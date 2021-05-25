@@ -7,14 +7,95 @@ from .tapquery import NightQuery
 
 from pyvo.dal import tap
 from astropy.coordinates import EarthLocation
-from astropy.table import Table, Column
+from astropy.table import Column, Table
 
 import numpy as np
 import os
 import json
 import re
-        
-class NightLog(Table):
+
+def rangify(x):
+    a, b = min(x), max(x)
+    if a == b:
+        return a
+    return f"{a} .. {b}" 
+
+def join(x):
+    x = np.unique(x).tolist()
+    for val in [None, 'NONE']:
+        if val in x:
+            x.remove(val)
+    return ' '.join(x)
+
+class Log(Table):
+    
+    def summary(self, keys=['prog_id']):
+
+        grouped = self.group_by(keys)
+
+        descriptions = []
+        names = []
+        units = [c.unit for c in grouped.columns.values()]
+        formats = [c.format for c in grouped.columns.values()]
+
+        # sequence number -> total number of merged OBs/templates/exposures
+
+        for col in grouped.columns.values():
+            
+            name, desc = col.name, col.description
+            if desc:
+                desc = re.sub('The ', '', desc)  
+
+            if '_no' in name:
+                desc = re.sub(' sequence.*', '', col.description)
+                desc = f"Number of {desc}s"
+                name = f"n_{name[:-3]}"
+
+            descriptions.append(desc)
+            names.append(name)
+
+        # averaging / merging depending on column
+
+        rows = []
+        for group in grouped.groups:
+            
+            row = []
+            for col in group.columns.values():
+                
+                name, values = col.name, col.data
+     
+                if name[-6:] == '_start':
+                    value = min(values)
+                elif name[-4:] == '_end':
+                    value = max(values)
+                elif name[-6:] == '_hours' or name in ['exposure']:
+                    value = sum(values)
+                elif name[-3:] == '_no':
+                    value = len(values)
+                elif name[0:2] == 'n_': # it's an average already
+                    value = sum(values)
+                elif name in ['night', 'period']:
+                    value = rangify(values)
+                elif col.dtype.char == 'U':
+                    value = join(values)
+                else:
+                    value = np.mean(values)
+                
+                row.append(value)
+
+            rows.append(row)
+
+        cls = type(self)
+        log = cls(rows=rows, names=names, descriptions=descriptions,
+                meta=self.meta)
+
+        for name in log.colnames:
+            if name in self.colnames:
+                log[name].format = self[name].format
+
+        return log
+
+class NightLog(Log):
 
     TABLE_FORMAT = 'ascii.ecsv'
 
@@ -31,12 +112,11 @@ class NightLog(Table):
         if use_log_cache and os.path.exists(filename):
         
             try:
-                cls = type(self)
-                tab = cls.read(filename, format=cls.TABLE_FORMAT)
+                
+                log = cls.read(filename, format=cls.TABLE_FORMAT)
                 print(f"{night}: read from cache")
                 
-                super().__init__(tab)
-                return 
+                return log 
         
             except Exception as e:
                 print(f"{night}: error trying to read from cache {filename}: {e}")
@@ -50,7 +130,7 @@ class NightLog(Table):
 
         # Add columns with period and night
 
-        log.add_night_info()
+        log._add_night_info()
       
         # renaming of a few columns
 
@@ -125,6 +205,10 @@ class NightLog(Table):
         # time accounting for night time, dark time, etc.
 
         log._add_time_accounting()
+
+        # column descriptuon
+
+        log._fix_column_description()
 
         # use human unreadable TABLE_FORMAT == 'ascii.ecsv' to ensure 
         # full reversibility in read/write operations
@@ -523,62 +607,6 @@ class NightLog(Table):
 
         self.add_column(exp_end)
 
-
-    def summary(self):
-
-        descriptions = []
-        names = []
-        units = [c.unit for c in self.columns]
-
-        # sequence number -> total number of merged OBs/templates/exposures
-
-        for col in self.columns:
-            
-            name, desc = col.name, col.description
-            desc = re.sub('The ', '', desc)  
-
-            if '_no' in name:
-                desc = re.sub(' sequence.*', '', col.description)
-                desc = f"Number of {desc}s"
-                name = f"n_{name[:-3]}"
-
-            descriptions.append(desc)
-            names.append(name)
-
-        # averaging / merging depending on column
-
-        rows = []
-        for group in self.groups:
-            
-            row = []
-            for col in self.columns:
-                
-                name, values = col.name, col.values()
-                
-                if '_start' in name:
-                    value = min(values)
-                elif '_end' in name:
-                    value = max(values)
-                elif '_hours' in name or name in ['exposure']:    
-                    value = sum(values)
-                elif name[-3:] = '_no':
-                    value = len(values)
-                elif name[0:2] = 'n_': # it's an average already
-                    value = sum(values)
-                elif col.dtype.char == 'U':
-                    value = ','.join(values)
-                else:
-                    value = np.mean(values)
-                
-                row.append(value)
-
-            rows.append(row)
-
-        cls = type(self)
-        log = cls(rows=rows, names=names, descriptions=descriptions)
-
-        return log
-
     def _average_conditions(self):
 
         for name in ['tel_airm', 'tel_ambi_fwhm']:
@@ -613,7 +641,7 @@ class NightLog(Table):
         self['internal'].description = 'Flag for internal instrument calibration'
         self['track'].description = 'Flag for on-sky observations (tracking)'
 
-    def add_night_info(self):
+    def _add_night_info(self):
 
         site = self.meta['site']
         location = EarthLocation.of_site(site)
@@ -624,4 +652,25 @@ class NightLog(Table):
         self.add_column(night, name='night', index=1)
         self['period'] = period
 
+        self['period'].description = 'ESO observing period'
+        self['night'].description = 'Observing night'
 
+    def _fix_column_description(self):
+
+        self['telescope'].description = 'Telescope name'
+        self['instrument'].description = 'Instrument name'
+        self['prog_id'].description = 'ESO programme ID'
+        self['pi'].description = 'Name of the principal investigator'
+        self['exp_start'].description = 'Time at start of exposure'
+        self['filter_path'].description = 'List of filtres'
+        self['object'].description = 'Name of the observation or target'
+        self['target'].description = 'Name of the astronomical target'
+        self['dp_cat'].description = 'Purpose of observation'
+        self['dp_tech'].description = 'Observing technique'
+        self['dp_type'].description = 'Type of exposure'
+        self['ob_name'].description = 'Name of the observing block'
+        self['tpl_start'].description = 'Time at start of observing template'
+
+        for name in self.colnames:
+            if name[-6:] == '_hours':
+                self[name].format = '.3f' 

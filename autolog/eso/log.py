@@ -7,7 +7,8 @@ from .tapquery import NightQuery
 
 from pyvo.dal import tap
 from astropy.coordinates import EarthLocation
-from astropy.table import Column, Table
+from ..utils.table import Table
+from astropy.table import Column
 
 import numpy as np
 import os
@@ -99,6 +100,16 @@ class NightLog(Log):
 
     TABLE_FORMAT = 'ascii.ecsv'
 
+    def summary_table(self):
+
+        summary = self.summary(['prog_id'])
+        keys = ['pi', 'prog_id', 'instrument', 'target', 'dark_hours', 
+                'night_hours', 'sun_down_hours']
+        caption = f"Telescope use during the night of {summary.meta['night']}"
+        soup = summary[keys].as_beautiful_soup(standalone=True, caption=caption)
+        
+        return soup
+
     @classmethod
     def fetch(cls, telescope, night, *, 
                 use_log_cache=True, use_tap_cache=True, rootdir='.'):
@@ -109,17 +120,17 @@ class NightLog(Log):
         
         # If file can be read, load and exit
 
-        if use_log_cache and os.path.exists(filename):
-        
-            try:
-                
-                log = cls.read(filename, format=cls.TABLE_FORMAT)
-                print(f"{night}: read from cache")
-                
-                return log 
-        
-            except Exception as e:
-                print(f"{night}: error trying to read from cache {filename}: {e}")
+        # if use_log_cache and os.path.exists(filename):
+        #
+        #    try:
+        #        
+        #        log = cls.read(filename, format=cls.TABLE_FORMAT)
+        #        print(f"{night}: read from cache")
+        #        
+        #        return log 
+        #
+        #    except Exception as e:
+        #        print(f"{night}: error trying to read from cache {filename}: {e}")
 
         # Get raw log
 
@@ -196,7 +207,8 @@ class NightLog(Log):
 
         # report gaps (no exposure reported during night time)
        
-        log._fill_idle_rows()
+        log._fill_idle_rows(boundary='night_time')
+        log._fill_idle_rows(boundary='astronomical_twilight_time')
 
         # fix PIDs
 
@@ -293,7 +305,7 @@ class NightLog(Log):
                 tech['filter_path'] = 'NONE' 
                 self.insert_row(i + 1, tech.tolist())
 
-    def _create_idle_row(self, i, start, end):
+    def _create_idle_row(self, i, start, end, name=[]):
 
         row0 = self[0]
 
@@ -306,10 +318,14 @@ class NightLog(Log):
         for key in 'ob', 'tpl', 'exp':
             row[f"{key}_start"] = start
             row[f"{key}_end"] = end
-        
+       
         for key in ['target', 'object', 'instrument', 'dp_cat', 'dp_tech', 
-                'dp_type', 'prog_id', 'pi']:
-            row[key] = 'GAP'
+                'dp_type']:
+            row[key] = 'IDLE'
+
+        uname = [n.upper() for n in name]
+        row['pi'] = ' '.join([*name, 'downtime'])[0:20]
+        row['prog_id'] =  '/'.join(['IDLE', *uname])[0:14]
 
         row['internal'] = False 
         row['track'] = False
@@ -321,7 +337,15 @@ class NightLog(Log):
     def _fill_idle_rows(self, boundary='astronomical_twilight_time'):
 
         self.sort(['internal', 'ob_start', 'tpl_no', 'exp_no'])
+       
+        if boundary == 'astronomical_twilight_time':
+            name = ['twilight']
+        elif boundary == 'night_time':
+            name = ['night']
+        else:
+            name = []
         
+ 
         ephem = self.meta['ephemeris']
      
         # if there is no astronomical twilight, nothing to report
@@ -355,7 +379,7 @@ class NightLog(Log):
 
             # Check if there is a gap
             if ob_end < next_ob_start:
-                self._create_idle_row(i+1, ob_end, next_ob_start)
+                self._create_idle_row(i+1, ob_end, next_ob_start, name=name)
 
             next_ob_no = ob_no
             next_ob_start = ob_start

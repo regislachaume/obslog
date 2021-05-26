@@ -87,13 +87,15 @@ It keeps a local copy of requests to save on internet bandpass"""
         
         if use_tap_cache and os.path.exists(filename):
 
-            try:
+            # try:
+                cls = type(self)
                 tab = Table.read(filename, format=self.TABLE_FORMAT)
+                cls._fix_column_types(tab)
                 print(f"{night}: raw log read from disk")
                 return tab
 
-            except Exception as e:
-                print(f"{night}: error trying to read raw log: {e}")
+            #except Exception as e:
+            #    print(f"{night}: error trying to read raw log: {e}")
 
         # Retrive from ESO using SQL-like language query for Table-access
         # protocol
@@ -143,38 +145,38 @@ It keeps a local copy of requests to save on internet bandpass"""
             print(f"Could not cache to {filename}")
 
         return tab
-
-    def _fix_column_types(self, tab):
+    
+    @classmethod
+    def _fix_column_types(cls, tab):
         
         for i, name in enumerate(tab.colnames):
-            
+        
             col = tab[name]
  
             if col.dtype.char in 'OU':
                 
-                str_ = self.KEYS.get(name, '<U0')
+                str_ = cls.KEYS.get(name, '<U0')
                 dtype = np.dtype(str_)
-                
+               
                 if (len := dtype.itemsize // dtype.alignment):
-                    col = np.array([c[0:len] for c in col])
-              
-                # ECSV defaults masked string to '0' 
-                mask = col == ''
-                col[mask] = '0' 
-                new_col = np.ma.masked_array(col, dtype=dtype, mask=mask)
+                    new_col = [c[0:len] if c else c for c in col]
+                else:
+                    new_col = [c for c in col]
+            
+                new_col = np.ma.masked_array(new_col, dtype=dtype)
+                new_col.mask |= col == '' 
                 tab.remove_column(name) 
                 tab.add_column(new_col, name=name, index=i)
             
-            elif (str_ := self.KEYS.get(name, '')) and col.dtype.str != str_:
+            elif (str_ := cls.KEYS.get(name, '')) and col.dtype.str != str_:
             
                 dtype = np.dtype(str_)
                 new_col = np.ma.masked_array(col, dtype=dtype, mask=col.mask)
                 tab.remove_column(name) 
                 tab.add_column(new_col, name=name, index=i)
 
-            if col.dtype.char in 'if':
+            if col.dtype.char in 'if' and hasattr(col, 'mask'):
 
-                # ECSV defaults masked floats to zero
                 col[col.mask] = np.ma.masked_array(0., mask=True)  
     
     def _fix_telescope(self, tab):

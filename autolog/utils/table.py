@@ -8,11 +8,18 @@ def BS(arg):
 
 class Table(_Table):
 
-    def as_beautiful_soup(self, *, caption=None, standalone=False,
-            lang='en', htmldict={}, **kwargs):
-       
+    def as_beautiful_soup(self, *, htmldict={}, **kwargs):
+      
+        print('Table.as_beautiful_soup')
+ 
         tab = self
-       
+
+        title = htmldict.pop('title', None)
+        h1 = htmldict.pop('h1', None)
+        h2 = htmldict.pop('h2', None)
+        caption = htmldict.pop('caption', None)
+        lang = htmldict.pop('lang', 'en')
+ 
         # HTML writer doesn't honour include/exclude names?!?
  
         if include_names := kwargs.pop('include_names', None):
@@ -36,9 +43,8 @@ class Table(_Table):
             table.insert(0, cap)
 
         # Write each group in a tbody
-
+        print(tab.groups)
         for group in tab.groups:
-            print(kwargs)
             with StringIO() as fh:
                 _Table(group).write(fh, format='ascii.html', **kwargs)
                 html = fh.getvalue()
@@ -47,15 +53,27 @@ class Table(_Table):
             tbody.name = 'tbody'
             table.append(tbody) 
 
-        if standalone:
-            return soup.table
-
         meta = soup.find_all('meta')
         for m in meta:
             if 'charset' in m.get('content', ''):
                 m.extract()
 
         soup.html['lang'] = lang 
+
+        if title:
+
+            title = BS(f'<title>{title}</title>').title
+            soup.head.append(title)
+
+        if h1:
+
+            h1 = BS(f'<h1>{h1}</h1>').h1
+            soup.body.insert(0, h1)
+        
+        if h2:
+
+            h2 = BS(f'<h2>{h2}</h2>').h2
+            soup.body.insert(1, h2)
 
         return soup
 

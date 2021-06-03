@@ -13,7 +13,7 @@ cls = NightLog
 rootdir = '.'
 use_tap_cache = True 
 use_log_cache = False
-night = '2020-03-03'
+night = '2021-03-03'
 
 #self = NightQuery(telescope=telescope, rootdir=rootdir)
 #telescope = self.telescope_names[0]
@@ -22,13 +22,12 @@ night = '2020-03-03'
 #cls = type(self)
 #tab = Table.read(filename, format=self.TABLE_FORMAT)
 #cls._fix_column_types(tab)
+# if night == 'all':
+#     nights = period_nights(period, format='iso')
+# else:
+#     nights = [night]
 
-
-if night == 'all':
-    nights = period_nights(period, format='iso')
-else:
-    nights = [night]
-
-for night in nights:
-    log = NightLog.fetch(telescope, night, use_log_cache=False,
+log = NightLog.fetch(telescope, night, use_log_cache=True,
         use_tap_cache=True)
+log.save_as_html()
+log.publish()

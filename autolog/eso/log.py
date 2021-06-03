@@ -9,8 +9,10 @@ from pyvo.dal import tap
 from astropy.coordinates import EarthLocation
 from ..utils.table import Table
 from astropy.table import Column
+from bs4 import Comment as BSComment
 
 import numpy as np
+import shutil
 import os
 import json
 import re
@@ -29,7 +31,7 @@ def join(x):
     return ' '.join(x)
 
 class Log(Table):
-    
+
     def summary(self, keys=['prog_id']):
 
         grouped = self.group_by(keys)
@@ -99,16 +101,110 @@ class Log(Table):
 class NightLog(Log):
 
     TABLE_FORMAT = 'ascii.ecsv'
+    
+    def publish(self, website='/var/www/twoptwo.com/html/2.2m/'):
 
-    def summary_table(self):
+        period = self['period'][0]
+        night = self.meta['night']
+        rootdir = f'{website}/logs/nightlogs'
+        dirname = path.dirname(rootdir, period=period, night=night, 
+                         makedirs=True)
+        filename = os.path.join(dirname, 'index.shtml')
+        shutil.copy2(self.meta['html'], filename) 
 
-        summary = self.summary(['prog_id'])
-        keys = ['pi', 'prog_id', 'instrument', 'target', 'dark_hours', 
-                'night_hours', 'sun_down_hours']
-        caption = f"Telescope use during the night of {summary.meta['night']}"
-        soup = summary[keys].as_beautiful_soup(standalone=True, caption=caption)
+    def as_beautiful_soup(self, caption=None, details=['prog_id', 'ob']):
+      
+        print('NightLog.as_beautiful_soup')
+ 
+        if not isinstance(details, str):
+            
+            soup = self.as_beautiful_soup(details=details[0])
+            
+            for detail in details[1:]:
+                table = self.as_beautiful_soup(details=detail)
+                soup.body.append(table.h2)
+                soup.body.append(table.table)
+
+            return soup
+
+        print('Scalar call') 
+        night = self.meta['night']
+
+        if details == 'prog_id':
+
+            kept_keys = ['pi', 'prog_id', 'instrument', 'target', 'dark_hours', 
+                    'night_hours', 'sun_down_hours']
+            group_keys = ['prog_id']
+            sort_keys = []
+            filter = lambda log: log
+            subtitle = "Program summary"
+        
+        elif details == 'target':
+
+            kept_keys = ['pi', 'prog_id', 'instrument', 'target', 'filter_path',
+                       'exposure', 'dark_hours',
+                       'night_hours', 'sun_down_hours']
+            group_keys = ['prog_id', 'target']
+            sort_keys = []
+            subtitle = "Compact night log"
+            filter = lambda log: log[log['track'] == True]
+
+        elif details == 'ob':
+
+            kept_keys = ['pi', 'prog_id', 'instrument', 'target', 'filter_path',
+                      'ob_start', 'ob_end', 'exposure', 'tel_ambi_fwhm',
+                      'tel_airm', 'dark_hours',
+                      'night_hours', 'sun_down_hours']
+            group_keys = ['prog_id', 'target', 'ob_start']
+            sort_keys = ['ob_start']
+            subtitle = "Detailed night log"
+            filter = lambda log: log[log['track'] == True]
+        else:
+            raise NotImplemented(f'level: {level}')
+
+        summary = filter(self).summary(group_keys)[kept_keys]
+
+        if sort_keys:
+            summary.sort(sort_keys)
+        
+        for key in ['ob_start', 'ob_end']:
+            if key in summary.colnames:
+                summary[key] = [s[11:16] for s in summary[key]] 
+        
+        for key in summary.colnames:
+            if '_hours' in key:
+                summary[key].name = key[:-6]
+            elif 'tel_ambi_' in key:
+                summary[key].name = key[9:]
+            elif 'tel_' in key:
+                summary[key].name = key[4:]
+
+        if not caption:
+            caption = f"{subtitle} for {night}"
+
+        doc_title = f"Night log for {night}"
+        htmldict=dict(
+            caption=caption,
+            title=doc_title,
+            h1=doc_title,
+            h2=subtitle,
+            table_class='horizontal',
+            cssfiles=['../../../../navbar.css', '../../../../twoptwo.css']
+        )
+
+        print('calling Table.as_bs')
+        soup = Table(summary).as_beautiful_soup(htmldict=htmldict)
+
+        navbar = '#include virtual="../../../../navbar.shtml"'
+        soup.body.insert(0, BSComment(navbar))
         
         return soup
+
+    def save_as_html(self, overwrite=False):
+
+        filename = self.meta['html']
+        self.write(filename, overwrite=overwrite, format='ascii.html')
+
 
     @classmethod
     def fetch(cls, telescope, night, *, 
@@ -226,9 +322,15 @@ class NightLog(Log):
         # full reversibility in read/write operations
 
         telescope = log['telescope'][0]
-        filaname = path.filename(telescope, night=night, name='log-red',
+        filename = path.filename(telescope, night=night, name='log',
+                        rootdir=rootdir)
+        htmlfile = path.filename(telescope, 
+                        night=night, name='log', ext='shtml',
                         rootdir=rootdir)
 
+        log.meta['fullname'] = filename
+        log.meta['html'] = htmlfile
+        
         try:
             log.write(filename, format=cls.TABLE_FORMAT, overwrite=True) 
             print(f"{night}: cached to {filename}")
@@ -698,3 +800,7 @@ class NightLog(Log):
         for name in self.colnames:
             if name[-6:] == '_hours':
                 self[name].format = '.3f' 
+            elif name in ['tel_airm', 'tel_ambi_fwhm']:
+                self[name].format = '.2f'
+            elif name in ['exposure']:
+                self[name].format = '.1f'

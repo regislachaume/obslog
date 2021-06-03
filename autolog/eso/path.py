@@ -35,7 +35,7 @@ def _get_name(telescope, /, *, rootdir='.',
 def dirname(telescope, /, *, rootdir='.',
         period=None, night=None, makedirs=False):
 
-    return _get_name(telscope, rootdir=rootdir, makedirs=makedirs,
+    return _get_name(telescope, rootdir=rootdir, makedirs=makedirs,
                 period=period, night=night)
 
 def filename(telescope, /, *, rootdir='.', name, ext='dat',

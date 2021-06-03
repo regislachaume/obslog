@@ -116,8 +116,7 @@ class Allocation(Table):
         filename = self.meta['html']
         self.write(filename, overwrite=overwrite, format='ascii.html')
 
-    def as_beautiful_soup(self, caption=None, exclude_names=['Identifiers'],
-            standalone=False):
+    def as_beautiful_soup(self, caption=None, exclude_names=['Identifiers']):
       
         period = self.meta['period']
         telescope = self.meta['telescope']
@@ -131,12 +130,14 @@ class Allocation(Table):
             caption = f"{doc_title} ({start} to {end}). Last modified {today}."
 
         htmldict=dict(
+            title=doc_title,
+            h1=doc_title,
+            caption=caption,
             table_class='horizontal',
             cssfiles=['../../navbar.css', '../../twoptwo.css']
         )
 
-        soup = super().as_beautiful_soup(caption=caption, 
-                    standalone=standalone,
+        soup = super().as_beautiful_soup(standalone=standalone,
                     exclude_names=exclude_names, htmldict=htmldict)
 
         # locate columns
@@ -190,16 +191,8 @@ class Allocation(Table):
             critical.extract()
             link.extract()
         
-        if not standalone:
-            
-            dtitle = BS(f'<title>{doc_title}</title>').title
-            soup.head.append(dtitle)
-          
-            h1 = BS(f'<h1>{doc_title}</h1>').h1
-            soup.body.insert(0, h1)
-
-            navbar = '#include virtual="../../navbar.shtml"'
-            soup.body.insert(0, BSComment(navbar))
+        navbar = '#include virtual="../../navbar.shtml"'
+        soup.body.insert(0, BSComment(navbar))
         
         return soup
 

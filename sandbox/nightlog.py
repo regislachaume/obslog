@@ -4,7 +4,7 @@ import sys
 sys.path.append('..')
 
 # from autolog.eso.tapquery import NightQuery
-from autolog.eso.log import *
+from autolog.eso.nightlog import *
 from autolog.eso.date import *
 
 period = 106

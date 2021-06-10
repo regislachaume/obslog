@@ -3,13 +3,16 @@ from .date import night_to_period
 
 from . import path
 
-from pyvo.dal import tap
+from pyvo.dal.tap import TAPQuery
 from astropy.coordinates import EarthLocation
 from astropy.table import Table
 from collections import OrderedDict
 
 import numpy as np
 import os
+import re
+from astropy.io import votable
+from io import BytesIO
         
 class NightQuery:
     """ESO TAP query for raw archive data. 
@@ -70,7 +73,6 @@ It keeps a local copy of requests to save on internet bandpass"""
 
         # Set the TAP & defaults
 
-        self.tap = tap.TAPService(self.URL)
         self.site = site
         self.location = EarthLocation.of_site(site)
         self.telescope_names = telescope_names
@@ -87,15 +89,15 @@ It keeps a local copy of requests to save on internet bandpass"""
         
         if use_tap_cache and os.path.exists(filename):
 
-            # try:
+            try:
                 cls = type(self)
                 tab = Table.read(filename, format=self.TABLE_FORMAT)
                 cls._fix_column_types(tab)
-                print(f"{night}: raw log read from disk")
+                print(f"{night}: raw log read from disk: {filename}")
                 return tab
 
-            #except Exception as e:
-            #    print(f"{night}: error trying to read raw log: {e}")
+            except Exception as e:
+                print(f"{night}: error trying to read raw log: {e}")
 
         # Retrive from ESO using SQL-like language query for Table-access
         # protocol
@@ -114,27 +116,27 @@ It keeps a local copy of requests to save on internet bandpass"""
             ORDER BY exp_start ASC
         """
 
-        result = self.tap.search(query=query)
-        tab = result.to_table()
+        tap = TAPQuery(self.URL, query)
+        res = tap.execute().to_table()
 
         # Add some meta information
 
         period = night_to_period(night)
-        tab.meta = OrderedDict(fullname=filename, night=night, site=self.site,
+        tab.meta = OrderedDict(fullname=filename, site=self.site,
             lon=loc.lon.to_value('deg'), lat=loc.lat.to_value('deg'), 
-            alt=loc.height.si.value)
-        
+            alt=loc.height.si.value, telescope=telescope, period=period, 
+            night=night)
+
+        # TAP is not consistent with telescope name, ensure one is used
+
+        tab['telescope'] = telescope
+         
         # char of variable size return by ESO TAP is rendered as object
         # by pyvo.  We fix that to get strings.  Empty ones are considered
         # masked.
-
+        
         self._fix_column_types(tab)
 
-        # Fix telescope name to ensure it's consistent over instruments
-        # and nights.
-
-        self._fix_telescope(tab)
-    
         # use human unreadable TABLE_FORMAT == 'ascii.ecsv' to ensure 
         # full reversibility in read/write operations
 
@@ -148,7 +150,7 @@ It keeps a local copy of requests to save on internet bandpass"""
     
     @classmethod
     def _fix_column_types(cls, tab):
-        
+
         for i, name in enumerate(tab.colnames):
         
             col = tab[name]
@@ -165,21 +167,18 @@ It keeps a local copy of requests to save on internet bandpass"""
             
                 new_col = np.ma.masked_array(new_col, dtype=dtype)
                 new_col.mask |= col == '' 
-                tab.remove_column(name) 
-                tab.add_column(new_col, name=name, index=i)
+                tab.replace_column(name, new_col)
             
             elif (str_ := cls.KEYS.get(name, '')) and col.dtype.str != str_:
             
                 dtype = np.dtype(str_)
                 new_col = np.ma.masked_array(col, dtype=dtype, mask=col.mask)
-                tab.remove_column(name) 
-                tab.add_column(new_col, name=name, index=i)
+                tab.replace_column(name, new_col) 
 
-            if col.dtype.char in 'if' and hasattr(col, 'mask'):
-
-                col[col.mask] = np.ma.masked_array(0., mask=True)  
-    
-    def _fix_telescope(self, tab):
-
-        tab['telescope'] = self.telescope_names[0]
+            if col.dtype.char in 'if':
+                if hasattr(col, 'mask'):
+                    col[col.mask] = np.ma.masked_array(0., mask=True)  
+                else:
+                    new_col = np.ma.masked_array(col)
+                    tab.replace_column(name, new_col)
 

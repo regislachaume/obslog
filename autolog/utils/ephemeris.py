@@ -48,51 +48,48 @@ def _down_span(observer, start, midnight, end, type='night'):
 
     return [max(start, set).isot, min(end, rise).isot]
 
-def _get_dark(observer, night_time):
+def _get_dark(obs, night_time):
 
     w = warnings.catch_warnings() 
     warnings.simplefilter('error', category=AstroplanWarning)
 
+
+    if not night_time:
+        return dict(dark_time=[], dark_hours=0.)
+
+    epsilon = 1/86400
+    night_start = Time(night_time[0][0])
+    night_end = Time(night_time[0][1])
+    h = -0.8333 * deg
+    t = Time(night_start)
+    
     dark_time = []
+   
+    while t < night_end:
 
-    if night_time:
+        alt = obs.moon_altaz(t + epsilon).alt 
+        is_dark = alt <= h
+        
+        if is_dark:
 
-        night_start = Time(night_time[0][0])
-        night_end = Time(night_time[0][1])
-        h = -0.8333 * deg
-        t = Time(night_start)
-
-        while t < night_end:
-
-            is_dark = observer.moon_altaz(t).alt < 0
-            
             try:
-                moon_rise = observer.moon_rise_time(t, 'next', horizon=h)
+                moon_rise = obs.moon_rise_time(t, 'next', horizon=h)
+                moon_rise = min(night_end, moon_rise)
             except AstroplanWarning as e:
                 moon_rise = night_end
-            
-            moon_rise = min(night_end, moon_rise)
 
-            if is_dark:
-                dark_time.append((t.isot, moon_rise.isot))
-            else:
-                
-                try:
-                    moon_set = observer.moon_set_time(t, 'next', horizon=h)
-                except AstroplanWarning as e:
-                    moon_set = night_end
-                
-                moon_set = min(night_end, moon_set)
-                if moon_set < night_end:
-                    dark_time.append([moon_set.isot, moon_rise.isot])
+            dark_time.append((t.isot, moon_rise.isot[0:19]))
+            t = moon_rise
 
-            t = moon_rise + 1/86400
+        try:
+            t = obs.moon_set_time(t, 'next', horizon=h) 
+            t = min(night_end, t)
+        except AstroplanWarning as e:
+            t = night_end
 
-        dark_hours = sum(total_seconds(*d) for d in dark_time) / 3600
+    dark_hours = sum(total_seconds(*d) for d in dark_time) / 3600
 
-    dark = dict(dark_time=dark_time, dark_hours=dark_hours)
-
-    return dark
+    return dict(dark_time=dark_time, dark_hours=dark_hours)
 
 def _get_twilights(observer, start, midnight, end):
 

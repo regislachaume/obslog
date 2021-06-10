@@ -11,6 +11,7 @@ from astropy.coordinates import EarthLocation
 from ..utils.table import Table
 from astropy.table import Column
 from bs4 import Comment as BSComment
+from collections import OrderedDict
 
 import numpy as np
 import shutil
@@ -20,111 +21,35 @@ import re
 
 class NightLog(Log):
 
-    TABLE_FORMAT = 'ascii.ecsv'
-    
-    def publish(self, website='/data/www/twoptwo.com/2.2m/'):
+    HTML_ROW_GROUPS = OrderedDict(
+        prog_id=['slew', 'prog_id'],
+        ob_start=['internal', 'slew', 'ob_start', 'prog_id'],
+    )
+    HTML_COLUMNS = OrderedDict(
+        prog_id=['prog_id', 'pi', 'instrument', 'dp_cat', 
+            'night_hours', 'dark_hours', 'sun_down_hours'],
+        ob_start=['prog_id', 'pi', 'instrument', 'object', 'exposure', 
+            'ob_start', 'ob_end', 'tel_airm', 'tel_ambi_fwhm',
+            'night_hours', 'dark_hours', 'sun_down_hours'],
+    )
+    HTML_SORT_KEYS = OrderedDict(
+        prog_id=['instrument'],
+        ob_start=None,
+    )
+
+    def publish(self, website='/data/www/twoptwo.com/'):
 
         period = self['period'][0]
+        telescope = self.meta['telescope']
         night = self.meta['night']
-        rootdir = f'{website}/logs/nightlogs'
+        rootdir = f'{website}/{telescope}/logs/'
+
         dirname = path.dirname(rootdir, period=period, night=night, 
                          makedirs=True)
         filename = os.path.join(dirname, 'index.shtml')
-        shutil.copy2(self.meta['html'], filename) 
+        print(f'publish to {filename}')
 
-    def as_beautiful_soup(self, caption=None, details=['prog_id', 'ob']):
-      
-        print('NightLog.as_beautiful_soup')
- 
-        if not isinstance(details, str):
-            
-            soup = self.as_beautiful_soup(details=details[0])
-            
-            for detail in details[1:]:
-                table = self.as_beautiful_soup(details=detail)
-                soup.body.append(table.h2)
-                soup.body.append(table.table)
-
-            return soup
-
-        print('Scalar call') 
-        night = self.meta['night']
-
-        if details == 'prog_id':
-
-            kept_keys = ['pi', 'prog_id', 'instrument', 'target', 'dark_hours', 
-                    'night_hours', 'sun_down_hours']
-            group_keys = ['prog_id']
-            sort_keys = []
-            filter = lambda log: log
-            subtitle = "Program summary"
-        
-        elif details == 'target':
-
-            kept_keys = ['pi', 'prog_id', 'instrument', 'target', 'filter_path',
-                       'exposure', 'dark_hours',
-                       'night_hours', 'sun_down_hours']
-            group_keys = ['prog_id', 'target']
-            sort_keys = []
-            subtitle = "Compact night log"
-            filter = lambda log: log[log['track'] == True]
-
-        elif details == 'ob':
-
-            kept_keys = ['pi', 'prog_id', 'instrument', 'target', 'filter_path',
-                      'ob_start', 'ob_end', 'exposure', 'tel_ambi_fwhm',
-                      'tel_airm', 'dark_hours',
-                      'night_hours', 'sun_down_hours']
-            group_keys = ['prog_id', 'target', 'ob_start']
-            sort_keys = ['ob_start']
-            subtitle = "Detailed night log"
-            filter = lambda log: log[log['track'] == True]
-        else:
-            raise NotImplemented(f'level: {level}')
-
-        summary = filter(self).summary(group_keys)[kept_keys]
-
-        if sort_keys:
-            summary.sort(sort_keys)
-        
-        for key in ['ob_start', 'ob_end']:
-            if key in summary.colnames:
-                summary[key] = [s[11:16] for s in summary[key]] 
-        
-        for key in summary.colnames:
-            if '_hours' in key:
-                summary[key].name = key[:-6]
-            elif 'tel_ambi_' in key:
-                summary[key].name = key[9:]
-            elif 'tel_' in key:
-                summary[key].name = key[4:]
-
-        if not caption:
-            caption = f"{subtitle} for {night}"
-
-        doc_title = f"Night log for {night}"
-        htmldict=dict(
-            caption=caption,
-            title=doc_title,
-            h1=doc_title,
-            h2=subtitle,
-            table_class='horizontal',
-            cssfiles=['../../../../navbar.css', '../../../../twoptwo.css']
-        )
-
-        print('calling Table.as_bs')
-        soup = Table(summary).as_beautiful_soup(htmldict=htmldict)
-
-        navbar = '#include virtual="../../../../navbar.shtml"'
-        soup.body.insert(0, BSComment(navbar))
-        
-        return soup
-
-    def save_as_html(self, overwrite=False):
-
-        filename = self.meta['html']
-        self.write(filename, overwrite=overwrite, format='ascii.html')
-
+        shutil.copy2(self.meta['html_filename'], filename) 
 
     @classmethod
     def fetch(cls, telescope, night, *, 
@@ -136,22 +61,23 @@ class NightLog(Log):
         
         # If file can be read, load and exit
 
-        # if use_log_cache and os.path.exists(filename):
-        #
-        #    try:
-        #        
-        #        log = cls.read(filename, format=cls.TABLE_FORMAT)
-        #        print(f"{night}: read from cache")
-        #        
-        #        return log 
-        #
-        #    except Exception as e:
-        #        print(f"{night}: error trying to read from cache {filename}: {e}")
+        if use_log_cache and os.path.exists(filename):
+        
+           try:
+               
+               log = cls.read(filename, format='ascii.ecsv')
+               print(f"{night}: read from cache")
+               
+               return log 
+        
+           except Exception as e:
+               print(f"{night}: error trying to read from cache {filename}: {e}")
 
         # Get raw log
 
         query = NightQuery(telescope=telescope, rootdir=rootdir)
         log = query.fetch(night=night, use_tap_cache=use_tap_cache)
+        del log.meta['fullname']
         log.__class__ = cls
 
 
@@ -162,6 +88,7 @@ class NightLog(Log):
         # renaming of a few columns
 
         log['tpl_seqno'].name = 'tpl_no'
+        log['tpl_no'].description = 'template number within OB'
         log['tpl_expno'].name = 'exp_no'
         log['pi_coi'].name = 'pi'
 
@@ -222,9 +149,8 @@ class NightLog(Log):
         log._fill_missing_technical_obs()
 
         # report gaps (no exposure reported during night time)
-       
-        log._fill_idle_rows(boundary='night_time')
-        log._fill_idle_rows(boundary='astronomical_twilight_time')
+
+        log._fill_idle_rows('night', 'astronomical_twilight')
 
         # fix PIDs
 
@@ -234,35 +160,35 @@ class NightLog(Log):
 
         log._add_time_accounting()
 
-        # column descriptuon
+        # column description
 
         log._fix_column_description()
 
         # use human unreadable TABLE_FORMAT == 'ascii.ecsv' to ensure 
         # full reversibility in read/write operations
 
-        telescope = log['telescope'][0]
-        filename = path.filename(telescope, night=night, name='log',
+        telescope = log.meta['telescope']
+        csv_filename = path.filename(telescope, night=night, name='log',
                         rootdir=rootdir)
-        htmlfile = path.filename(telescope, 
+        html_filename = path.filename(telescope, 
                         night=night, name='log', ext='shtml',
                         rootdir=rootdir)
 
-        log.meta['fullname'] = filename
-        log.meta['html'] = htmlfile
+        log.meta['csv_filename'] = csv_filename
+        log.meta['html_filename'] = html_filename
         
         try:
-            log.write(filename, format=cls.TABLE_FORMAT, overwrite=True) 
-            print(f"{night}: cached to {filename}")
+            log.save(format='csv', overwrite=True) 
+            print(f"{night}: cached to {csv_filename}")
         except FileNotFoundError as e:
-            print(f"{night}: could not cache to {filename}")
+            print(f"{night}: could not cache to {html_filename}")
 
         return log
 
     def _add_ephemeris(self):
 
         night = self.meta['night'] 
-        telescope = self['telescope'][0]
+        telescope = self.meta['telescope']
         filename = path.filename(telescope, night=night, name='ephemeris', 
                         ext='json', makedirs=True)
 
@@ -289,7 +215,7 @@ class NightLog(Log):
         return ephem
 
     def _fill_missing_templates(self):
-
+        
         for i in reversed(range(len(self) - 1)):
                 
             this, next = self[i], self[i + 1]
@@ -327,88 +253,89 @@ class NightLog(Log):
                 tech['filter_path'] = 'NONE' 
                 self.insert_row(i + 1, tech.tolist())
 
-    def _create_idle_row(self, i, start, end, name=[]):
+    def _create_idle_row(self, i, start, end, name=[], ob_no=-1):
 
-        row0 = self[0]
-
+        row0 = np.ndarray((1,), dtype=self.dtype)
         self.insert_row(i)
         row = self[i]
 
-        for key in 'night', 'period', 'telescope':
-            row[key] = row0[key]
-        
+        row['night'] = self.meta['night']
+        row['period'] = self.meta['period']
+        row['telescope'] = self.meta['telescope']
+
         for key in 'ob', 'tpl', 'exp':
             row[f"{key}_start"] = start
             row[f"{key}_end"] = end
-       
-        for key in ['target', 'object', 'instrument', 'dp_cat', 'dp_tech', 
-                'dp_type']:
-            row[key] = 'IDLE'
 
         uname = [n.upper() for n in name]
         row['pi'] = ' '.join([*name, 'downtime'])[0:20]
         row['prog_id'] =  '/'.join(['IDLE', *uname])[0:14]
 
-        row['internal'] = False 
-        row['track'] = False
-
         row['ob_name'] = 'Telescope_Idle'
+        row['ob_no'] = ob_no
+
+        row['internal'] = False 
+        row['slew'] = True
 
         return row
 
-    def _fill_idle_rows(self, boundary='astronomical_twilight_time'):
+    def _fill_idle_rows(self, *boundaries):
 
         self.sort(['internal', 'ob_start', 'tpl_no', 'exp_no'])
-       
-        if boundary == 'astronomical_twilight_time':
-            name = ['twilight']
-        elif boundary == 'night_time':
-            name = ['night']
-        else:
-            name = []
-        
- 
         ephem = self.meta['ephemeris']
-     
-        # if there is no astronomical twilight, nothing to report
-        if not ephem[boundary]:
-            return
         
-        tw_start = ephem[boundary][0][0]
-        tw_end = ephem[boundary][-1][1]
-       
-        # on-sky observations are sorted by time
-     
-        next_ob_start = tw_end
-        next_ob_no = -1
-       
-        # reversed order, so that inserting rows doesn't mess with the 
-        # access via index 
-       
-        in_bounds = (self['ob_start'] < tw_end) & (self['ob_end'] > tw_start)
-        indices = np.argwhere(~self['internal'] & in_bounds)[:,0]
-        for i in reversed(indices):
+        idle_ob_no = max(self['ob_no']) + 1 if len(self) else 1
 
-            row = self[i]
+        for boundary in boundaries:
+            
+            if boundary == 'astronomical_twilight':
+                name = ['twilight']
+            elif boundary == 'night':
+                name = ['night']
+            else:
+                name = []
+            
+            for tw_start, tw_end in ephem[boundary + '_time']: 
 
-            # Within the same OB, no gaps (was taken care of)
-            ob_no = row['ob_no']
-            if ob_no == next_ob_no:
-                continue
+                # on-sky observations are sorted by time
+             
+                next_ob_start = tw_end
+                next_ob_no = -1
+           
+                # reversed order, so that inserting rows doesn't mess 
+                # with the access via index 
+           
+                in_bounds = ((self['ob_start'] < tw_end) & 
+                             (self['ob_end'] > tw_start))
+                indices = np.argwhere(~self['internal'] & in_bounds)[:,0]
 
-            # In nautical twilight don't report gaps 
-            ob_start, ob_end = row['ob_start','ob_end']
+                for i in reversed(indices):
 
-            # Check if there is a gap
-            if ob_end < next_ob_start:
-                self._create_idle_row(i+1, ob_end, next_ob_start, name=name)
+                    row = self[i]
 
-            next_ob_no = ob_no
-            next_ob_start = ob_start
+                    # Within the same OB, no gaps (was taken care of)
+                    ob_no = row['ob_no']
+                    if ob_no == next_ob_no:
+                        continue
 
-        if tw_start < next_ob_start:
-            i0 = indices[0] if len(indices) else 0
-            self.create_idle_row(i0, tw_start, next_ob_start)
+                    ob_start, ob_end = row['ob_start','ob_end']
+
+                    # Check if there is a gap
+                    if ob_end < next_ob_start:
+                        self._create_idle_row(i+1, ob_end, next_ob_start, 
+                                   name=name, ob_no=idle_ob_no)
+                    idle_ob_no += 1
+
+                    next_ob_no = ob_no
+                    next_ob_start = ob_start
+
+                # last index to beginning of night / twilight
+
+                if tw_start < next_ob_start:
+                    i0 = indices[0] if len(indices) else 0
+                    self._create_idle_row(i0, tw_start, next_ob_start,
+                                  name=name, ob_no=idle_ob_no)
+                    idle_ob_no += 1
 
     def _fix_pids(self, programs=None):
         
@@ -420,7 +347,8 @@ class NightLog(Log):
 
     def _add_time_accounting(self,
             sky_conditions=['night', 'dark', 'astronomical_twilight', 
-                            'nautical_twilight', 'civil_twilight', 'sun_down']):
+                            'nautical_twilight', 'civil_twilight', 
+                            'sun_down']):
 
         # ensure to sort by OB, template, and exposure.
 
@@ -456,8 +384,16 @@ class NightLog(Log):
                                     for s, e in zip(start, end)]
                 time += np.array(t) * accounting 
             
-            col = Column(time, name=sky_time, description=desc, unit='hour')
+            col = Column(time, name=sky_time, description=desc, 
+                    unit='hour')
             self.add_column(col)
+
+        t = [total_hours(s, e)  for s, e in zip(start, end)]
+        time = np.array(t) * accounting
+        col = Column(time, name='total_hours', 
+            description='number of hours', unit='hour')
+        self.add_column(col)
+
 
     def _add_ob_no(self):
 
@@ -472,8 +408,9 @@ class NightLog(Log):
         # Unfortunately, unique OB identification or start time are not
         # contained in the ESO TAP.
 
-        ob_id = np.array([])
-        
+        ob_no = self['tpl_no'].copy()
+        ob_no.name = 'ob_no'
+        ob_no.description = 'OB sequence number within the night'
         if len(self):
 
             new_ob = ((self['ob_name'][1:] != self['ob_name'][:-1]) | 
@@ -485,15 +422,12 @@ class NightLog(Log):
             new_ob = np.hstack([True, new_ob])
             ob_id = np.cumsum(new_ob) - 1
         
-        ob_no = self['tpl_no'].copy()
-        ob_no.name = 'ob_no'
-        ob_no.description = 'Observing Block sequence number within the night'
-        
-        start_rank = 1 + np.argsort(self[new_ob]['tpl_start']).argsort()
+            new_ob_start = self[new_ob]['tpl_start']
+            start_rank = 1 + np.argsort(new_ob_start).argsort()
 
-        for id in np.unique(ob_id):
-            index = id == ob_id
-            ob_no[index] = start_rank[id]
+            for id in np.unique(ob_id):
+                index = id == ob_id
+                ob_no[index] = start_rank[id]
        
         self.add_column(ob_no, index=self.colnames.index('tpl_no'))
 
@@ -502,7 +436,7 @@ class NightLog(Log):
         self.sort(['internal', 'ob_no', 'tpl_no', 'exp_no'])
         
         # OB start & end columns
-        exec = 'execution of the Observing Block'
+        exec = 'execution of the OB'
 
         ob_start = self['tpl_start'].copy()
         ob_start.name = 'ob_start'
@@ -510,9 +444,10 @@ class NightLog(Log):
         
         ob_end = self['tpl_end'].copy()
         ob_end.name = 'ob_end'
-        ob_start.description = f'estimated end time of the {exec}'
+        ob_end.description = f'estimated end time of the {exec}'
 
         ob_no = self['ob_no']
+        ob_no.description = f'unique OB number within the night'
 
         for no in np.unique(ob_no):
             index = no == ob_no
@@ -538,12 +473,12 @@ class NightLog(Log):
             index = id == ob_id
             
             first_exp = self[index][0]
-            tracking, start = first_exp['track','tpl_start']
+            tracking = ~first_exp['slew']
+            start = first_exp['tpl_start']
             tplno, expno = first_exp['tpl_no','exp_no']
             
             end = self['tpl_end'][index][-1]
             
-
             # Determine the delay between start of OB and start
             # of first template. If acquisition has no image, it won't appear.
             # preset is ~ 4 min, anything from 0 (no preset actually
@@ -606,7 +541,7 @@ class NightLog(Log):
         tpl_end = self['tpl_start'].copy()
         tpl_end.name = 'tpl_end'
         what = 'the execution of the observing template'
-        tpl_end.description = f'Estimated end time of {what}'
+        tpl_end.description = f'estimated end time of {what}'
 
         # in each OB, set the end of templates at the beginning of
         # the next one.  Last template ends at end of last exposure.
@@ -635,7 +570,7 @@ class NightLog(Log):
 
         exp_end = self['exp_start'].copy()
         exp_end.name = 'exp_end'
-        exp_end.description = 'Estimated end time of the exposure'
+        exp_end.description = 'estimated end time of the exposure'
         start, exposure = self['exp_start'], self['exposure']
         
         # IR/optical exposure overheads differ. About 1 min overhead per
@@ -662,20 +597,23 @@ class NightLog(Log):
             self[start] = (self[start].data + self[end].data) / 2 
             self[start].name = name
             self.remove_column(end)
-        self['tel_airm'].description = 'Estimated airmass during the exposure'
-        self['tel_ambi_fwhm'].description = 'Estimated DIMM seeing during the exposure'
+        self['tel_airm'].description = 'reported airmass during the exposure'
+        self['tel_ambi_fwhm'].description = 'reported DIMM seeing during the exposure'
         self['tel_ambi_fwhm'].unit = 'arcsec'
 
     def _add_track_info(self):
         
         typ = self['dp_type']
-        sky_types = ['OBJECT', 'STAR', 'OTHER', 'SKY', 'STD', 'FLUX', 'VELOC', 
-                        'FOCUS', 'ASTROMETRY','TELLURIC', 'SCIENCE']
+        sky_types = ['OBJECT', 'STAR', 'OTHER', 'SKY', 'STD', 'FLUX', 
+                    'VELOC', 'FOCUS', 'ASTROMETRY','TELLURIC', 'SCIENCE']
         track = np.any([[s in d for d in typ] for s in sky_types], axis=0) 
         
         # Airmass = 1.0 means telescope parked at zenith; real 
         # observations with airmass = 1.000 at both start & end are 
         # pretty rare (there is at best a ~ 54 s window).
+        # We do not flag SCIENCE observations for airmass alone
+        # though, as it may be a FITS keyword issue.
+
         tel_airm = self['tel_airm']
         tel_airm[tel_airm.mask] = 1
         track &= (self['dp_cat'] == 'SCIENCE') | (tel_airm > 1.0)
@@ -683,40 +621,48 @@ class NightLog(Log):
         ext_types = ['SCREEN', 'LAMP', *sky_types]
         intern = np.all([[e not in d for d in typ] for e in ext_types], axis=0)
         
-        self.add_columns([intern, track], names=['internal', 'track'], indexes=[2,2])
-        self['internal'].description = 'Flag for internal instrument calibration'
-        self['track'].description = 'Flag for on-sky observations (tracking)'
+        self.add_columns([intern, ~track], names=['internal', 'slew'], 
+                indexes=[2,2])
+        self['internal'].description = 'flag for internal instrument calibration'
+        self['slew'].description = 'flag for non-tracking observations'
 
     def _add_night_info(self):
 
         site = self.meta['site']
         location = EarthLocation.of_site(site)
         start = self['tpl_start']
-        night = np.array([date_to_night(s, site=location) for s in start])
-        period = np.array([night_to_period(n) for n in night])
+        night = np.array([date_to_night(s, site=location, format='iso') 
+                for s in start], dtype='<U10')
+        period = np.array([night_to_period(n) for n in night],
+                    dtype='<i4')
 
         self.add_column(night, name='night', index=1)
         self['period'] = period
 
         self['period'].description = 'ESO observing period'
-        self['night'].description = 'Observing night'
+        self['night'].description = 'observing night'
 
     def _fix_column_description(self):
 
-        self['telescope'].description = 'Telescope name'
-        self['instrument'].description = 'Instrument name'
+        self['telescope'].description = 'telescope name'
+        self['instrument'].description = 'instrument name'
         self['prog_id'].description = 'ESO programme ID'
-        self['pi'].description = 'Name of the principal investigator'
-        self['exp_start'].description = 'Time at start of exposure'
-        self['filter_path'].description = 'List of filtres'
-        self['object'].description = 'Name of the observation or target'
-        self['target'].description = 'Name of the astronomical target'
-        self['dp_cat'].description = 'Purpose of observation'
-        self['dp_tech'].description = 'Observing technique'
-        self['dp_type'].description = 'Type of exposure'
-        self['ob_name'].description = 'Name of the observing block'
-        self['tpl_start'].description = 'Time at start of observing template'
+        self['pi'].description = 'name of the principal investigator'
+        self['exp_start'].description = 'time at start of exposure'
+        self['filter_path'].description = 'list of filtres in the optical path'
+        self['object'].description = 'name of the observed object'
+        self['target'].description = 'name of the astronomical target'
+        self['dp_cat'].description = 'purpose of observation'
+        self['dp_tech'].description = 'observing technique'
+        self['dp_type'].description = 'type of exposure'
+        self['ob_name'].description = 'name of the observing block'
+        self['tpl_start'].description = 'time at start of observing template'
+        self['exposure'].description = 'cumulated exposure time'
+        self['ob_id'].description = 'observing block ID number'
+        self['exp_no'].description = 'exposure number within template'
 
+        self['exposure'].unit = 's'
+ 
         for name in self.colnames:
             if name[-6:] == '_hours':
                 self[name].format = '.3f' 

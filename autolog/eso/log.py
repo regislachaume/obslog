@@ -9,13 +9,18 @@ from pyvo.dal import tap
 from astropy.coordinates import EarthLocation
 from ..utils.table import Table
 from astropy.table import Column
-from bs4 import Comment as BSComment
+from bs4 import Comment as BSComment, BeautifulSoup
 
 import numpy as np
 import shutil
 import os
 import json
 import re
+
+
+def BS(arg):
+    return BeautifulSoup(arg, features='lxml')
+
 
 def rangify(x):
     a, b = min(x), max(x)
@@ -24,13 +29,134 @@ def rangify(x):
     return f"{a} .. {b}" 
 
 def join(x):
-    x = np.unique(x).tolist()
-    for val in [None, 'NONE']:
+    x = [str(i) for i in np.unique(x)]
+    for val in ['None', 'NONE']:
         if val in x:
             x.remove(val)
     return ' '.join(x)
 
+def keep_track(log):
+    return log[~log['slew'] & (log['sun_down_hours'] > 0)]
+
+def keep_external(log):
+    return log[~log['internal'] & (log['sun_down_hours'] > 0)]
+
+def keep_target(log):
+    return log[log['object'] != '']
+
+def keep_all(log):
+    return log
+
 class Log(Table):
+
+    HTML_CAPTIONS = {
+        'prog_id': 'summary of programme execution',
+        'object': 'summary of target observations',
+        'ob_start': 'detailed log',
+        'night': 'summary of nights',
+    }
+    HTML_ROW_FILTRES = {
+        'prog_id': keep_external,
+        'object': keep_target,
+        'ob_start': keep_external,
+        'night': keep_external,
+    }
+
+    def save(self, overwrite=False, format='csv'):
+
+        filename = self.meta[f'{format}_filename']
+
+        if format == 'csv':
+            format = 'ascii.ecsv'
+        elif format == 'html':
+            format = 'ascii.html'
+
+        self.write(filename, overwrite=overwrite, format=format)
+    
+    def as_beautiful_soup(self, **htmldict):
+
+        table_types = [key for key in self.HTML_ROW_GROUPS]
+        soup = self._as_bs_helper(table_type=table_types[0], 
+                                        **htmldict)
+
+        for table_type in table_types[1:]:
+            table = self._as_bs_helper(table_type=table_type,
+                                        **htmldict)
+            soup.body.append(table.h2)
+            soup.body.append(table.table)
+
+        return soup
+        
+    def _as_bs_helper(self, *, table_type, **html_dict):
+
+        # Scalar call for detail.  
+
+        telescope = self.meta['telescope']
+        if night := self.meta.get('night', None):
+            what = f'night of {night} at {telescope}'
+        elif period := self.meta.get('period', None):
+            what = f'period {period} at {telescope}'
+        else:
+            what = f'at {telescope}'
+       
+        kept_keys = self.HTML_COLUMNS[table_type]
+        group_keys = self.HTML_ROW_GROUPS[table_type]
+        sort_keys = self.HTML_SORT_KEYS[table_type]
+        filter = self.HTML_ROW_FILTRES[table_type] 
+        subtitle = self.HTML_CAPTIONS[table_type]
+
+        units = [c.unit.name if c.unit else '' for c in self.itercols()]
+
+        summary = filter(self).summary(group_keys)
+
+        if sort_keys:
+            summary = summary.group_by(sort_keys)
+
+        summary = summary[kept_keys]
+
+        # Shorten some keys / values for visual compactness
+ 
+        for key in ['ob_start', 'ob_end']:
+            if key in summary.colnames:
+                summary[key] = [s[11:16] for s in summary[key]]
+
+        for key in summary.colnames:
+            if '_hours' in key:
+                summary[key].name = key[:-6] + '_t'
+            elif 'tel_ambi_' in key:
+                summary[key].name = key[9:]
+            elif 'tel_' in key:
+                summary[key].name = key[4:]
+
+        caption = f"{subtitle} for {what}"
+
+        doc_title = f"Log for {what}"
+        htmldict=dict(
+            **html_dict,
+            caption=caption,
+            title=doc_title,
+            h1=doc_title,
+            h2=subtitle,
+            table_class='horizontal',
+            cssfiles=[f'/{telescope}/navbar.css', 
+                      f'/{telescope}/twoptwo.css']
+        )
+
+        summary.__class__ = Table # want to keep groups!
+        soup = summary.as_beautiful_soup(htmldict=htmldict)
+
+        navbar = f'#include virtual="/{telescope}/navbar.shtml"'
+        soup.body.insert(0, BSComment(navbar))
+
+        # If above night level, place a link to lower level
+        if sort_keys and sort_keys[0] == 'night' and kept_keys[0] == 'night':
+            for group in soup.table.find_all('tbody'):
+                tr1 = group.tr
+                text = tr1.td.get_text()
+                link = BS(f'<td><a href="./{text}">{text}</a></td>').td
+                tr1.td.replace_with(link)
+
+        return soup
 
     def summary(self, keys=['prog_id']):
 
@@ -38,10 +164,9 @@ class Log(Table):
 
         descriptions = []
         names = []
-        units = [c.unit for c in grouped.columns.values()]
-        formats = [c.format for c in grouped.columns.values()]
 
-        # sequence number -> total number of merged OBs/templates/exposures
+        # sequence number -> total number of merged 
+        # OBs/templates/exposures
 
         for col in grouped.columns.values():
             
@@ -73,14 +198,21 @@ class Log(Table):
                     value = max(values)
                 elif name[-6:] == '_hours' or name in ['exposure']:
                     value = sum(values)
-                elif name[-3:] == '_no':
-                    value = len(values)
+                elif name == 'exp_no':
+                    value = len(np.unique(group['exp_start']))
+                elif name == 'tpl_no':
+                    value = len(np.unique(group['tpl_start']))
+                elif name == 'ob_no':
+                    value = len(np.unique(group['ob_start']))
                 elif name[0:2] == 'n_': # it's an average already
                     value = sum(values)
-                elif name in ['night', 'period']:
-                    value = rangify(values)
                 elif col.dtype.char == 'U':
                     value = join(values)
+                elif col.dtype.char == '?':
+                    value = values[0]
+                    if any(values != value):
+                        text = f"cannot average booleans in column {name}"
+                        raise RuntimeError(text)
                 else:
                     value = np.mean(values)
                 
@@ -95,6 +227,7 @@ class Log(Table):
         for name in log.colnames:
             if name in self.colnames:
                 log[name].format = self[name].format
+                log[name].unit = self[name].unit
 
         return log
 

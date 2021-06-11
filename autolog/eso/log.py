@@ -42,7 +42,8 @@ def keep_external(log):
     return log[~log['internal'] & (log['sun_down_hours'] > 0)]
 
 def keep_target(log):
-    return log[log['object'] != '']
+    obj, ins = log['object'], log['instrument']
+    return log[~obj.mask & ~ins.mask & (obj != '') & (ins != '')]
 
 def keep_all(log):
     return log
@@ -62,32 +63,65 @@ class Log(Table):
         'night': keep_external,
     }
 
-    def save(self, overwrite=False, format='csv'):
+    def save(self, log_type='log', overwrite=False, format='csv'):
 
-        filename = self.meta[f'{format}_filename']
+        if format == 'csv':
+            ext = 'csv'
+        elif format == 'html':
+            ext = 'shtml'
+
+        filename = self.get_filename(log_type, ext=ext, makedirs=True)
+        kwargs = {}
 
         if format == 'csv':
             format = 'ascii.ecsv'
         elif format == 'html':
             format = 'ascii.html'
+            kwargs['htmldict'] = dict(log_type=log_type)
 
-        self.write(filename, overwrite=overwrite, format=format)
+        self.write(filename, overwrite=overwrite, format=format, **kwargs)
+
+    def publish(self, log_type='log'):
+
+        source = self.get_filename(log_type, ext='shtml')
+        dest = self.get_filename(log_type, ext='shtml', 
+                                                www=True, makedirs=True)
+
+        shutil.copy2(source, dest)
+
+    def get_filename(self, log_type, makedirs=False, ext='csv', www=False):
+
+        period = self.meta.get('period', None)
+        night = self.meta.get('night', None)
+        telescope = self.meta['telescope'] 
+        if www:
+            rootdir = self.meta['wwwdir']
+        else:
+            rootdir = self.meta['rootdir']
+        
+        return path.filename(telescope, log_type=log_type, rootdir=rootdir, 
+            makedirs=makedirs, period=period, night=night, ext=ext)
     
-    def as_beautiful_soup(self, **htmldict):
+    def as_beautiful_soup(self, htmldict={}, **kwargs):
 
-        table_types = [key for key in self.HTML_ROW_GROUPS]
+        log_type = htmldict.get('log_type', 'log')
+
+        table_types = [key for key in self.LOG_TYPES[log_type]]
         soup = self._as_bs_helper(table_type=table_types[0], 
-                                        **htmldict)
+                                        htmldict=htmldict, **kwargs)
 
         for table_type in table_types[1:]:
             table = self._as_bs_helper(table_type=table_type,
-                                        **htmldict)
+                                        htmldict=htmldict, **kwargs)
             soup.body.append(table.h2)
             soup.body.append(table.table)
 
+        if len(table_types) == 1:
+            soup.h2.extract()
+
         return soup
         
-    def _as_bs_helper(self, *, table_type, **html_dict):
+    def _as_bs_helper(self, *, table_type, htmldict={}, **kwargs):
 
         # Scalar call for detail.  
 
@@ -130,22 +164,27 @@ class Log(Table):
 
         caption = f"{subtitle} for {what}"
 
-        doc_title = f"Log for {what}"
+        tel = telescope.split('-')[-1]
+
+        log_type = htmldict.get('log_type', 'log')
+        log_type = log_type[0].upper() + log_type[1:]
+
+        doc_title = f"{log_type} for {what}"
         htmldict=dict(
-            **html_dict,
+            **htmldict,
             caption=caption,
             title=doc_title,
             h1=doc_title,
             h2=subtitle,
             table_class='horizontal',
-            cssfiles=[f'/{telescope}/navbar.css', 
-                      f'/{telescope}/twoptwo.css']
+            cssfiles=[f'/{tel}/navbar.css', 
+                      f'/{tel}/twoptwo.css']
         )
 
         summary.__class__ = Table # want to keep groups!
-        soup = summary.as_beautiful_soup(htmldict=htmldict)
+        soup = summary.as_beautiful_soup(htmldict=htmldict, **kwargs)
 
-        navbar = f'#include virtual="/{telescope}/navbar.shtml"'
+        navbar = f'#include virtual="/{tel}/navbar.shtml"'
         soup.body.insert(0, BSComment(navbar))
 
         # If above night level, place a link to lower level

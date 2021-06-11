@@ -1,0 +1,112 @@
+# %ECSV 0.9
+# ---
+# datatype:
+# - {name: period, datatype: int32, description: ESO observing period}
+# - {name: night, datatype: string, description: observing night}
+# - {name: internal, datatype: bool, description: flag for internal instrument calibration}
+# - {name: slew, datatype: bool, description: flag for non-tracking observations}
+# - {name: object, datatype: string, description: name of the observed object}
+# - {name: target, datatype: string, description: name of the astronomical target}
+# - name: ra
+#   unit: deg
+#   datatype: float64
+#   description: Right Ascension FK5 J2000
+#   meta: !!omap
+#   - {ucd: pos.eq.ra;meta.main}
+# - name: dec
+#   unit: deg
+#   datatype: float64
+#   description: Declination FK5 J2000
+#   meta: !!omap
+#   - {ucd: pos.eq.dec;meta.main}
+# - {name: telescope, datatype: string, description: telescope name}
+# - {name: instrument, datatype: string, description: instrument name}
+# - {name: prog_id, datatype: string, description: ESO programme ID}
+# - {name: pi, datatype: string, description: name of the principal investigator}
+# - {name: dp_cat, datatype: string, description: purpose of observation}
+# - {name: dp_tech, datatype: string, description: observing technique}
+# - {name: dp_type, datatype: string, description: type of exposure}
+# - name: exposure
+#   unit: s
+#   datatype: float32
+#   format: .1f
+#   description: cumulated exposure time
+#   meta: !!omap
+#   - {ucd: time.duration;obs.exposure}
+# - {name: filter_path, datatype: string, description: list of filtres in the optical path}
+# - {name: ob_name, datatype: string, description: name of the observing block}
+# - name: ob_id
+#   datatype: int32
+#   description: observing block ID number
+#   meta: !!omap
+#   - {ucd: meta.id;obs;meta.main}
+# - {name: tel_airm, datatype: float32, format: .2f, description: reported airmass during the exposure}
+# - {name: tel_ambi_fwhm, unit: arcsec, datatype: float32, format: .2f, description: reported DIMM seeing during the exposure}
+# - name: ob_no
+#   datatype: int32
+#   description: unique OB number within the night
+#   meta: !!omap
+#   - {ucd: meta.id;obs;meta.number}
+# - {name: ob_start, datatype: string, description: estimated start time of the execution of the OB}
+# - {name: ob_end, datatype: string, description: estimated end time of the execution of the OB}
+# - name: tpl_no
+#   datatype: int32
+#   description: template number within OB
+#   meta: !!omap
+#   - {ucd: meta.id;obs;meta.number}
+# - {name: tpl_start, datatype: string, description: time at start of observing template}
+# - {name: tpl_end, datatype: string, description: estimated end time of the execution of the observing template}
+# - name: exp_no
+#   datatype: int32
+#   description: exposure number within template
+#   meta: !!omap
+#   - {ucd: meta.id;obs;meta.number}
+# - {name: exp_start, datatype: string, description: time at start of exposure}
+# - {name: exp_end, datatype: string, description: estimated end time of the exposure}
+# - {name: night_hours, unit: h, datatype: float64, format: .3f, description: number of hours of night conditions}
+# - {name: dark_hours, unit: h, datatype: float64, format: .3f, description: number of hours of dark conditions}
+# - {name: astronomical_twilight_hours, unit: h, datatype: float64, format: .3f, description: number of hours of astronomicaltwilight
+#     conditions}
+# - {name: nautical_twilight_hours, unit: h, datatype: float64, format: .3f, description: number of hours of nauticaltwilight conditions}
+# - {name: civil_twilight_hours, unit: h, datatype: float64, format: .3f, description: number of hours of civiltwilight conditions}
+# - {name: sun_down_hours, unit: h, datatype: float64, format: .3f, description: number of hours of sundown conditions}
+# - {name: total_hours, unit: h, datatype: float64, format: .3f, description: number of hours}
+# meta: !!omap
+# - {site: La Silla Observatory}
+# - {lon: -70.73000000000005}
+# - {lat: -29.25666666666666}
+# - {alt: 2346.999999998842}
+# - {telescope: ESO-2.2m}
+# - {period: 107}
+# - {night: '2021-04-30'}
+# - {rootdir: .}
+# - ephemeris:
+#     astronomical_twilight_hours: 0.9288888888888889
+#     astronomical_twilight_time:
+#     - ['2021-04-30T23:02:05', '2021-04-30T23:29:56']
+#     - ['2021-05-01T09:50:24', '2021-05-01T10:18:17']
+#     civil_twilight_hours: 0.8197222222222222
+#     civil_twilight_time:
+#     - ['2021-04-30T22:09:22', '2021-04-30T22:33:56']
+#     - ['2021-05-01T10:46:28', '2021-05-01T11:11:05']
+#     dark_hours: 1.9930555555555556
+#     dark_time:
+#     - !!python/tuple ['2021-04-30T23:29:56', '2021-05-01T01:29:31']
+#     moon_illumination: 0.7773531083644138
+#     nautical_twilight_hours: 0.9388888888888889
+#     nautical_twilight_time:
+#     - ['2021-04-30T22:33:56', '2021-04-30T23:02:05']
+#     - ['2021-05-01T10:18:17', '2021-05-01T10:46:28']
+#     night_hours: 10.341111111111111
+#     night_time:
+#     - ['2021-04-30T23:29:56', '2021-05-01T09:50:24']
+#     sun_down_hours: 13.028611111111111
+#     sun_down_time:
+#     - ['2021-04-30T22:09:22', '2021-05-01T11:11:05']
+# - {roodir: .}
+# - {wwwdir: /data/www/twoptwo.com}
+# schema: astropy-2.0
+period night internal slew object target ra dec telescope instrument prog_id pi dp_cat dp_tech dp_type exposure filter_path ob_name ob_id tel_airm tel_ambi_fwhm ob_no ob_start ob_end tpl_no tpl_start tpl_end exp_no exp_start exp_end night_hours dark_hours astronomical_twilight_hours nautical_twilight_hours civil_twilight_hours sun_down_hours total_hours
+107 2021-04-30 False True "" "" 0.0 0.0 ESO-2.2m "" IDLE/TWILIGHT "twilight downtime" "" "" "" 0.0 "" Telescope_Idle 0 0.00 0.00 2 2021-04-30T23:02:05 2021-04-30T23:29:56 0 2021-04-30T23:02:05 2021-04-30T23:29:56 0 2021-04-30T23:02:05 2021-04-30T23:29:56 0.000 0.000 0.464 0.000 0.000 0.464 0.464
+107 2021-04-30 False True "" "" 0.0 0.0 ESO-2.2m "" IDLE/NIGHT "night downtime" "" "" "" 0.0 "" Telescope_Idle 0 0.00 0.00 1 2021-04-30T23:29:56 2021-05-01T09:50:24 0 2021-04-30T23:29:56 2021-05-01T09:50:24 0 2021-04-30T23:29:56 2021-05-01T09:50:24 10.341 1.993 0.000 0.000 0.000 10.341 10.341
+107 2021-04-30 False True "" "" 0.0 0.0 ESO-2.2m "" IDLE/TWILIGHT "twilight downtime" "" "" "" 0.0 "" Telescope_Idle 0 0.00 0.00 3 2021-05-01T09:50:24 2021-05-01T10:18:17 0 2021-05-01T09:50:24 2021-05-01T10:18:17 0 2021-05-01T09:50:24 2021-05-01T10:18:17 0.000 0.000 0.465 0.000 0.000 0.465 0.465

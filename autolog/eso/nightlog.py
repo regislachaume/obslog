@@ -1,5 +1,7 @@
 from ..utils.date import night_to_date_range, add_seconds, date_to_night, \
                          total_seconds, total_hours
+from .date import night_to_period
+
 from ..utils.ephemeris import night_ephemeris 
 from .date import night_to_period
 from . import path
@@ -22,42 +24,29 @@ import re
 class NightLog(Log):
 
     HTML_ROW_GROUPS = OrderedDict(
-        prog_id=['slew', 'prog_id'],
-        ob_start=['internal', 'slew', 'ob_start', 'prog_id'],
+        ob_start=['ob_start', 'prog_id'],
     )
     HTML_COLUMNS = OrderedDict(
-        prog_id=['prog_id', 'pi', 'instrument', 'dp_cat', 
-            'night_hours', 'dark_hours', 'sun_down_hours'],
         ob_start=['prog_id', 'pi', 'instrument', 'object', 'exposure', 
             'ob_start', 'ob_end', 'tel_airm', 'tel_ambi_fwhm',
             'night_hours', 'dark_hours', 'sun_down_hours'],
     )
     HTML_SORT_KEYS = OrderedDict(
-        prog_id=['instrument'],
         ob_start=None,
     )
 
-    def publish(self, website='/data/www/twoptwo.com/'):
+    LOG_TYPES = dict(log=['ob_start'])
 
-        period = self['period'][0]
-        telescope = self.meta['telescope']
-        night = self.meta['night']
-        rootdir = f'{website}/{telescope}/logs/'
-
-        dirname = path.dirname(rootdir, period=period, night=night, 
-                         makedirs=True)
-        filename = os.path.join(dirname, 'index.shtml')
-        print(f'publish to {filename}')
-
-        shutil.copy2(self.meta['html_filename'], filename) 
 
     @classmethod
     def fetch(cls, telescope, night, *, 
-                use_log_cache=True, use_tap_cache=True, rootdir='.'):
+                use_log_cache=True, use_tap_cache=True, 
+                rootdir='.', wwwdir='/data/www/twoptwo.com'):
         """Create a new request for a given ESO telescope."""
         
-        filename = path.filename(telescope, night=night, name='log',
-                        rootdir=rootdir)
+        
+        filename = path.filename(telescope=telescope, night=night,
+            rootdir=rootdir, log_type='log', ext='csv')
         
         # If file can be read, load and exit
 
@@ -77,9 +66,7 @@ class NightLog(Log):
 
         query = NightQuery(telescope=telescope, rootdir=rootdir)
         log = query.fetch(night=night, use_tap_cache=use_tap_cache)
-        del log.meta['fullname']
         log.__class__ = cls
-
 
         # Add columns with period and night
 
@@ -167,21 +154,14 @@ class NightLog(Log):
         # use human unreadable TABLE_FORMAT == 'ascii.ecsv' to ensure 
         # full reversibility in read/write operations
 
-        telescope = log.meta['telescope']
-        csv_filename = path.filename(telescope, night=night, name='log',
-                        rootdir=rootdir)
-        html_filename = path.filename(telescope, 
-                        night=night, name='log', ext='shtml',
-                        rootdir=rootdir)
-
-        log.meta['csv_filename'] = csv_filename
-        log.meta['html_filename'] = html_filename
-        
+        log.meta['roodir'] = rootdir
+        log.meta['wwwdir'] = wwwdir       
+ 
         try:
             log.save(format='csv', overwrite=True) 
-            print(f"{night}: cached to {csv_filename}")
+            print(f"{night}: cached to disk")
         except FileNotFoundError as e:
-            print(f"{night}: could not cache to {html_filename}")
+            print(f"{night}: could not cache to disk: {e}")
 
         return log
 
@@ -189,8 +169,8 @@ class NightLog(Log):
 
         night = self.meta['night'] 
         telescope = self.meta['telescope']
-        filename = path.filename(telescope, night=night, name='ephemeris', 
-                        ext='json', makedirs=True)
+        filename = path.filename(telescope, night=night, 
+                    log_type='ephem', ext='json', makedirs=True)
 
         if os.path.exists(filename):
 

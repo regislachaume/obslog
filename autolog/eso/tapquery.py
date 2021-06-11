@@ -82,7 +82,7 @@ It keeps a local copy of requests to save on internet bandpass"""
         """Query the list of frames from ESO TAP service for a given night."""
 
         telescope = self.telescope_names[0]
-        filename = path.filename(telescope, night=night, name='tap',
+        filename = path.filename(telescope, night=night, log_type='tap',
                         rootdir=self.rootdir, makedirs=True)
 
         # If file can be read, load and exit
@@ -117,15 +117,15 @@ It keeps a local copy of requests to save on internet bandpass"""
         """
 
         tap = TAPQuery(self.URL, query)
-        res = tap.execute().to_table()
+        tab = tap.execute().to_table()
 
         # Add some meta information
 
         period = night_to_period(night)
-        tab.meta = OrderedDict(fullname=filename, site=self.site,
+        tab.meta = OrderedDict(site=self.site,
             lon=loc.lon.to_value('deg'), lat=loc.lat.to_value('deg'), 
             alt=loc.height.si.value, telescope=telescope, period=period, 
-            night=night)
+            night=night, rootdir=self.rootdir)
 
         # TAP is not consistent with telescope name, ensure one is used
 

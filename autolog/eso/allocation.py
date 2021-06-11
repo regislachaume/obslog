@@ -1,6 +1,6 @@
-from . import path
-from ..utils.io import table_from_excel
-from .date import period_start, period_end
+from autolog.eso import path
+from autolog.utils.io import table_from_excel
+from autolog.eso.date import period_start, period_end
 
 from datetime import date as Date
 import os
@@ -8,7 +8,7 @@ import re
 import numpy as np
 import codecs
 
-from ..utils.table import Table, BS
+from autolog.utils.table import Table, BS
 from bs4 import Comment as BSComment
 
 class Allocation(Table):
@@ -20,8 +20,8 @@ class Allocation(Table):
     @classmethod
     def read(cls, *, telescope, period, rootdir='.', honour_omit=True):
         
-        filename = path.filename(telescope, name='allocation', ext='xls', 
-                rootdir=rootdir, period=period)
+        filename = path.filename(telescope, period=106,
+                log_type='allocation', ext='xls', rootdir=rootdir)
 
         alloc = table_from_excel(filename, cls=cls) 
         fixes = table_from_excel(filename, sheetnum=1)

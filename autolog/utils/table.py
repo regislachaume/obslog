@@ -57,14 +57,12 @@ class Table(_Table):
         # Write each group in a tbody
         for group in tab.groups:
             with StringIO() as fh:
-                _Table(group).write(fh, format='ascii.html', **kwargs)
+                _Table(group).write(fh, format='ascii.html', 
+                    htmldict=htmldict, **kwargs)
                 html = fh.getvalue()
             tbody = BS(html).table
             thead = tbody.thead.extract()
             tbody.name = 'tbody'
-            # if repeat_header:
-            #    for heading in thead.find_all('tr')[::-1]:
-            #        tbody.insert(0, heading) 
             table.append(tbody) 
 
         meta = soup.find_all('meta')
@@ -93,10 +91,12 @@ class Table(_Table):
 
     def write(self, output, *, format, **kwargs):
 
+
         if format in ['ascii.html', 'html']:
 
-            htmldict = kwargs.pop('htmldict', {})
-            soup = self.as_beautiful_soup(**htmldict)
+            # htmldict = kwargs.pop('htmldict', {})
+
+            soup = self.as_beautiful_soup(**kwargs)
             text = "<!DOCTYPE html>\n"
             text += soup.prettify()
 

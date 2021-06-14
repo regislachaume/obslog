@@ -7,6 +7,7 @@ import os
 import re
 import numpy as np
 import codecs
+import shutil
 
 from autolog.utils.table import Table, BS
 from bs4 import Comment as BSComment
@@ -14,14 +15,14 @@ from bs4 import Comment as BSComment
 class Allocation(Table):
         
     ESO_SCHEDULE_URL = 'http://archive.eso.org/wdb/wdb/eso/sched_rep_arc/query'
-    SITE_URL = 'http://www.astro.puc.cl/2.2m/'    
-    SITE_DIR = 'lachaume@black:~/2.2m'
 
     @classmethod
-    def read(cls, *, telescope, period, rootdir='.', honour_omit=True):
+    def read(cls, *, telescope, period, rootdir='.',
+                    wwwdir='/data/www/twoptwo.com',
+                    honour_omit=True):
         
-        filename = path.filename(telescope, period=106,
-                log_type='allocation', ext='xls', rootdir=rootdir)
+        filename = path.filename(telescope, period=period,
+                log_type='program', ext='xls', rootdir=rootdir)
 
         alloc = table_from_excel(filename, cls=cls) 
         fixes = table_from_excel(filename, sheetnum=1)
@@ -31,13 +32,11 @@ class Allocation(Table):
         
         alloc.meta = dict(
             rootdir = rootdir,
+            wwwdir = wwwdir,
             filename = filename,
-            html = path.filename(telescope, name='allocation', ext='html',
-                rootdir=rootdir, period=period),
             telescope = telescope,
             period = period,
-            url = "{cls.SITE_URL}/schedule/P{period}/P{period}.xls",
-            fixes = fixes,
+            pid_fixes = fixes,
             cross_reference = {pid: pid for pid in alloc['PID']}
         )
  
@@ -51,28 +50,30 @@ class Allocation(Table):
  
         return alloc 
 
-    def lookup(self, pid, target=None, date=None, ins=None):
+    def lookup(self, log_entry):
 
-        # Look if it has been observed with a wrong PID.
-        # The fixes table is manually maintained by a 2.2m SA for
-        # transient/target-dependent issues.
+        pid, object, ob_name = log_entry['prog_id', 'object', 'ob_name']
+        date = log_entry['ob_start']
         
-        if target is not None or date is not None:
-            # print(self.corr)
+        # Look if it has been observed with a wrong PID.  The fixes table is
+        # manually maintained by a 2.2m SA for transient/target-dependent
+        # issues.
+               
+        for fix in self.meta['pid_fixes']:
             
-            for line in self.meta['fixes']:
+            if fix['Used PID'] in pid:
                 
-                if line['PID'] in pid:
-                    
-                    t = line['Target']
-                    d1, d2 = line['Start'], line['End']
-                    
-                    if (t != '' and not re.search(t, target) or
-                       d1 != '' and date < d1 or
-                       d2 != '' and date > d2):
-                        continue
-                    pid = line['Nominal PID']
-                    break
+                obj, name = fix['Object', 'OB name']
+                d1, d2 = fix['Start date', 'End date']
+                
+                if (o != '' and not re.search(o, object) or
+                    n != '' and not re.search(n, ob_name) or
+                   d1 != '' and date < d1 or
+                   d2 != '' and date > d2):
+                    continue
+
+                pid = fix['Nominal PID']
+                break
 
         pid =  self.meta['cross_reference'].get(pid, pid)
 
@@ -80,9 +81,9 @@ class Allocation(Table):
         if any(indices):
             return self[indices][0]
 
-        return self.unidentified_programme()
+        return self.unidentified_programme(pid, log_entry['instrument']) 
 
-    def unidentified_programme(self):
+    def unidentified_programme(self, pid, ins):
 
         unid = self[-1].copy()
         unid['TAC'] = 'N/A'
@@ -111,10 +112,20 @@ class Allocation(Table):
 
         return link
 
-    def save_as_html(self, overwrite=False):
+    def save(self, format='html'):
 
-        filename = self.meta['html']
-        self.write(filename, overwrite=overwrite, format='ascii.html')
+        if format == 'html':
+            ext = 'shtml'
+            format = 'ascii.html'
+            alloc = self.group_by('TAC')
+        else:
+            ext = 'csv'
+            format = 'ascii.ecsv'
+            alloc = self
+
+        filename = self.get_filename(ext=ext, makedirs=True)
+        
+        alloc.write(filename, format=format)
 
     def as_beautiful_soup(self, caption=None, exclude_names=['Identifiers']):
       
@@ -134,11 +145,11 @@ class Allocation(Table):
             h1=doc_title,
             caption=caption,
             table_class='horizontal',
-            cssfiles=['../../navbar.css', '../../twoptwo.css']
+            cssfiles=['/2.2m/navbar.css', '/2.2m/twoptwo.css']
         )
 
-        soup = super().as_beautiful_soup(standalone=standalone,
-                    exclude_names=exclude_names, htmldict=htmldict)
+        soup = super().as_beautiful_soup(exclude_names=exclude_names, 
+                                htmldict=htmldict)
 
         # locate columns
         th = soup.tr.find_all('th')
@@ -167,14 +178,13 @@ class Allocation(Table):
             title = td[ititle]
             
             id = pid.contents[0]
-            
+            url = link.contents[0].strip() if link.contents else ''
+ 
             # replace programme title with linked programme title
             
-            if 'no' not in link and 'omit' not in link:
-                if 'yes' in link:
-                    url = self.local_link(id)
-                else: 
-                    url = link.contents[0]
+            if url and url not in ['omit', 'no']:
+                if url[0:7] not in ['http://', 'https:/']:
+                    url = f"proposals/{url}"
                 td = BS(f'<td><a href="{url}">{title.contents[0]}</a><td>').td
                 title.replace_with(td)
                
@@ -191,16 +201,35 @@ class Allocation(Table):
             critical.extract()
             link.extract()
         
-        navbar = '#include virtual="../../navbar.shtml"'
+        navbar = '#include virtual="/2.2m/navbar.shtml"'
         soup.body.insert(0, BSComment(navbar))
         
         return soup
 
+    def get_filename(self, makedirs=False, ext='xls', www=False):
+
+        period = self.meta.get('period', None)
+        night = self.meta.get('night', None)
+        telescope = self.meta['telescope']
+        if www:
+            rootdir = self.meta['wwwdir']
+        else:
+            rootdir = self.meta['rootdir']
+
+        return path.filename(telescope, log_type='program', period=period, 
+            rootdir=rootdir, makedirs=makedirs, ext=ext)
+                    
     def publish(self):
 
-        period = self.meta['period']
-        rootdir = self.meta['rootdir']
-        remote = f"{self.SITE_DIR}/programs/P{period:03}"
-        html = self.meta['html']
-        dir = os.path.dirname(html)
-        os.system(f"scp -r {html} {remote}/index.shtml")
+        source = self.get_filename(ext='shtml')
+        dest = self.get_filename(ext='shtml', www=True, makedirs=True)
+
+        source_dir = os.path.join(os.path.dirname(source), 'proposals')
+        dest_dir = os.path.join(os.path.dirname(dest), 'proposals')
+
+        shutil.copy2(source, dest)
+        try:
+            shutil.copytree(source_dir, dest_dir, dirs_exist_ok=True)
+        except:
+            pass
+

@@ -27,8 +27,8 @@ class NightLog(Log):
         ob_start=['ob_start', 'prog_id'],
     )
     HTML_COLUMNS = OrderedDict(
-        ob_start=['prog_id', 'pi', 'instrument', 'object', 'exposure', 
-            'ob_start', 'ob_end', 'tel_airm', 'tel_ambi_fwhm',
+        ob_start=['prog_id', 'nom_prog_id', 'pi', 'instrument', 'object', 
+            'exposure', 'ob_start', 'ob_end', 'tel_airm', 'tel_ambi_fwhm',
             'night_hours', 'dark_hours', 'sun_down_hours'],
     )
     HTML_SORT_KEYS = OrderedDict(

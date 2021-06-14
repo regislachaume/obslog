@@ -63,29 +63,41 @@ class Log(Table):
         'night': keep_external,
     }
 
+    def fix_prog_id(self, allocation):
+        
+        index = np.argwhere(['prog_id' == n for n in self.colnames])[0,0]
+        self.insert_column(self['prog_id'], name='nom_prog_id', index=index)
+        
+        tacs = {p: t for p, t in allocation['',''])
+        tac = {
+
+        for log_entry in log:
+            used_pid = log_entry['prog_id']
+            prog = allocation.look_up(log_entry)
+            nominal_pid, surname = prog['Nominal PID', 'Surname']
+            if nominal_pid != used_pid:
+                log_entry['nom_prog_id'] = nominal_pid
+            log_entry['pi'] = surname
+
     def save(self, log_type='log', overwrite=False, format='csv'):
 
         if format == 'csv':
             ext = 'csv'
+            format = 'ascii.ecsv'
+            kwargs = {}
         elif format == 'html':
             ext = 'shtml'
+            format = 'ascii.html'
+            kwargs = dict(htmldict=dict(log_type=log_type))
 
         filename = self.get_filename(log_type, ext=ext, makedirs=True)
-        kwargs = {}
-
-        if format == 'csv':
-            format = 'ascii.ecsv'
-        elif format == 'html':
-            format = 'ascii.html'
-            kwargs['htmldict'] = dict(log_type=log_type)
 
         self.write(filename, overwrite=overwrite, format=format, **kwargs)
 
     def publish(self, log_type='log'):
 
         source = self.get_filename(log_type, ext='shtml')
-        dest = self.get_filename(log_type, ext='shtml', 
-                                                www=True, makedirs=True)
+        dest = self.get_filename(log_type, ext='shtml', www=True, makedirs=True)
 
         shutil.copy2(source, dest)
 

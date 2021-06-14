@@ -15,19 +15,28 @@ class PeriodLog(Log):
     HTML_ROW_GROUPS = OrderedDict(
         night=['night', 'slew', 'instrument', 'prog_id'],
         object=['internal', 'slew', 'instrument', 'prog_id', 'object'],
+        dp_cat=['internal', 'slew', 'instrument', 'dp_cat'],
+        prog_id=['internal', 'slew', 'tac', 'prog_id'],
     )
     HTML_COLUMNS = OrderedDict(
         night=['night', 'instrument', 'prog_id', 'dp_cat', 'pi', 
                'night_hours', 'dark_hours', 'sun_down_hours'],
         object=['instrument', 'prog_id', 'object', 'night', 
                     'n_ob', 'n_exp',  'exposure'],
+        dp_cat=['instrument', 'dp_cat', 
+               'night_hours', 'dark_hours', 'sun_down_hours'],
+        prog_id=['tac', 'prog_id',  'night_hours', 'dark_hours', 
+                'sun_down_hours'],
     )
     HTML_SORT_KEYS = OrderedDict(
         night=['night'],
         object=['internal', 'slew', 'instrument', 'prog_id'],
+        dp_cat=['instrument'],
+        prog_id=['tac', 'prog_id'],
     )
 
-    LOG_TYPES = dict(log=['night'], target=['object'])
+    LOG_TYPES = dict(log=['night'], target=['object'],
+                    report=['dp_cat', 'prog_id'])
 
     @classmethod
     def fetch(cls, telescope, period, *, 

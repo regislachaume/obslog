@@ -1,5 +1,6 @@
 from astropy.table import Table as _Table
 
+import numpy as np
 from bs4 import BeautifulSoup
 from io import StringIO
 
@@ -89,8 +90,19 @@ class Table(_Table):
 
         return soup
 
-    def write(self, output, *, format, **kwargs):
+    @classmethod
+    def read(cls, input, *, format, **kwargs):
 
+        tab = super().read(input, format=format, **kwargs)
+
+        # eliminate fake row
+        if format == 'ascii.ecsv':
+            tab = tab[:-1]
+
+        return tab
+        
+
+    def write(self, output, *, format, **kwargs):
 
         if format in ['ascii.html', 'html']:
 
@@ -106,6 +118,28 @@ class Table(_Table):
                 fh = output
             fh.write(text)
 
+        elif format == 'ascii.ecsv':
+            
+
+            print('Saving to ascii.ecsv')    
+            # ensure str column width is preserved
+
+            fake_row = np.zeros((), dtype=self.dtype)
+            for name in fake_row.dtype.names:
+                d = fake_row[name].dtype
+                if d.char in 'SU':
+                    padding = 'x' * (d.itemsize // d.alignment)
+                    fake_row[name] = padding
+            self.add_row(fake_row.tolist())    
+            try:
+                super().write(output, format=format, 
+                    serialize_method='data_mask', **kwargs)
+            except Exception as e:
+                self.remove_row(-1)
+                raise e
+
+            self.remove_row(-1)
+
         else:
-    
+            
             super().write(output, format=format, **kwargs)

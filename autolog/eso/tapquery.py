@@ -1,11 +1,11 @@
 from ..utils.date import night_to_date_range
 from .date import night_to_period
+from ..utils.table import Table
 
 from . import path
 
 from pyvo.dal.tap import TAPQuery
 from astropy.coordinates import EarthLocation
-from astropy.table import Table
 from collections import OrderedDict
 
 import numpy as np
@@ -13,7 +13,7 @@ import os
 import re
 from astropy.io import votable
 from io import BytesIO
-        
+
 class NightQuery:
     """ESO TAP query for raw archive data. 
 
@@ -22,21 +22,24 @@ It keeps a local copy of requests to save on internet bandpass"""
     URL = 'http://archive.eso.org/tap_obs'
     TABLE = 'dbo.raw'
     KEYS = {'period': '<i2',
-            'object': '<U32', 
-            'target': '<U32', 
+            'object': '<U64', 
+            'target': '<U64', 
             'ra': '<f8', 
+            'ra_pnt': '<f8', 
+            'dp_id': '<U30',
             'dec': '<f8', 
-            'telescope': '<U20', 
-            'instrument': '<U8', 
-            'prog_id': '<U14', 
-            'pi_coi': '<U20',
-            'dp_cat': '<U11', 
-            'dp_tech': '<U32', 
-            'dp_type': '<U32', 
+            'dec_pnt': '<f8', 
+            'telescope': '<U68', 
+            'instrument': '<U20', 
+            'prog_id': '<U15', 
+            'pi_coi': '<U255',
+            'dp_cat': '<U10', 
+            'dp_tech': '<U30', 
+            'dp_type': '<U30', 
             'exposure': '<f4', 
             'det_dit': '<f4', 
-            'filter_path': '<U32', 
-            'ob_name': '<U64', 
+            'filter_path': '<U255', 
+            'ob_name': '<U70', 
             'ob_id': '<i4',
             'tel_airm_start': '<f4', 
             'tel_airm_end': '<f4', 
@@ -86,13 +89,12 @@ It keeps a local copy of requests to save on internet bandpass"""
                         rootdir=self.rootdir, makedirs=True)
 
         # If file can be read, load and exit
-        
+       
         if use_tap_cache and os.path.exists(filename):
 
             try:
                 cls = type(self)
                 tab = Table.read(filename, format=self.TABLE_FORMAT)
-                cls._fix_column_types(tab)
                 print(f"{night}: raw log read from disk: {filename}")
                 return tab
 
@@ -118,6 +120,7 @@ It keeps a local copy of requests to save on internet bandpass"""
 
         tap = TAPQuery(self.URL, query)
         tab = tap.execute().to_table()
+        tab.__class__ = Table
 
         # Add some meta information
 
@@ -150,11 +153,12 @@ It keeps a local copy of requests to save on internet bandpass"""
     
     @classmethod
     def _fix_column_types(cls, tab):
-
+        
         for i, name in enumerate(tab.colnames):
         
             col = tab[name]
  
+            # set correct width for object/string
             if col.dtype.char in 'OU':
                 
                 str_ = cls.KEYS.get(name, '<U0')
@@ -164,21 +168,15 @@ It keeps a local copy of requests to save on internet bandpass"""
                     new_col = [c[0:len] if c else c for c in col]
                 else:
                     new_col = [c for c in col]
-            
-                new_col = np.ma.masked_array(new_col, dtype=dtype)
-                new_col.mask |= col == '' 
+          
+                mask = [c == '' for c in col]
+                new_col = np.ma.masked_array(new_col, dtype=dtype, mask=mask)
                 tab.replace_column(name, new_col)
             
+            # cast to correct type
             elif (str_ := cls.KEYS.get(name, '')) and col.dtype.str != str_:
             
                 dtype = np.dtype(str_)
-                new_col = np.ma.masked_array(col, dtype=dtype, mask=col.mask)
+                new_col = np.ma.masked_array(col, dtype=dtype)
                 tab.replace_column(name, new_col) 
-
-            if col.dtype.char in 'if':
-                if hasattr(col, 'mask'):
-                    col[col.mask] = np.ma.masked_array(0., mask=True)  
-                else:
-                    new_col = np.ma.masked_array(col)
-                    tab.replace_column(name, new_col)
 

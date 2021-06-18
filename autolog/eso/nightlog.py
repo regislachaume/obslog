@@ -28,7 +28,7 @@ class NightLog(Log):
     )
     HTML_COLUMNS = OrderedDict(
         ob_start=['prog_id', 'nom_prog_id', 'pi', 'instrument', 'object', 
-            'exposure', 'ob_start', 'ob_end', 'tel_airm', 'tel_ambi_fwhm',
+            'exposure', 'ob_start', 'ob_end', 'airmass', 'seeing',
             'night_hours', 'dark_hours', 'sun_down_hours'],
     )
     HTML_SORT_KEYS = OrderedDict(
@@ -60,7 +60,7 @@ class NightLog(Log):
                return log 
         
            except Exception as e:
-               print(f"{night}: error trying to read from cache {filename}: {e}")
+               print(f"{night}: error trying to read from '{filename}': {e}")
 
         # Get raw log
 
@@ -78,6 +78,8 @@ class NightLog(Log):
         log['tpl_no'].description = 'template number within OB'
         log['tpl_expno'].name = 'exp_no'
         log['pi_coi'].name = 'pi'
+        log['prog_id'].name = 'used_pid'
+        log['filter_path'].name = 'filter'
 
         print(f"{night}: processing raw log")
 
@@ -90,6 +92,12 @@ class NightLog(Log):
         # Note: dalogase may return -1 for missing airmass / seeing (not sure)
 
         log._average_conditions()
+        
+        # Guess the end of exposures
+        # Once again, the TAP doesn't give readout time/overhead info, that's
+        # a wild guess.
+
+        log._add_exp_end()
 
         # Unfortunately, ESO TAP does not give good information about what is
         # internal/on sky and what not.  A reasonable guess here, but not 100%
@@ -97,12 +105,6 @@ class NightLog(Log):
 
         log._add_track_info()
      
-        # Guess the end of exposures
-        # Once again, the TAP doesn't give readout time/overhead info, that's
-        # a wild guess.
-
-        log._add_exp_end()
-
         #  Add OB number, by start time of first template
         
         log._add_ob_no()
@@ -141,7 +143,7 @@ class NightLog(Log):
 
         # fix PIDs
 
-        log._fix_pids()
+        log.fix_pids()
 
         # time accounting for night time, dark time, etc.
 
@@ -213,7 +215,7 @@ class NightLog(Log):
                 acq['dp_cat'] = 'ACQUISITION'
                 acq['dp_tech'] = 'NONE'
                 acq['dp_type'] = 'NONE'
-                acq['filter_path'] = '' 
+                acq['filter'] = '' 
                 self.insert_row(i + 1, acq.tolist())
 
             # other templates
@@ -247,9 +249,12 @@ class NightLog(Log):
             row[f"{key}_start"] = start
             row[f"{key}_end"] = end
 
+        for key in 'ra', 'dec':
+            row[key] = row[key].mask = True
+
         uname = [n.upper() for n in name]
         row['pi'] = ' '.join([*name, 'downtime'])[0:20]
-        row['prog_id'] =  '/'.join(['IDLE', *uname])[0:14]
+        row['pid'] =  '/'.join(['IDLE', *uname])[0:14]
 
         row['ob_name'] = 'Telescope_Idle'
         row['ob_no'] = ob_no
@@ -316,10 +321,6 @@ class NightLog(Log):
                     self._create_idle_row(i0, tw_start, next_ob_start,
                                   name=name, ob_no=idle_ob_no)
                     idle_ob_no += 1
-
-    def _fix_pids(self, programs=None):
-        
-        pass
 
     def _fill_missing_technical_obs(self):
 
@@ -577,34 +578,52 @@ class NightLog(Log):
             self[start] = (self[start].data + self[end].data) / 2 
             self[start].name = name
             self.remove_column(end)
-        self['tel_airm'].description = 'reported airmass during the exposure'
-        self['tel_ambi_fwhm'].description = 'reported DIMM seeing during the exposure'
-        self['tel_ambi_fwhm'].unit = 'arcsec'
-
+        self['tel_airm'].name = 'airmass'
+        self['airmass'].description = 'airmass during the exposure'
+        self['tel_ambi_fwhm'].name = 'seeing'
+        self['seeing'].description = 'DIMM seeing during the exposure'
+        self['seeing'].unit = 'arcsec'
+    
     def _add_track_info(self):
         
         typ = self['dp_type']
+
+        # On sky observations with tracking are in this list
         sky_types = ['OBJECT', 'STAR', 'OTHER', 'SKY', 'STD', 'FLUX', 
-                    'VELOC', 'FOCUS', 'ASTROMETRY','TELLURIC', 'SCIENCE']
-        track = np.any([[s in d for d in typ] for s in sky_types], axis=0) 
-        
+                     'VELOC', 'FOCUS', 'ASTROMETRY','TELLURIC', 'SCIENCE']
+        slew = ~np.any([[s in d for d in typ] for s in sky_types], axis=0) 
+       
+        # Day-time observations are without tracking too (give 45 min leaway
+        # for solar spectra in the evening and 6 min for U-band flats in
+        # the morning).
+        sunset, sunrise = self.meta['ephemeris']['sun_down_time'][0]
+        start, end = self['exp_start'], self['exp_end']
+        to_sunset = np.array([total_hours(s, sunset) for s in start])
+        from_sunrise = np.array([total_hours(sunrise, e) for e in end])
+
+        slew |= (to_sunset >= 0.75) | (from_sunrise >= 0.1) 
+
         # Airmass = 1.0 means telescope parked at zenith; real 
         # observations with airmass = 1.000 at both start & end are 
         # pretty rare (there is at best a ~ 54 s window).
         # We do not flag SCIENCE observations for airmass alone
         # though, as it may be a FITS keyword issue.
 
-        tel_airm = self['tel_airm']
-        tel_airm[tel_airm.mask] = 1
-        track &= (self['dp_cat'] == 'SCIENCE') | (tel_airm > 1.0)
-        
+        airmass = np.array(self['airmass'])
+        slew |= (self['dp_cat'] != 'SCIENCE') & (airmass == 1.0)
+       
+        # Flag internal observations by their type 
         ext_types = ['SCREEN', 'LAMP', *sky_types]
         intern = np.all([[e not in d for d in typ] for e in ext_types], axis=0)
         
-        self.add_columns([intern, ~track], names=['internal', 'slew'], 
+        self.add_columns([intern, slew], names=['internal', 'slew'], 
                 indexes=[2,2])
         self['internal'].description = 'flag for internal instrument calibration'
         self['slew'].description = 'flag for non-tracking observations'
+
+        for name in ['ra', 'dec', 'airmass', 'seeing']:
+            self[name].mask[intern | slew] = True
+            self[name].mask[intern] = True
 
     def _add_night_info(self):
 
@@ -626,10 +645,11 @@ class NightLog(Log):
 
         self['telescope'].description = 'telescope name'
         self['instrument'].description = 'instrument name'
-        self['prog_id'].description = 'ESO programme ID'
+        self['used_pid'].description = 'ESO programme ID used to observe'
+        self['pid'].description = 'Allocated ESO programme ID'
         self['pi'].description = 'name of the principal investigator'
         self['exp_start'].description = 'time at start of exposure'
-        self['filter_path'].description = 'list of filtres in the optical path'
+        self['filter'].description = 'list of filtres in the optical path'
         self['object'].description = 'name of the observed object'
         self['target'].description = 'name of the astronomical target'
         self['dp_cat'].description = 'purpose of observation'

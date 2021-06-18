@@ -5,15 +5,22 @@ sys.path.append('..')
 
 from autolog.eso import path
 from autolog.eso.nightlog import NightLog
+from autolog.eso.allocation import Allocation
 
-night = '2020-03-03'
+import warnings
+warnings.filterwarnings('error', category=RuntimeWarning)
+
+import numpy as np
+
+night = '2021-06-13'
 telescope = 'ESO-2.2m'
 opts = dict(
-    use_tap_cache = True,
-    use_log_cache = True,
+    use_tap_cache = False,
+    use_log_cache = False,
 )
 
 log = NightLog.fetch(telescope, night, **opts) 
-log.save(format='html')
-log.publish()
-#
+log.fix_prog_id()
+
+# log.save(format='html')
+# log.publish()

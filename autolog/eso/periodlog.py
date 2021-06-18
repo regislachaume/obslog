@@ -13,30 +13,30 @@ import numpy as np
 class PeriodLog(Log):
 
     HTML_ROW_GROUPS = OrderedDict(
-        night=['night', 'slew', 'instrument', 'prog_id'],
-        object=['internal', 'slew', 'instrument', 'prog_id', 'object'],
+        night=['night', 'slew', 'instrument', 'pid'],
+        object=['internal', 'slew', 'instrument', 'pid', 'object'],
         dp_cat=['internal', 'slew', 'instrument', 'dp_cat'],
-        prog_id=['internal', 'slew', 'tac', 'prog_id'],
+        pid=['internal', 'slew', 'tac', 'pid'],
     )
     HTML_COLUMNS = OrderedDict(
-        night=['night', 'instrument', 'prog_id', 'dp_cat', 'pi', 
+        night=['night', 'instrument', 'pid', 'dp_cat', 'pi', 
                'night_hours', 'dark_hours', 'sun_down_hours'],
-        object=['instrument', 'prog_id', 'object', 'night', 
+        object=['instrument', 'pid', 'object', 'night', 
                     'n_ob', 'n_exp',  'exposure'],
         dp_cat=['instrument', 'dp_cat', 
                'night_hours', 'dark_hours', 'sun_down_hours'],
-        prog_id=['tac', 'prog_id',  'night_hours', 'dark_hours', 
+        pid=['tac', 'pid',  'night_hours', 'dark_hours', 
                 'sun_down_hours'],
     )
     HTML_SORT_KEYS = OrderedDict(
         night=['night'],
-        object=['internal', 'slew', 'instrument', 'prog_id'],
+        object=['internal', 'slew', 'instrument', 'pid'],
         dp_cat=['instrument'],
-        prog_id=['tac', 'prog_id'],
+        pid=['tac', 'pid'],
     )
 
     LOG_TYPES = dict(log=['night'], target=['object'],
-                    report=['dp_cat', 'prog_id'])
+                    report=['dp_cat', 'pid'])
 
     @classmethod
     def fetch(cls, telescope, period, *, 
@@ -53,9 +53,9 @@ class PeriodLog(Log):
         logs = [NightLog.fetch(telescope, night, **opts)
             for night in period_nights(period, format='iso') if night < today]
        
-        for log in logs:
-            log.save(format='html')
-            log.publish()
+        #for log in logs:
+        #    log.save(format='html')
+        #    log.publish()
         
         # append ephemeris 
         ephem = {}

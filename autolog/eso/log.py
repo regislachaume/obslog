@@ -4,6 +4,8 @@ from ..utils.ephemeris import night_ephemeris
 from .date import night_to_period
 from . import path
 from .tapquery import NightQuery
+from .allocation import Allocation
+
 
 from pyvo.dal import tap
 from astropy.coordinates import EarthLocation
@@ -51,33 +53,38 @@ def keep_all(log):
 class Log(Table):
 
     HTML_CAPTIONS = {
-        'prog_id': 'summary of programme execution',
+        'pid': 'summary of programme execution',
         'object': 'summary of target observations',
         'ob_start': 'detailed log',
         'night': 'summary of nights',
     }
     HTML_ROW_FILTRES = {
-        'prog_id': keep_external,
+        'pid': keep_external,
         'object': keep_target,
         'ob_start': keep_external,
         'night': keep_external,
     }
 
-    def fix_prog_id(self, allocation):
+    def fix_pids(self):
+            
+        if not (period := self.meta.get('period', None)):
+            return
         
-        index = np.argwhere(['prog_id' == n for n in self.colnames])[0,0]
-        self.insert_column(self['prog_id'], name='nom_prog_id', index=index)
-        
-        tacs = {p: t for p, t in allocation['',''])
-        tac = {
+        telescope = self.meta['telescope']
+        allocation = Allocation.read(telescope=telescope, period=period)
 
-        for log_entry in log:
-            used_pid = log_entry['prog_id']
-            prog = allocation.look_up(log_entry)
-            nominal_pid, surname = prog['Nominal PID', 'Surname']
-            if nominal_pid != used_pid:
-                log_entry['nom_prog_id'] = nominal_pid
-            log_entry['pi'] = surname
+        if 'pid' not in self.colnames:
+            index = np.argwhere(['used_pid' == n for n in self.colnames])[0,0]
+            self.add_column(self['used_pid'], name='nom_pid', index=index)
+        
+        for i, log_entry in enumerate(self):
+            
+            used_pid = log_entry['used_pid']
+            prog = allocation.lookup(log_entry)
+            pid, pi = prog['PID', 'PI']
+
+            log_entry['pid'] = pid
+            log_entry['pi'] = pi
 
     def save(self, log_type='log', overwrite=False, format='csv'):
 
@@ -209,7 +216,7 @@ class Log(Table):
 
         return soup
 
-    def summary(self, keys=['prog_id']):
+    def summary(self, keys=['pid']):
 
         grouped = self.group_by(keys)
 

@@ -16,20 +16,22 @@ class Allocation(Table):
         
     ESO_SCHEDULE_URL = 'http://archive.eso.org/wdb/wdb/eso/sched_rep_arc/query'
 
+    _INSTANCES = {}
+
     @classmethod
     def read(cls, *, telescope, period, rootdir='.',
-                    wwwdir='/data/www/twoptwo.com',
-                    honour_omit=True):
+                                wwwdir='/data/www/twoptwo.com'): 
         
+        key = (telescope, period)
+        if alloc := cls._INSTANCES.get(key, None):
+            return alloc
+
         filename = path.filename(telescope, period=period,
                 log_type='program', ext='xls', rootdir=rootdir)
 
         alloc = table_from_excel(filename, cls=cls) 
         fixes = table_from_excel(filename, sheetnum=1)
 
-        if honour_omit:
-            alloc = alloc[alloc['Link'] != 'omit']
-        
         alloc.meta = dict(
             rootdir = rootdir,
             wwwdir = wwwdir,
@@ -47,12 +49,15 @@ class Allocation(Table):
 
         for name in ['Airmass', 'Seeing', 'Hours']:
             alloc[name].format = '.1f'
+
+        cls._INSTANCES[key] = alloc
  
-        return alloc 
+        return alloc
 
     def lookup(self, log_entry):
 
-        pid, object, ob_name = log_entry['prog_id', 'object', 'ob_name']
+        pid, object, ob_name = log_entry['used_pid', 'object', 'ob_name']
+        instrument = log_entry['instrument']
         date = log_entry['ob_start']
         
         # Look if it has been observed with a wrong PID.  The fixes table is
@@ -66,10 +71,10 @@ class Allocation(Table):
                 obj, name = fix['Object', 'OB name']
                 d1, d2 = fix['Start date', 'End date']
                 
-                if (o != '' and not re.search(o, object) or
-                    n != '' and not re.search(n, ob_name) or
-                   d1 != '' and date < d1 or
-                   d2 != '' and date > d2):
+                if (obj != '' and not re.search(obj, object) or
+                    name != '' and not re.search(name, ob_name) or
+                    d1 != '' and date < d1 or
+                    d2 != '' and date > d2):
                     continue
 
                 pid = fix['Nominal PID']
@@ -79,23 +84,28 @@ class Allocation(Table):
 
         indices = self['PID'] == pid
         if any(indices):
-            return self[indices][0]
+            return self[indices].copy()[0]
 
-        return self.unidentified_programme(pid, log_entry['instrument']) 
+        return self._unidentified(pid=pid, instrument=instrument)
 
-    def unidentified_programme(self, pid, ins):
+    def new_program(self, *, pid, title, instrument='', pi='', tac=''):
 
-        unid = self[-1].copy()
-        unid['TAC'] = 'N/A'
-        unid['PID'] = pid
-        unid['Title'] = 'Unidentified programme'
-        unid['Investigator'] = 'N/A'
-        unid['Name'] = ''
-        unid['Instrument'] = ins
-        unid['Identifiers'] = ''
-        unid['Link'] = 'no'
+        new = self[-1:].copy()[0]
+        
+        new['PID'] = pid
+        new['Title'] = title
+        new['TAC'] = tac
+        new['PI'] = pi 
+        new['Instrument'] = instrument
+        new['Identifiers'] = ''
+        new['Link'] = 'no'
 
-        return unid
+        return new
+
+    def _unidentified(self, pid, instrument):
+
+        return self.new_program(pid=pid, instrument=instrument, 
+                    title='unidentified program')
 
     @classmethod
     def archive_link(cls, pid):
@@ -112,8 +122,13 @@ class Allocation(Table):
 
         return link
 
-    def save(self, format='html'):
-
+    def save(self, format='html', omit=True):
+        
+        if omit:
+            alloc = alloc[alloc['Link'] == 'omit']
+        else:
+            alloc = self
+        
         if format == 'html':
             ext = 'shtml'
             format = 'ascii.html'
@@ -121,11 +136,10 @@ class Allocation(Table):
         else:
             ext = 'csv'
             format = 'ascii.ecsv'
-            alloc = self
 
         filename = self.get_filename(ext=ext, makedirs=True)
         
-        alloc.write(filename, format=format)
+        self.write(filename, format=format)
 
     def as_beautiful_soup(self, caption=None, exclude_names=['Identifiers']):
       

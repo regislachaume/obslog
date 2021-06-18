@@ -19,7 +19,7 @@ opts = dict(
 
 log = PeriodLog.fetch(telescope, period, **opts) 
 
-for log_type in ['log', 'target']:
-    log.save(log_type, format='html')
-    log.publish(log_type)
+#for log_type in ['log', 'target']:
+#    log.save(log_type, format='html')
+#    log.publish(log_type)
 

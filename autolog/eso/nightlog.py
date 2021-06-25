@@ -24,10 +24,10 @@ import re
 class NightLog(Log):
 
     HTML_ROW_GROUPS = OrderedDict(
-        ob_start=['ob_start', 'prog_id'],
+        ob_start=['ob_start', 'pid'],
     )
     HTML_COLUMNS = OrderedDict(
-        ob_start=['prog_id', 'nom_prog_id', 'pi', 'instrument', 'object', 
+        ob_start=['used_pid', 'pid', 'pi', 'instrument', 'object', 
             'exposure', 'ob_start', 'ob_end', 'airmass', 'seeing',
             'night_hours', 'dark_hours', 'sun_down_hours'],
     )
@@ -104,7 +104,6 @@ class NightLog(Log):
         # safe, because DPR TYPE is not consistent across ESO instruments. 
 
         log._add_track_info()
-     
         #  Add OB number, by start time of first template
         
         log._add_ob_no()
@@ -126,10 +125,12 @@ class NightLog(Log):
         # Exposure is the important info, det_dit is IR only.  
 
         log.remove_column('det_dit')
+        print(log[-5:]) 
 
         # Add missing templates such as acquisitions without images
 
         log._fill_missing_templates()
+        print(log[-5:]) 
 
         # guess missing OBs.  FEROS focus OBs do not leave trace in the
         # exposure dalogase.  Can be inferred from gap in FEROS observations.
@@ -201,7 +202,7 @@ class NightLog(Log):
         for i in reversed(range(len(self) - 1)):
                 
             this, next = self[i], self[i + 1]
-            
+
             # acquisition
             if next['ob_no'] != this['ob_no'] and next['tpl_no'] > 1:
                 acq = np.copy(next)
@@ -213,9 +214,6 @@ class NightLog(Log):
                 acq['exp_end'] = next['tpl_start']
                 acq['exposure'] = 0
                 acq['dp_cat'] = 'ACQUISITION'
-                acq['dp_tech'] = 'NONE'
-                acq['dp_type'] = 'NONE'
-                acq['filter'] = '' 
                 self.insert_row(i + 1, acq.tolist())
 
             # other templates
@@ -230,16 +228,27 @@ class NightLog(Log):
                 tech['exp_end'] = next['tpl_start']
                 tech['exposure'] = 0
                 tech['dp_cat'] = 'TECHNICAL'
-                tech['dp_tech'] = 'NONE'
-                tech['dp_type'] = 'NONE'
-                tech['filter_path'] = 'NONE' 
+                tech['object'] = 'HIDDEN'
                 self.insert_row(i + 1, tech.tolist())
+            
+            else:
+                
+                continue
+          
+            for name in ['filter', 'dp_id', 'dp_tech', 'dp_type']:
+                self[name][i+1] = '' 
 
-    def _create_idle_row(self, i, start, end, name=[], ob_no=-1):
+            # mask
+            next_mask = np.array(list(self.mask[i+2].as_void())) 
+            mask = np.array([c == '' for c in self[i+1].as_void()])
+            self.mask[i+1] = mask | next_mask
+
+    def _insert_idle_row(self, i, start, end, name=[], ob_no=-1):
 
         row0 = np.ndarray((1,), dtype=self.dtype)
+        row0 = np.ma.masked_array(row0)
         self.insert_row(i)
-        row = self[i]
+        row = self[i:i+1]
 
         row['night'] = self.meta['night']
         row['period'] = self.meta['period']
@@ -249,20 +258,19 @@ class NightLog(Log):
             row[f"{key}_start"] = start
             row[f"{key}_end"] = end
 
-        for key in 'ra', 'dec':
-            row[key] = row[key].mask = True
+        for key in ['ra', 'dec', 'seeing', 'airmass', 'target', 
+                    'dp_id', 'dp_cat', 'dp_tech', 'dp_type']:
+            row[key].mask = True
 
         uname = [n.upper() for n in name]
         row['pi'] = ' '.join([*name, 'downtime'])[0:20]
-        row['pid'] =  '/'.join(['IDLE', *uname])[0:14]
-
+        row['used_pid'] =  '/'.join(['IDLE', *uname])[0:14]
+        row['object'] = 'IDLE'
         row['ob_name'] = 'Telescope_Idle'
         row['ob_no'] = ob_no
 
         row['internal'] = False 
         row['slew'] = True
-
-        return row
 
     def _fill_idle_rows(self, *boundaries):
 
@@ -307,7 +315,7 @@ class NightLog(Log):
 
                     # Check if there is a gap
                     if ob_end < next_ob_start:
-                        self._create_idle_row(i+1, ob_end, next_ob_start, 
+                        self._insert_idle_row(i+1, ob_end, next_ob_start, 
                                    name=name, ob_no=idle_ob_no)
                     idle_ob_no += 1
 
@@ -318,7 +326,7 @@ class NightLog(Log):
 
                 if tw_start < next_ob_start:
                     i0 = indices[0] if len(indices) else 0
-                    self._create_idle_row(i0, tw_start, next_ob_start,
+                    self._insert_idle_row(i0, tw_start, next_ob_start,
                                   name=name, ob_no=idle_ob_no)
                     idle_ob_no += 1
 
@@ -621,9 +629,9 @@ class NightLog(Log):
         self['internal'].description = 'flag for internal instrument calibration'
         self['slew'].description = 'flag for non-tracking observations'
 
-        for name in ['ra', 'dec', 'airmass', 'seeing']:
-            self[name].mask[intern | slew] = True
-            self[name].mask[intern] = True
+        off_sky = intern | slew
+        for name in ['target', 'ra', 'dec', 'airmass', 'seeing']:
+            self[name].mask[off_sky] = True
 
     def _add_night_info(self):
 
@@ -646,11 +654,11 @@ class NightLog(Log):
         self['telescope'].description = 'telescope name'
         self['instrument'].description = 'instrument name'
         self['used_pid'].description = 'ESO programme ID used to observe'
-        self['pid'].description = 'Allocated ESO programme ID'
+        self['pid'].description = 'ESO programme ID allocated by TAC'
         self['pi'].description = 'name of the principal investigator'
         self['exp_start'].description = 'time at start of exposure'
         self['filter'].description = 'list of filtres in the optical path'
-        self['object'].description = 'name of the observed object'
+        self['object'].description = 'name of the object in the exposure'
         self['target'].description = 'name of the astronomical target'
         self['dp_cat'].description = 'purpose of observation'
         self['dp_tech'].description = 'observing technique'

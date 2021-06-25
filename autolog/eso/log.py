@@ -75,7 +75,7 @@ class Log(Table):
 
         if 'pid' not in self.colnames:
             index = np.argwhere(['used_pid' == n for n in self.colnames])[0,0]
-            self.add_column(self['used_pid'], name='nom_pid', index=index)
+            self.add_column(self['used_pid'], name='pid', index=index)
         
         for i, log_entry in enumerate(self):
             

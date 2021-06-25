@@ -25,10 +25,8 @@ It keeps a local copy of requests to save on internet bandpass"""
             'object': '<U64', 
             'target': '<U64', 
             'ra': '<f8', 
-            'ra_pnt': '<f8', 
-            'dp_id': '<U30',
             'dec': '<f8', 
-            'dec_pnt': '<f8', 
+            'dp_id': '<U30',
             'telescope': '<U68', 
             'instrument': '<U20', 
             'prog_id': '<U15', 
@@ -168,15 +166,20 @@ It keeps a local copy of requests to save on internet bandpass"""
                     new_col = [c[0:len] if c else c for c in col]
                 else:
                     new_col = [c for c in col]
-          
-                mask = [c == '' for c in col]
-                new_col = np.ma.masked_array(new_col, dtype=dtype, mask=mask)
+         
+                if name in ['object', 'telescope', 'ob_name', 'prog_id']:
+                    new_col = np.array(new_col, dtype=dtype)
+                else:
+                    new_col = np.ma.masked_array(new_col, dtype=dtype)
+
                 tab.replace_column(name, new_col)
             
             # cast to correct type
             elif (str_ := cls.KEYS.get(name, '')) and col.dtype.str != str_:
-            
-                dtype = np.dtype(str_)
+        
                 new_col = np.ma.masked_array(col, dtype=dtype)
                 tab.replace_column(name, new_col) 
 
+        # at this point, only target may not be specified
+        for name in ['target']:    
+            tab.mask[name] = tab[name] == ''

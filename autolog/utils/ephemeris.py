@@ -106,15 +106,15 @@ def _get_twilights(observer, start, midnight, end):
                 nautical_twilight_time = [[naut[0], astron[0]],
                                           [astron[1], naut[1]]]
                 if night:
-                    astronomical_twilight_time = [[astron[0], night[0]],
-                                                  [night[1], astron[1]]]
+                    twilight_time = [[astron[0], night[0]],
+                                     [night[1], astron[1]]]
                     night_time = [night]
                 else:
-                    astronomical_twilight_time = [astron]
+                    twilight_time = [astron]
                     night_time = []
             else:
                 nautical_twilight_time = [naut]
-                astronomical_twilight_time = []
+                twilight_time = []
         else:
             civil_twilight_time = [down]
             nautical_twilight_time = []
@@ -125,8 +125,8 @@ def _get_twilights(observer, start, midnight, end):
                         for d in sun_down_time) / 3600
     night_hours = sum(total_seconds(*d) 
                         for d in night_time) / 3600
-    astronomical_twilight_hours = sum(total_seconds(*d) 
-                        for d in astronomical_twilight_time) / 3600
+    twilight_hours = sum(total_seconds(*d) 
+                        for d in twilight_time) / 3600
     nautical_twilight_hours = sum(total_seconds(*d) 
                         for d in nautical_twilight_time) / 3600
     civil_twilight_hours = sum(total_seconds(*d) 
@@ -140,8 +140,8 @@ def _get_twilights(observer, start, midnight, end):
                     civil_twilight_hours = civil_twilight_hours,
                     nautical_twilight_time = nautical_twilight_time,
                     nautical_twilight_hours = nautical_twilight_hours,
-                    astronomical_twilight_time = astronomical_twilight_time,
-                    astronomical_twilight_hours = astronomical_twilight_hours,
+                    twilight_time = twilight_time,
+                    twilight_hours = twilight_hours,
                     night_time = night_time,
                     night_hours = night_hours,
                 )

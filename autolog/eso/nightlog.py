@@ -32,12 +32,12 @@ class NightLog(Log):
             'night_hours', 'dark_hours', 'sun_down_hours'],
     )
     HTML_SORT_KEYS = OrderedDict(
-        ob_start=None,
+        ob_start=[],
     )
-
+    HTML_SUBTOTALS = OrderedDict(
+        ob_start=[]
+    )
     LOG_TYPES = dict(log=['ob_start'])
-
-
     @classmethod
     def fetch(cls, telescope, night, *, 
                 use_log_cache=True, use_tap_cache=True, 
@@ -125,12 +125,10 @@ class NightLog(Log):
         # Exposure is the important info, det_dit is IR only.  
 
         log.remove_column('det_dit')
-        print(log[-5:]) 
 
         # Add missing templates such as acquisitions without images
 
         log._fill_missing_templates()
-        print(log[-5:]) 
 
         # guess missing OBs.  FEROS focus OBs do not leave trace in the
         # exposure dalogase.  Can be inferred from gap in FEROS observations.
@@ -140,7 +138,7 @@ class NightLog(Log):
 
         # report gaps (no exposure reported during night time)
 
-        log._fill_idle_rows('night', 'astronomical_twilight')
+        log._fill_idle_rows('night', 'twilight')
 
         # fix PIDs
 
@@ -259,7 +257,7 @@ class NightLog(Log):
             row[f"{key}_end"] = end
 
         for key in ['ra', 'dec', 'seeing', 'airmass', 'target', 
-                    'dp_id', 'dp_cat', 'dp_tech', 'dp_type']:
+                    'dp_id', 'dp_tech', 'dp_type']:
             row[key].mask = True
 
         uname = [n.upper() for n in name]
@@ -268,6 +266,8 @@ class NightLog(Log):
         row['object'] = 'IDLE'
         row['ob_name'] = 'Telescope_Idle'
         row['ob_no'] = ob_no
+        row['instrument'] = 'IDLE'
+        row['dp_cat'] = 'IDLE'
 
         row['internal'] = False 
         row['slew'] = True
@@ -281,7 +281,7 @@ class NightLog(Log):
 
         for boundary in boundaries:
             
-            if boundary == 'astronomical_twilight':
+            if boundary == 'twilight':
                 name = ['twilight']
             elif boundary == 'night':
                 name = ['night']
@@ -335,7 +335,7 @@ class NightLog(Log):
         pass
 
     def _add_time_accounting(self,
-            sky_conditions=['night', 'dark', 'astronomical_twilight', 
+            sky_conditions=['night', 'dark', 'twilight', 
                             'nautical_twilight', 'civil_twilight', 
                             'sun_down']):
 
@@ -674,7 +674,7 @@ class NightLog(Log):
         for name in self.colnames:
             if name[-6:] == '_hours':
                 self[name].format = '.3f' 
-            elif name in ['tel_airm', 'tel_ambi_fwhm']:
+            elif name in ['airmass', 'seeing']:
                 self[name].format = '.2f'
             elif name in ['exposure']:
-                self[name].format = '.1f'
+                self[name].format = '.0f'

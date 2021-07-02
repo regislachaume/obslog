@@ -12,6 +12,14 @@ import shutil
 from autolog.utils.table import Table, BS
 from bs4 import Comment as BSComment
 
+def alloc_time_format(t):
+
+    if t < 1:
+        return f"{t:.0%}"
+    if t >= 1:
+        return f"{t:.1f}"
+    return format(t) # masked
+
 class Allocation(Table):
         
     ESO_SCHEDULE_URL = 'http://archive.eso.org/wdb/wdb/eso/sched_rep_arc/query'
@@ -32,6 +40,9 @@ class Allocation(Table):
         alloc = table_from_excel(filename, cls=cls) 
         fixes = table_from_excel(filename, sheetnum=1)
 
+        for row in alloc:
+            row['PID'] = row['PID'].strip() 
+
         alloc.meta = dict(
             rootdir = rootdir,
             wwwdir = wwwdir,
@@ -44,15 +55,37 @@ class Allocation(Table):
  
         for row in alloc:
             pid = row['PID']
-            for id in alloc['Identifiers']:
-                alloc.meta['cross_reference'][id] = pid
+            for id in row['Identifiers'].split(','):
+                id = id.strip()
+                if id != '':
+                    alloc.meta['cross_reference'][id] = pid
 
-        for name in ['Airmass', 'Seeing', 'Hours']:
+        for name in ['Airmass', 'Seeing']:
             alloc[name].format = '.1f'
+        alloc['Hours'].format = alloc_time_format
+
+        alloc.remove_column('Identifiers')
 
         cls._INSTANCES[key] = alloc
  
         return alloc
+
+    def allocated_hours(self, pid, total_hours):
+        
+        lineno = np.argwhere(self['PID'] == pid)
+        if not len(lineno):
+            return 0
+        
+        lineno = lineno[0][0]
+        hours = self['Hours'][lineno]
+        
+        if hours < 1:
+            hours *= total_hours
+
+        if hours > 0:
+            return hours
+
+        return 0
 
     def lookup(self, log_entry):
 
@@ -125,21 +158,21 @@ class Allocation(Table):
     def save(self, format='html', omit=True):
         
         if omit:
-            alloc = alloc[alloc['Link'] == 'omit']
+            alloc = self[self['Link'] != 'omit']
         else:
             alloc = self
         
         if format == 'html':
             ext = 'shtml'
             format = 'ascii.html'
-            alloc = self.group_by('TAC')
+            alloc = alloc.group_by('TAC')
         else:
             ext = 'csv'
             format = 'ascii.ecsv'
 
-        filename = self.get_filename(ext=ext, makedirs=True)
+        filename = alloc.get_filename(ext=ext, makedirs=True)
         
-        self.write(filename, format=format)
+        alloc.write(filename, format=format)
 
     def as_beautiful_soup(self, caption=None, exclude_names=['Identifiers']):
       
@@ -154,12 +187,14 @@ class Allocation(Table):
         if not caption:
             caption = f"{doc_title} ({start} to {end}). Last modified {today}."
 
+        tel = telescope.split('-')[-1]
         htmldict=dict(
             title=doc_title,
             h1=doc_title,
             caption=caption,
             table_class='horizontal',
-            cssfiles=['/2.2m/navbar.css', '/2.2m/twoptwo.css']
+            cssfiles=[f'/{tel}/style/navbar.css', 
+                      f'/{tel}/style/twoptwo.css']
         )
 
         soup = super().as_beautiful_soup(exclude_names=exclude_names, 
@@ -215,7 +250,7 @@ class Allocation(Table):
             critical.extract()
             link.extract()
         
-        navbar = '#include virtual="/2.2m/navbar.shtml"'
+        navbar = '#include virtual="/2.2m/style/navbar.shtml"'
         soup.body.insert(0, BSComment(navbar))
         
         return soup

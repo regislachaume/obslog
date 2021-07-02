@@ -10,7 +10,7 @@ from .allocation import Allocation
 from pyvo.dal import tap
 from astropy.coordinates import EarthLocation
 from ..utils.table import Table
-from astropy.table import Column
+from astropy.table import Column, MaskedColumn
 from bs4 import Comment as BSComment, BeautifulSoup
 
 import numpy as np
@@ -54,16 +54,23 @@ class Log(Table):
 
     HTML_CAPTIONS = {
         'pid': 'summary of programme execution',
-        'object': 'summary of target observations',
+        'object': 'list of observed targets',
         'ob_start': 'detailed log',
-        'night': 'summary of nights',
+        'night': 'observed programmes by night',
+        'dp_cat': 'summary of telescope use',
+    }
+    HTML_TITLES = {
+        'target': 'list of targets',
+        'log': 'observing logs',
     }
     HTML_ROW_FILTRES = {
         'pid': keep_external,
         'object': keep_target,
         'ob_start': keep_external,
         'night': keep_external,
+        'dp_cat': keep_external,
     }
+    HTML_PROGRESS = { }
 
     def fix_pids(self):
             
@@ -76,15 +83,21 @@ class Log(Table):
         if 'pid' not in self.colnames:
             index = np.argwhere(['used_pid' == n for n in self.colnames])[0,0]
             self.add_column(self['used_pid'], name='pid', index=index)
+
+        if 'tac' not in self.colnames:
+            tac = np.full(len(self), '', dtype='<U12')
+            tac = np.ma.masked_array(tac, mask=True)
+            self.add_column(tac, name='tac', index=0)
         
         for i, log_entry in enumerate(self):
             
             used_pid = log_entry['used_pid']
             prog = allocation.lookup(log_entry)
-            pid, pi = prog['PID', 'PI']
+            pid, pi, tac = prog['PID', 'PI', 'TAC']
 
             log_entry['pid'] = pid
             log_entry['pi'] = pi
+            log_entry['tac'] = tac
 
     def save(self, log_type='log', overwrite=False, format='csv'):
 
@@ -154,15 +167,88 @@ class Log(Table):
        
         kept_keys = self.HTML_COLUMNS[table_type]
         group_keys = self.HTML_ROW_GROUPS[table_type]
-        sort_keys = self.HTML_SORT_KEYS[table_type]
+        sort_keys = self.HTML_SORT_KEYS.get(table_type, [])
         filter = self.HTML_ROW_FILTRES[table_type] 
         subtitle = self.HTML_CAPTIONS[table_type]
+        progress = self.HTML_PROGRESS.get(table_type, None)
 
         units = [c.unit.name if c.unit else '' for c in self.itercols()]
 
         summary = filter(self).summary(group_keys)
+            
+        # Report progress as a function of total available time
 
+        if progress == 'time':
+            for name in ['night_hours', 'twilight_hours']:
+                fname = name[:-6] + '_fraction'
+                fval = summary[name] / self.meta['ephemeris'][name]
+                col = Column(fval, name=fname, format='.1%')
+                summary.add_column(col)
+                kept_keys.append(fname)
+
+        # report progress as a function of allocated time
+
+        if progress == 'allocation' and (p := self.meta.get('period', None)):
+        
+            telescope = self.meta['telescope']
+            allocation = Allocation.read(telescope=telescope, period=p)
+
+            # add unobserved programmes so that their null completion is
+            # reported ;-)
+
+            for line in allocation[allocation['Link'] != 'omit']:
+                tac, pid, pi, ins = line['TAC', 'PID', 'PI', 'Instrument']
+                if pid not in summary['pid']:
+                    empty_row = np.zeros_like(summary[-1])
+                    empty_row['pid'] = pid
+                    empty_row['tac'] = tac
+                    empty_row['pi'] = pi
+                    empty_row['instrument'] = ins
+                    summary.add_row(empty_row.tolist())
+        
+            # add execution %.  Tricky part: GROND with PID ~ 9099 has 15% 
+            # of night time so don't count non-night observations.
+
+            night_hours = self.meta['ephemeris']['night_hours']
+            allocated = np.array([allocation.allocated_hours(pid, night_hours)
+                    for pid in summary['pid']])
+            allocated = np.ma.masked_array(allocated, mask=allocated==0)
+            
+            col = MaskedColumn(allocated, name='allocated', format='.0f')
+            col.unit = 'h'
+            summary.add_column(col) 
+ 
+            executed = summary['sun_down_hours'].data.copy()
+            grond_pid = f"0{p}.A-9099(A)"
+            lineno = np.argwhere([grond_pid == pid for pid in summary['pid']])
+            if len(lineno):
+                lineno = lineno[0][0]
+                executed[lineno] = summary['night_hours'][lineno]
+
+            progress = executed / allocated
+
+            col = Column(executed, name='executed')
+            summary.add_column(col)
+    
+            col = MaskedColumn(progress, name='progress', format='.0%')
+            summary.add_column(col)
+            kept_keys += ['allocated', 'progress']
+        
+        # add a subtotal line in each group
+
+        if len(sort_keys) == 1:
+            subtotals = summary.summary(sort_keys)
+            for name in subtotals.colnames:
+                if subtotals[name].dtype.char == 'U' and name not in sort_keys:
+                    subtotals[name] = 'all'
+            subtotals['progress'] = subtotals['executed'] / subtotals['allocated']
+            for subtotal in subtotals:
+                summary.add_row(subtotal)
+
+        # Group rows and keep only the most interesting columns
+                        
         if sort_keys:
+            summary.sort(kept_keys)
             summary = summary.group_by(sort_keys)
 
         summary = summary[kept_keys]
@@ -173,14 +259,6 @@ class Log(Table):
             if key in summary.colnames:
                 summary[key] = [s[11:16] for s in summary[key]]
 
-        for key in summary.colnames:
-            if '_hours' in key:
-                summary[key].name = key[:-6] + '_t'
-            elif 'tel_ambi_' in key:
-                summary[key].name = key[9:]
-            elif 'tel_' in key:
-                summary[key].name = key[4:]
-
         caption = f"{subtitle} for {what}"
 
         tel = telescope.split('-')[-1]
@@ -188,7 +266,9 @@ class Log(Table):
         log_type = htmldict.get('log_type', 'log')
         log_type = log_type[0].upper() + log_type[1:]
 
+        doc_title = self.HTML_TITLES.get(log_type, log_type)
         doc_title = f"{log_type} for {what}"
+
         htmldict=dict(
             **htmldict,
             caption=caption,
@@ -196,14 +276,14 @@ class Log(Table):
             h1=doc_title,
             h2=subtitle,
             table_class='horizontal',
-            cssfiles=[f'/{tel}/navbar.css', 
-                      f'/{tel}/twoptwo.css']
+            cssfiles=[f'/{tel}/style/navbar.css', 
+                      f'/{tel}/style/twoptwo.css']
         )
 
         summary.__class__ = Table # want to keep groups!
         soup = summary.as_beautiful_soup(htmldict=htmldict, **kwargs)
 
-        navbar = f'#include virtual="/{tel}/navbar.shtml"'
+        navbar = f'#include virtual="/{tel}/style/navbar.shtml"'
         soup.body.insert(0, BSComment(navbar))
 
         # If above night level, place a link to lower level
@@ -254,7 +334,7 @@ class Log(Table):
                     value = min(values)
                 elif name[-4:] == '_end':
                     value = max(values)
-                elif name[-6:] == '_hours' or name in ['exposure']:
+                elif name[-6:] == '_hours' or name in ['exposure', 'allocated']:
                     value = sum(values)
                 elif name == 'exp_no':
                     value = len(np.unique(group['exp_start']))
@@ -269,8 +349,7 @@ class Log(Table):
                 elif col.dtype.char == '?':
                     value = values[0]
                     if any(values != value):
-                        text = f"cannot average booleans in column {name}"
-                        raise RuntimeError(text)
+                        value = '?'
                 else:
                     value = np.mean(values)
                 

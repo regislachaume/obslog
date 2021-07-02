@@ -31,7 +31,7 @@ It keeps a local copy of requests to save on internet bandpass"""
             'instrument': '<U20', 
             'prog_id': '<U15', 
             'pi_coi': '<U255',
-            'dp_cat': '<U10', 
+            'dp_cat': '<U11', 
             'dp_tech': '<U30', 
             'dp_type': '<U30', 
             'exposure': '<f4', 

@@ -1,12 +1,14 @@
 from ..utils.date import night_to_date_range
 from .date import night_to_period
 from ..utils.table import Table
+from ..utils.telescope import parse_telescope
 
 from . import path
 
 from pyvo.dal.tap import TAPQuery
 from astropy.coordinates import EarthLocation
 from collections import OrderedDict
+from astropy.table import Column, MaskedColumn
 
 import numpy as np
 import os
@@ -49,28 +51,18 @@ It keeps a local copy of requests to save on internet bandpass"""
             'exp_start': '<U19',
            }
     TABLE_FORMAT = 'ascii.ecsv'
+    MASKED_COLS =  [
+        'target', 'dp_id', 'dp_tech', 'dp_type', 'filter_path', 
+        'det_dit', 'tel_ambi_fwhm_start', 'tel_ambi_fwhm_end',
+        'tel_airm_start', 'tel_airm_end'
+    ]
         
     def __init__(self, *, telescope, rootdir='.'):
         """Create a new request for a given ESO telescope."""
  
         # La Silla telescopes were poorly handled in headers
 
-        eso_2p2 = ('ESO-2.2m', 'ESO/2.2m', '2.2m', 'MPI-2.2', 'MPG-2.2', 'MPG/ESO-2.2', 'MPG/ESO-220')
-        eso_ntt = ('ESO-NTT', 'ESO/NTT', 'NTT', 'ESO-NTT', 'VLT-NONE')
-        eso_3p6 = ('ESO-3.6m', 'ESO/3.6m', '3.6m', 'ESO-3P6',)
-
-        if telescope in eso_2p2:
-            telescope_names = eso_2p2
-            site = 'La Silla Observatory'
-        elif telescope in eso_ntt:
-            telescope_names = eso_ntt
-            site = 'La Silla Observatory'
-        elif telescope in eso_3p6:
-            telescope_names = eso_3p6
-            site = 'La Silla Observatory'
-        else:
-            telescope_names = (telescope,)
-            site = 'Paranal Observatory'
+        site, telscope_names = parse_telescope(telescope)
 
         # Set the TAP & defaults
 
@@ -153,7 +145,7 @@ It keeps a local copy of requests to save on internet bandpass"""
     def _fix_column_types(cls, tab):
         
         for i, name in enumerate(tab.colnames):
-        
+       
             col = tab[name]
  
             # set correct width for object/string
@@ -167,10 +159,10 @@ It keeps a local copy of requests to save on internet bandpass"""
                 else:
                     new_col = [c for c in col]
          
-                if name in ['object', 'telescope', 'ob_name', 'prog_id']:
-                    new_col = np.array(new_col, dtype=dtype)
-                else:
+                if name in cls.MASKED_COLS:
                     new_col = np.ma.masked_array(new_col, dtype=dtype)
+                else:
+                    new_col = np.array(new_col, dtype=dtype)
 
                 tab.replace_column(name, new_col)
             
@@ -178,7 +170,13 @@ It keeps a local copy of requests to save on internet bandpass"""
             elif (str_ := cls.KEYS.get(name, '')) and col.dtype.str != str_:
         
                 new_col = np.ma.masked_array(col, dtype=dtype)
-                tab.replace_column(name, new_col) 
+                tab.replace_column(name, new_col)
+   
+            # ensure masked! 
+            elif name in cls.MASKED_COLS and not isinstance(col, MaskedColumn):
+
+                new_col = MaskedColumn(col)
+                tab.replace_column(name, new_col)
 
         # at this point, only target may not be specified
         for name in ['target']:    

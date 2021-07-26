@@ -15,13 +15,13 @@ class PeriodLog(Log):
     HTML_ROW_GROUPS = OrderedDict(
         night=['night', 'slew', 'instrument', 'pid'],
         object=['internal', 'slew', 'instrument', 'pid', 'object'],
-        dp_cat=['internal', 'slew', 'dp_cat', 'instrument'],
-        pid=['internal', 'slew', 'tac', 'pid'],
+        dp_cat=['dp_cat', 'instrument'],
+        pid=['tac', 'pid'],
     )
     HTML_COLUMNS = OrderedDict(
         night=['night', 'instrument', 'pid', 'dp_cat', 'pi', 
                'night_hours', 'dark_hours', 'sun_down_hours'],
-        object=['instrument', 'pid', 'object', 'night', 
+        object=['instrument', 'pid', 'used_pid', 'object', 'night', 
                     'n_ob', 'n_exp',  'exposure'],
         dp_cat=['dp_cat', 'instrument', 
                'night_hours', 'dark_hours', 'sun_down_hours'],
@@ -29,7 +29,7 @@ class PeriodLog(Log):
                 'twilight_hours', 'sun_down_hours'],
     )
     HTML_SORT_KEYS = OrderedDict(
-        night=['night','slew'],
+        night=['period', 'night'],
         object=['internal', 'slew', 'instrument', 'pid'],
         dp_cat=['dp_cat'],
         pid=['tac'],
@@ -38,7 +38,7 @@ class PeriodLog(Log):
         dp_cat='time',
         pid='allocation',
     )
-    LOG_TYPES = dict(log=['night'], target=['object'],
+    LOG_TYPES = OrderedDict(log=['night'], target=['object'],
                     report=['dp_cat', 'pid'])
 
     @classmethod

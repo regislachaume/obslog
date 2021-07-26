@@ -15,7 +15,7 @@ import numpy as np
 night = '2021-04-13'
 telescope = 'ESO-2.2m'
 opts = dict(
-    use_tap_cache = True, 
+    use_tap_cache = False, 
     use_log_cache = False,
 )
 

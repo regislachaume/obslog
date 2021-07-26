@@ -10,22 +10,18 @@ from autolog.eso.periodlog import *
 from autolog.eso.date import *
 from astropy.table import MaskedColumn
 
-period = 107
+period = 106
 telescope = 'ESO-2.2m'
 cls = NightLog
 opts = dict(
     rootdir = '.',
-    use_tap_cache = True, 
+    use_tap_cache = True,
     use_log_cache = True,
 )
 
 log = PeriodLog.fetch(telescope, period, **opts) 
 
-
-
-
-for log_type in ['report']:
-   for log_type in ['log', 'target', 'report']:
-       log.save(log_type=log_type, format='html')
-       log.publish(log_type=log_type)
+for log_type in ['log', 'target', 'report']:
+   log.save(log_type=log_type, format='html')
+   log.publish(log_type=log_type)
 

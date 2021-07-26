@@ -11,7 +11,7 @@ from .log import Log
 from pyvo.dal import tap
 from astropy.coordinates import EarthLocation
 from ..utils.table import Table
-from astropy.table import Column
+from astropy.table import Column, MaskedColumn
 from bs4 import Comment as BSComment
 from collections import OrderedDict
 
@@ -27,7 +27,7 @@ class NightLog(Log):
         ob_start=['ob_start', 'pid'],
     )
     HTML_COLUMNS = OrderedDict(
-        ob_start=['used_pid', 'pid', 'pi', 'instrument', 'object', 
+        ob_start=['pid', 'pi', 'used_pid', 'instrument', 'object', 
             'exposure', 'ob_start', 'ob_end', 'airmass', 'seeing',
             'night_hours', 'dark_hours', 'sun_down_hours'],
     )
@@ -37,7 +37,7 @@ class NightLog(Log):
     HTML_SUBTOTALS = OrderedDict(
         ob_start=[]
     )
-    LOG_TYPES = dict(log=['ob_start'])
+    LOG_TYPES = OrderedDict(log=['ob_start'])
     @classmethod
     def fetch(cls, telescope, night, *, 
                 use_log_cache=True, use_tap_cache=True, 
@@ -170,31 +170,10 @@ class NightLog(Log):
 
         night = self.meta['night'] 
         telescope = self.meta['telescope']
-        filename = path.filename(telescope, night=night, 
-                    log_type='ephem', ext='json', makedirs=True)
-
-        if os.path.exists(filename):
-
-            try:
-                with open(filename, 'r') as fh:
-                    ephem = json.load(fh)
-                    print(f"{night}: ephemeris read from disk")
-                    self.meta['ephemeris'] = ephem
-                    return ephem
-            
-            except Exception as e:
-                print(f"{night}: error trying to read ephemeris: {e}")
+        ephem = night_ephemeris(telescope, night)
         
-        print(f"{night}: compute ephemeris")
-        
-        ephem = night_ephemeris(self.meta['site'], night)
-        
-        with open(filename, 'w') as fh:
-            json.dump(ephem, fh)
-
         self.meta['ephemeris'] = ephem
-        return ephem
-
+       
     def _fill_missing_templates(self):
         
         for i in reversed(range(len(self) - 1)):
@@ -243,7 +222,7 @@ class NightLog(Log):
 
     def _insert_idle_row(self, i, start, end, name=[], ob_no=-1):
 
-        row0 = np.ndarray((1,), dtype=self.dtype)
+        row0 = np.zeros_like((1,), dtype=self.dtype)
         row0 = np.ma.masked_array(row0)
         self.insert_row(i)
         row = self[i:i+1]
@@ -580,12 +559,15 @@ class NightLog(Log):
     def _average_conditions(self):
 
         for name in ['tel_airm', 'tel_ambi_fwhm']:
+
             start, end = f"{name}_start", f"{name}_end"
+            
             self[start].mask |= self[start] == -1
             self[end].mask |= self[end] == -1
             self[start] = (self[start].data + self[end].data) / 2 
             self[start].name = name
             self.remove_column(end)
+        
         self['tel_airm'].name = 'airmass'
         self['airmass'].description = 'airmass during the exposure'
         self['tel_ambi_fwhm'].name = 'seeing'

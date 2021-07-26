@@ -1,0 +1,298 @@
+# %ECSV 0.9
+# ---
+# datatype:
+# - {name: tac, datatype: string}
+# - {name: period, datatype: int32, description: ESO observing period}
+# - {name: night, datatype: string, description: observing night}
+# - {name: internal, datatype: bool, description: flag for internal instrument calibration}
+# - {name: slew, datatype: bool, description: flag for non-tracking observations}
+# - {name: object, datatype: string, description: name of the object in the exposure}
+# - {name: object.mask, datatype: bool}
+# - {name: target, datatype: string, description: name of the astronomical target}
+# - {name: target.mask, datatype: bool}
+# - name: ra
+#   unit: deg
+#   datatype: float64
+#   description: Right Ascension FK5 J2000
+#   meta: !!omap
+#   - {ucd: pos.eq.ra;meta.main}
+# - {name: ra.mask, datatype: bool}
+# - name: dec
+#   unit: deg
+#   datatype: float64
+#   description: Declination FK5 J2000
+#   meta: !!omap
+#   - {ucd: pos.eq.dec;meta.main}
+# - {name: dec.mask, datatype: bool}
+# - {name: dp_id, datatype: string}
+# - {name: dp_id.mask, datatype: bool}
+# - {name: telescope, datatype: string, description: telescope name}
+# - {name: instrument, datatype: string, description: instrument name}
+# - {name: pid, datatype: string, description: ESO programme ID allocated by TAC}
+# - {name: used_pid, datatype: string, description: ESO programme ID used to observe}
+# - {name: pi, datatype: string, description: name of the principal investigator}
+# - {name: dp_cat, datatype: string, description: purpose of observation}
+# - {name: dp_tech, datatype: string, description: observing technique}
+# - {name: dp_tech.mask, datatype: bool}
+# - {name: dp_type, datatype: string, description: type of exposure}
+# - {name: dp_type.mask, datatype: bool}
+# - name: exposure
+#   unit: s
+#   datatype: float32
+#   format: .0f
+#   description: cumulated exposure time
+#   meta: !!omap
+#   - {ucd: time.duration;obs.exposure}
+# - {name: filter, datatype: string, description: list of filtres in the optical path}
+# - {name: filter.mask, datatype: bool}
+# - {name: ob_name, datatype: string, description: name of the observing block}
+# - name: ob_id
+#   datatype: int32
+#   description: observing block ID number
+#   meta: !!omap
+#   - {ucd: meta.id;obs;meta.main}
+# - {name: airmass, datatype: float32, format: .2f, description: airmass during the exposure}
+# - {name: airmass.mask, datatype: bool}
+# - {name: seeing, unit: arcsec, datatype: float32, format: .2f, description: DIMM seeing during the exposure}
+# - {name: seeing.mask, datatype: bool}
+# - name: ob_no
+#   datatype: int32
+#   description: unique OB number within the night
+#   meta: !!omap
+#   - {ucd: meta.id;obs;meta.number}
+# - {name: ob_start, datatype: string, description: estimated start time of the execution of the OB}
+# - {name: ob_end, datatype: string, description: estimated end time of the execution of the OB}
+# - name: tpl_no
+#   datatype: int32
+#   description: template number within OB
+#   meta: !!omap
+#   - {ucd: meta.id;obs;meta.number}
+# - {name: tpl_start, datatype: string, description: time at start of observing template}
+# - {name: tpl_end, datatype: string, description: estimated end time of the execution of the observing template}
+# - name: exp_no
+#   datatype: int32
+#   description: exposure number within template
+#   meta: !!omap
+#   - {ucd: meta.id;obs;meta.number}
+# - {name: exp_start, datatype: string, description: time at start of exposure}
+# - {name: exp_end, datatype: string, description: estimated end time of the exposure}
+# - {name: night_hours, unit: h, datatype: float64, format: .3f, description: number of hours of night conditions}
+# - {name: dark_hours, unit: h, datatype: float64, format: .3f, description: number of hours of dark conditions}
+# - {name: twilight_hours, unit: h, datatype: float64, format: .3f, description: number of hours of twilight conditions}
+# - {name: nautical_twilight_hours, unit: h, datatype: float64, format: .3f, description: number of hours of nauticaltwilight conditions}
+# - {name: civil_twilight_hours, unit: h, datatype: float64, format: .3f, description: number of hours of civiltwilight conditions}
+# - {name: sun_down_hours, unit: h, datatype: float64, format: .3f, description: number of hours of sundown conditions}
+# - {name: total_hours, unit: h, datatype: float64, format: .3f, description: number of hours}
+# meta: !!omap
+# - {site: La Silla Observatory}
+# - {lon: -70.73000000000005}
+# - {lat: -29.25666666666666}
+# - {alt: 2346.999999998842}
+# - {telescope: ESO-2.2m}
+# - {period: 106}
+# - {night: '2021-02-08'}
+# - {rootdir: .}
+# - ephemeris:
+#     civil_twilight_hours: 0.8344444444444444
+#     civil_twilight_time:
+#     - ['2021-02-08T23:34:50', '2021-02-08T23:59:52']
+#     - ['2021-02-09T09:54:41', '2021-02-09T10:19:43']
+#     dark_hours: 6.899444444444445
+#     dark_time:
+#     - ['2021-02-09T01:00:28', '2021-02-09T07:54:26']
+#     moon_illumination: 0.07784455445991262
+#     nautical_twilight_hours: 0.9927777777777778
+#     nautical_twilight_time:
+#     - ['2021-02-08T23:59:52', '2021-02-09T00:29:39']
+#     - ['2021-02-09T09:24:54', '2021-02-09T09:54:41']
+#     night_hours: 7.893611111111111
+#     night_time:
+#     - ['2021-02-09T01:00:28', '2021-02-09T08:54:05']
+#     sun_down_hours: 10.748055555555556
+#     sun_down_time:
+#     - ['2021-02-08T23:34:50', '2021-02-09T10:19:43']
+#     twilight_hours: 1.0272222222222223
+#     twilight_time:
+#     - ['2021-02-09T00:29:39', '2021-02-09T01:00:28']
+#     - ['2021-02-09T08:54:05', '2021-02-09T09:24:54']
+# - {roodir: .}
+# - {wwwdir: /data/www/twoptwo.com}
+# - __serialized_columns__:
+#     airmass:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: airmass}
+#       mask: !astropy.table.SerializedColumn {name: airmass.mask}
+#     dec:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: dec}
+#       mask: !astropy.table.SerializedColumn {name: dec.mask}
+#     dp_id:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: dp_id}
+#       mask: !astropy.table.SerializedColumn {name: dp_id.mask}
+#     dp_tech:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: dp_tech}
+#       mask: !astropy.table.SerializedColumn {name: dp_tech.mask}
+#     dp_type:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: dp_type}
+#       mask: !astropy.table.SerializedColumn {name: dp_type.mask}
+#     exp_no:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: exp_no}
+#     exposure:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: exposure}
+#     filter:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: filter}
+#       mask: !astropy.table.SerializedColumn {name: filter.mask}
+#     ob_id:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: ob_id}
+#     ob_no:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: ob_no}
+#     object:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: object}
+#       mask: !astropy.table.SerializedColumn {name: object.mask}
+#     pi:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: pi}
+#     ra:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: ra}
+#       mask: !astropy.table.SerializedColumn {name: ra.mask}
+#     seeing:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: seeing}
+#       mask: !astropy.table.SerializedColumn {name: seeing.mask}
+#     tac:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: tac}
+#     target:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: target}
+#       mask: !astropy.table.SerializedColumn {name: target.mask}
+#     tpl_no:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: tpl_no}
+# schema: astropy-2.0
+tac period night internal slew object object.mask target target.mask ra ra.mask dec dec.mask dp_id dp_id.mask telescope instrument pid used_pid pi dp_cat dp_tech dp_tech.mask dp_type dp_type.mask exposure filter filter.mask ob_name ob_id airmass airmass.mask seeing seeing.mask ob_no ob_start ob_end tpl_no tpl_start tpl_end exp_no exp_start exp_end night_hours dark_hours twilight_hours nautical_twilight_hours civil_twilight_hours sun_down_hours total_hours
+Calib 106 2021-02-08 False True OBJECT,SKY False WHATEVER True 62.23223111 True -29.28241 True FEROS.2021-02-08T23:35:38.588 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False OBJECT,SKY False 0 "" False TestOB 100412975 1.00 True 1.27 True 2 2021-02-08T23:35:09 2021-02-08T23:36:38 1 2021-02-08T23:35:09 2021-02-08T23:36:38 1 2021-02-08T23:35:38 2021-02-08T23:36:38 0.000 0.000 0.000 0.000 0.025 0.025 0.025
+Calib 106 2021-02-08 False False 0 True "" True -596.52323555 False -596.52323555 False GROND.2021-02-08T23:40:28.033 False ESO-2.2m GROND 60.A-9080(A) 0106.A-9099(A) Service SCIENCE IMAGE False OBJECT False 6 G,R,I,Z False testOB -1 nan True nan True 4 2021-02-08T23:40:15 2021-02-08T23:41:11 1 2021-02-08T23:40:15 2021-02-08T23:41:11 1 2021-02-08T23:40:28 2021-02-08T23:41:11 0.000 0.000 0.000 0.000 0.016 0.016 0.016
+Calib 106 2021-02-08 False False 0 True "" True -596.52323555 False -596.52323555 False GROND.2021-02-08T23:40:27.313 False ESO-2.2m GROND 60.A-9080(A) 0106.A-9099(A) Service SCIENCE IMAGE False OBJECT False 2 J,H,K False testOB -1 nan True nan True 4 2021-02-08T23:40:15 2021-02-08T23:41:11 1 2021-02-08T23:40:15 2021-02-08T23:41:11 2 2021-02-08T23:40:27 2021-02-08T23:40:39 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 False False 0 True "" True -596.52323555 False -596.52323555 False GROND.2021-02-08T23:40:33.744 False ESO-2.2m GROND 60.A-9080(A) 0106.A-9099(A) Service SCIENCE IMAGE False OBJECT False 2 J,H,K False testOB -1 nan True nan True 4 2021-02-08T23:40:15 2021-02-08T23:41:11 1 2021-02-08T23:40:15 2021-02-08T23:41:11 3 2021-02-08T23:40:33 2021-02-08T23:40:45 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 False False 0 True "" True -596.52323555 False -596.52323555 False GROND.2021-02-08T23:40:39.971 False ESO-2.2m GROND 60.A-9080(A) 0106.A-9099(A) Service SCIENCE IMAGE False OBJECT False 2 J,H,K False testOB -1 nan True nan True 4 2021-02-08T23:40:15 2021-02-08T23:41:11 1 2021-02-08T23:40:15 2021-02-08T23:41:11 4 2021-02-08T23:40:39 2021-02-08T23:40:51 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 False False 0 True "" True -596.52323555 False -596.52323555 False GROND.2021-02-08T23:40:46.315 False ESO-2.2m GROND 60.A-9080(A) 0106.A-9099(A) Service SCIENCE IMAGE False OBJECT False 2 J,H,K False testOB -1 nan True nan True 4 2021-02-08T23:40:15 2021-02-08T23:41:11 1 2021-02-08T23:40:15 2021-02-08T23:41:11 5 2021-02-08T23:40:46 2021-02-08T23:40:58 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 False False 0 True "" True -596.52323555 False -596.52323555 False GROND.2021-02-08T23:40:52.527 False ESO-2.2m GROND 60.A-9080(A) 0106.A-9099(A) Service SCIENCE IMAGE False OBJECT False 2 J,H,K False testOB -1 nan True nan True 4 2021-02-08T23:40:15 2021-02-08T23:41:11 1 2021-02-08T23:40:15 2021-02-08T23:41:11 6 2021-02-08T23:40:52 2021-02-08T23:41:04 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 False False 0 True "" True -596.52323555 False -596.52323555 False GROND.2021-02-08T23:40:58.795 False ESO-2.2m GROND 60.A-9080(A) 0106.A-9099(A) Service SCIENCE IMAGE False OBJECT False 2 J,H,K False testOB -1 nan True nan True 4 2021-02-08T23:40:15 2021-02-08T23:41:11 1 2021-02-08T23:40:15 2021-02-08T23:41:11 7 2021-02-08T23:40:58 2021-02-08T23:41:10 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 False False 0 True "" True 63.89801305 False -29.28165 False GROND.2021-02-08T23:42:23.737 False ESO-2.2m GROND 60.A-9080(A) 0106.A-9099(A) Service SCIENCE IMAGE False OBJECT False 7 G,R,I,Z False testOB -1 1.00 False 1.27 False 5 2021-02-08T23:41:11 2021-02-08T23:43:29 1 2021-02-08T23:41:11 2021-02-08T23:43:29 1 2021-02-08T23:42:23 2021-02-08T23:43:29 0.000 0.000 0.000 0.000 0.038 0.038 0.038
+Calib 106 2021-02-08 False False 0 True "" True 65.40265388 False -29.27892 False GROND.2021-02-08T23:48:01.911 False ESO-2.2m GROND 60.A-9080(A) 0106.A-9099(A) Service SCIENCE IMAGE False OBJECT False 7 G,R,I,Z False testOB -1 1.00 False 1.27 False 6 2021-02-08T23:47:46 2021-02-08T23:49:07 1 2021-02-08T23:47:46 2021-02-08T23:49:07 1 2021-02-08T23:48:01 2021-02-08T23:49:07 0.000 0.000 0.000 0.000 0.022 0.022 0.022
+Calib 106 2021-02-08 False False 0 True "" True 65.31906305 False -29.27908 False GROND.2021-02-08T23:48:02.137 False ESO-2.2m GROND 60.A-9080(A) 0106.A-9099(A) Service SCIENCE IMAGE False OBJECT False 2 J,H,K False testOB -1 1.00 False 1.27 False 6 2021-02-08T23:47:46 2021-02-08T23:49:07 1 2021-02-08T23:47:46 2021-02-08T23:49:07 2 2021-02-08T23:48:02 2021-02-08T23:48:14 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 False False 0 True "" True 65.34414 False -29.27903 False GROND.2021-02-08T23:48:08.340 False ESO-2.2m GROND 60.A-9080(A) 0106.A-9099(A) Service SCIENCE IMAGE False OBJECT False 2 J,H,K False testOB -1 1.00 False 1.27 False 6 2021-02-08T23:47:46 2021-02-08T23:49:07 1 2021-02-08T23:47:46 2021-02-08T23:49:07 3 2021-02-08T23:48:08 2021-02-08T23:48:20 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 False False 0 True "" True 65.36921888 False -29.27899 False GROND.2021-02-08T23:48:14.568 False ESO-2.2m GROND 60.A-9080(A) 0106.A-9099(A) Service SCIENCE IMAGE False OBJECT False 2 J,H,K False testOB -1 1.00 False 1.27 False 6 2021-02-08T23:47:46 2021-02-08T23:49:07 1 2021-02-08T23:47:46 2021-02-08T23:49:07 4 2021-02-08T23:48:14 2021-02-08T23:48:26 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 False False 0 True "" True 65.40265388 False -29.27892 False GROND.2021-02-08T23:48:20.975 False ESO-2.2m GROND 60.A-9080(A) 0106.A-9099(A) Service SCIENCE IMAGE False OBJECT False 2 J,H,K False testOB -1 1.00 False 1.27 False 6 2021-02-08T23:47:46 2021-02-08T23:49:07 1 2021-02-08T23:47:46 2021-02-08T23:49:07 5 2021-02-08T23:48:20 2021-02-08T23:48:32 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 False False 0 True "" True 65.42773111 False -29.27888 False GROND.2021-02-08T23:48:27.323 False ESO-2.2m GROND 60.A-9080(A) 0106.A-9099(A) Service SCIENCE IMAGE False OBJECT False 2 J,H,K False testOB -1 1.00 False 1.27 False 6 2021-02-08T23:47:46 2021-02-08T23:49:07 1 2021-02-08T23:47:46 2021-02-08T23:49:07 6 2021-02-08T23:48:27 2021-02-08T23:48:39 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 False False 0 True "" True 65.45280805 False -29.27883 False GROND.2021-02-08T23:48:33.659 False ESO-2.2m GROND 60.A-9080(A) 0106.A-9099(A) Service SCIENCE IMAGE False OBJECT False 2 J,H,K False testOB -1 1.00 False 1.27 False 6 2021-02-08T23:47:46 2021-02-08T23:49:07 1 2021-02-08T23:47:46 2021-02-08T23:49:07 7 2021-02-08T23:48:33 2021-02-08T23:48:45 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 False False FLAT,SKY False "" True 92.17451805 False -47.99425 False "" True ESO-2.2m WFI 60.A-9120(A) 60.A-9120(A) Service ACQUISITION "" True "" True 0 "" True SkyFlatsEveningCalPlan 100346479 1.12 False 1.27 False 7 2021-02-08T23:54:59 2021-02-08T23:58:52 1 2021-02-08T23:54:59 2021-02-08T23:54:59 1 2021-02-08T23:54:59 2021-02-08T23:54:59 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 False False FLAT,SKY False "" True 92.17451805 False -47.99425 False WFI.2021-02-08T23:56:02.490 False ESO-2.2m WFI 60.A-9120(A) 60.A-9120(A) Service CALIB IMAGE False FLAT,SKY False 1 BB#RC/162_ESO844 False SkyFlatsEveningCalPlan 100346479 1.12 False 1.27 False 7 2021-02-08T23:54:59 2021-02-08T23:58:52 5 2021-02-08T23:54:59 2021-02-08T23:58:52 2 2021-02-08T23:56:02 2021-02-08T23:57:03 0.000 0.000 0.000 0.000 0.065 0.065 0.065
+Calib 106 2021-02-08 False False FLAT,SKY False "" True 92.18278805 False -47.98869 False WFI.2021-02-08T23:56:57.356 False ESO-2.2m WFI 60.A-9120(A) 60.A-9120(A) Service CALIB IMAGE False FLAT,SKY False 1 BB#RC/162_ESO844 False SkyFlatsEveningCalPlan 100346479 1.12 False 1.27 False 7 2021-02-08T23:54:59 2021-02-08T23:58:52 5 2021-02-08T23:54:59 2021-02-08T23:58:52 3 2021-02-08T23:56:57 2021-02-08T23:57:58 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 False False FLAT,SKY False "" True 92.19107305 False -47.98312 False WFI.2021-02-08T23:57:51.222 False ESO-2.2m WFI 60.A-9120(A) 60.A-9120(A) Service CALIB IMAGE False FLAT,SKY False 2 BB#RC/162_ESO844 False SkyFlatsEveningCalPlan 100346479 1.12 False 1.27 False 7 2021-02-08T23:54:59 2021-02-08T23:58:52 5 2021-02-08T23:54:59 2021-02-08T23:58:52 4 2021-02-08T23:57:51 2021-02-08T23:58:52 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+External 106 2021-02-08 False False SKY False DESJ0602-4335 False 90.566625 False -43.59443 False WFI.2021-02-09T00:07:31.226 False ESO-2.2m WFI 0106.A-9005(A) 0106.A-9005(A) "Courbin, Frédéric" ACQUISITION IMAGE False SKY False 30 BB#RC/162_ESO844 False DESJ0602-4335 1746213 1.08 False 1.27 False 8 2021-02-09T00:06:51 2021-02-09T00:09:00 1 2021-02-09T00:06:51 2021-02-09T00:09:00 1 2021-02-09T00:07:31 2021-02-09T00:09:00 0.000 0.000 0.000 0.036 0.000 0.036 0.036
+Calib 106 2021-02-08 False False FOCUS False DUMMY False 90.49220805 False -43.47866 False WFI.2021-02-09T00:24:41.503 False ESO-2.2m WFI 60.A-9120(A) 60.A-9120(A) Service CALIB TEL-THROUGH False FOCUS False 10 BB#RC/162_ESO844 False focusCurrentFiltre 100119956 1.06 False 1.27 False 9 2021-02-09T00:22:20 2021-02-09T00:31:10 1 2021-02-09T00:22:20 2021-02-09T00:31:10 1 2021-02-09T00:24:41 2021-02-09T00:31:10 0.000 0.000 0.025 0.122 0.000 0.147 0.147
+Downtime 106 2021-02-08 False True IDLE False "" True 0.0 True 0.0 True "" True ESO-2.2m IDLE IDLE/TWILIGHT IDLE/TWILIGHT "" IDLE "" True "" True 0 "" False Telescope_Idle 0 0.00 True 0.00 True 34 2021-02-09T00:31:10 2021-02-09T00:51:27 0 2021-02-09T00:31:10 2021-02-09T00:51:27 0 2021-02-09T00:31:10 2021-02-09T00:51:27 0.000 0.000 0.338 0.000 0.000 0.338 0.338
+External 106 2021-02-08 False False SKY False DESJ0602-4335 False 90.56662805 False -43.59443 False WFI.2021-02-09T00:51:58.522 False ESO-2.2m WFI 0106.A-9005(A) 0106.A-9005(A) "Courbin, Frédéric" ACQUISITION IMAGE False SKY False 30 BB#RC/162_ESO844 False DESJ0602-4335 1746213 1.04 False 1.27 False 10 2021-02-09T00:51:27 2021-02-09T01:25:58 1 2021-02-09T00:51:27 2021-02-09T00:59:09 1 2021-02-09T00:51:58 2021-02-09T00:53:27 0.000 0.000 0.128 0.000 0.000 0.128 0.128
+External 106 2021-02-08 False False DESJ0602-4335 False DESJ0602-4335 False 90.59107888 False -43.60087 False WFI.2021-02-09T00:59:28.241 False ESO-2.2m WFI 0106.A-9005(A) 0106.A-9005(A) "Courbin, Frédéric" SCIENCE IMAGE False OBJECT False 320 BB#RC/162_ESO844 False DESJ0602-4335 1746213 1.04 False 1.27 False 10 2021-02-09T00:51:27 2021-02-09T01:25:58 2 2021-02-09T00:59:09 2021-02-09T01:25:58 1 2021-02-09T00:59:28 2021-02-09T01:05:47 0.425 0.425 0.022 0.000 0.000 0.447 0.447
+External 106 2021-02-08 False False DESJ0602-4335 False DESJ0602-4335 False 90.59607111 False -43.60087 False WFI.2021-02-09T01:06:13.577 False ESO-2.2m WFI 0106.A-9005(A) 0106.A-9005(A) "Courbin, Frédéric" SCIENCE IMAGE False OBJECT False 320 BB#RC/162_ESO844 False DESJ0602-4335 1746213 1.03 False 1.27 False 10 2021-02-09T00:51:27 2021-02-09T01:25:58 2 2021-02-09T00:59:09 2021-02-09T01:25:58 2 2021-02-09T01:06:13 2021-02-09T01:12:32 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+External 106 2021-02-08 False False DESJ0602-4335 False DESJ0602-4335 False 90.59399611 False -43.59911 False WFI.2021-02-09T01:13:00.002 False ESO-2.2m WFI 0106.A-9005(A) 0106.A-9005(A) "Courbin, Frédéric" SCIENCE IMAGE False OBJECT False 320 BB#RC/162_ESO844 False DESJ0602-4335 1746213 1.03 False 1.27 False 10 2021-02-09T00:51:27 2021-02-09T01:25:58 2 2021-02-09T00:59:09 2021-02-09T01:25:58 3 2021-02-09T01:13:00 2021-02-09T01:19:19 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+External 106 2021-02-08 False False DESJ0602-4335 False DESJ0602-4335 False 90.59423694 False -43.60252 False WFI.2021-02-09T01:19:39.406 False ESO-2.2m WFI 0106.A-9005(A) 0106.A-9005(A) "Courbin, Frédéric" SCIENCE IMAGE False OBJECT False 320 BB#RC/162_ESO844 False DESJ0602-4335 1746213 1.03 False 1.27 False 10 2021-02-09T00:51:27 2021-02-09T01:25:58 2 2021-02-09T00:59:09 2021-02-09T01:25:58 4 2021-02-09T01:19:39 2021-02-09T01:25:58 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Downtime 106 2021-02-08 False True IDLE False "" True 0.0 True 0.0 True "" True ESO-2.2m IDLE IDLE/NIGHT IDLE/NIGHT "" IDLE "" True "" True 0 "" False Telescope_Idle 0 0.00 True 0.00 True 32 2021-02-09T01:25:58 2021-02-09T01:35:41 0 2021-02-09T01:25:58 2021-02-09T01:35:41 0 2021-02-09T01:25:58 2021-02-09T01:35:41 0.162 0.162 0.000 0.000 0.000 0.162 0.162
+MPIA/A 106 2021-02-08 False False LSTAR_13_1 False LSTAR_13_1 False 102.85452305 False -1.35248 False "" True ESO-2.2m FEROS 0106.A-9011(A) 0106.A-9011(A) "Hansens, Camilla Juul" ACQUISITION "" True "" True 0 "" True Lstar_13_1 1000012659 1.14 False 0.85 False 11 2021-02-09T01:35:41 2021-02-09T02:14:21 1 2021-02-09T01:35:41 2021-02-09T01:39:41 1 2021-02-09T01:35:41 2021-02-09T01:39:41 0.067 0.067 0.000 0.000 0.000 0.067 0.067
+MPIA/A 106 2021-02-08 False False LSTAR_13_1 False LSTAR_13_1 False 102.85452305 False -1.35248 False FEROS.2021-02-09T01:40:01.714 False ESO-2.2m FEROS 0106.A-9011(A) 0106.A-9011(A) "Hansens, Camilla Juul" SCIENCE ECHELLE False OBJECT,WAVE False 2000 "" False Lstar_13_1 1000012659 1.14 False 0.85 False 11 2021-02-09T01:35:41 2021-02-09T02:14:21 2 2021-02-09T01:39:41 2021-02-09T02:14:21 1 2021-02-09T01:40:01 2021-02-09T02:14:21 0.578 0.578 0.000 0.000 0.000 0.578 0.578
+MPIA/A 106 2021-02-08 False False LSTAR_13_2 False LSTAR_13_2 False 102.85612805 False -1.35214 False "" True ESO-2.2m FEROS 0106.A-9011(A) 0106.A-9011(A) "Hansens, Camilla Juul" ACQUISITION "" True "" True 0 "" True Lstar_13_2 1000012659 1.14 False 0.84 False 12 2021-02-09T02:14:21 2021-02-09T02:52:21 1 2021-02-09T02:14:21 2021-02-09T02:17:41 1 2021-02-09T02:14:21 2021-02-09T02:17:41 0.056 0.056 0.000 0.000 0.000 0.056 0.056
+MPIA/A 106 2021-02-08 False False LSTAR_13_2 False LSTAR_13_2 False 102.85612805 False -1.35214 False FEROS.2021-02-09T02:18:01.860 False ESO-2.2m FEROS 0106.A-9011(A) 0106.A-9011(A) "Hansens, Camilla Juul" SCIENCE ECHELLE False OBJECT,WAVE False 2000 "" False Lstar_13_2 1000012659 1.14 False 0.84 False 12 2021-02-09T02:14:21 2021-02-09T02:52:21 2 2021-02-09T02:17:41 2021-02-09T02:52:21 1 2021-02-09T02:18:01 2021-02-09T02:52:21 0.578 0.578 0.000 0.000 0.000 0.578 0.578
+Downtime 106 2021-02-08 False True IDLE False "" True 0.0 True 0.0 True "" True ESO-2.2m IDLE IDLE/NIGHT IDLE/NIGHT "" IDLE "" True "" True 0 "" False Telescope_Idle 0 0.00 True 0.00 True 30 2021-02-09T02:52:21 2021-02-09T03:06:46 0 2021-02-09T02:52:21 2021-02-09T03:06:46 0 2021-02-09T02:52:21 2021-02-09T03:06:46 0.240 0.240 0.000 0.000 0.000 0.240 0.240
+MPIA/A 106 2021-02-08 False False LSTAR_20_1 False LSTAR_20_1 False 138.01943888 False -50.35814 False "" True ESO-2.2m FEROS 0106.A-9011(A) 0106.A-9011(A) "Hansens, Camilla Juul" ACQUISITION "" True "" True 0 "" True Lstar_20_1 1000012659 1.10 False 0.99 False 13 2021-02-09T03:06:46 2021-02-09T04:02:07 1 2021-02-09T03:06:46 2021-02-09T03:10:46 1 2021-02-09T03:06:46 2021-02-09T03:10:46 0.067 0.067 0.000 0.000 0.000 0.067 0.067
+MPIA/A 106 2021-02-08 False False LSTAR_20_1 False LSTAR_20_1 False 138.01943888 False -50.35814 False FEROS.2021-02-09T03:11:07.304 False ESO-2.2m FEROS 0106.A-9011(A) 0106.A-9011(A) "Hansens, Camilla Juul" SCIENCE ECHELLE False OBJECT,WAVE False 3000 "" False Lstar_20_1 1000012659 1.10 False 0.99 False 13 2021-02-09T03:06:46 2021-02-09T04:02:07 2 2021-02-09T03:10:46 2021-02-09T04:02:07 1 2021-02-09T03:11:07 2021-02-09T04:02:07 0.856 0.856 0.000 0.000 0.000 0.856 0.856
+MPIA/A 106 2021-02-08 False False LSTAR_20_2 False LSTAR_20_2 False 138.01980388 False -50.35731 False "" True ESO-2.2m FEROS 0106.A-9011(A) 0106.A-9011(A) "Hansens, Camilla Juul" ACQUISITION "" True "" True 0 "" True Lstar_20_2 1000012659 1.08 False 1.04 False 14 2021-02-09T04:02:07 2021-02-09T04:56:16 1 2021-02-09T04:02:07 2021-02-09T04:04:56 1 2021-02-09T04:02:07 2021-02-09T04:04:56 0.047 0.047 0.000 0.000 0.000 0.047 0.047
+MPIA/A 106 2021-02-08 False False LSTAR_20_2 False LSTAR_20_2 False 138.01980388 False -50.35731 False FEROS.2021-02-09T04:05:16.485 False ESO-2.2m FEROS 0106.A-9011(A) 0106.A-9011(A) "Hansens, Camilla Juul" SCIENCE ECHELLE False OBJECT,WAVE False 3000 "" False Lstar_20_2 1000012659 1.08 False 1.04 False 14 2021-02-09T04:02:07 2021-02-09T04:56:16 2 2021-02-09T04:04:56 2021-02-09T04:56:16 1 2021-02-09T04:05:16 2021-02-09T04:56:16 0.856 0.856 0.000 0.000 0.000 0.856 0.856
+Downtime 106 2021-02-08 False True IDLE False "" True 0.0 True 0.0 True "" True ESO-2.2m IDLE IDLE/NIGHT IDLE/NIGHT "" IDLE "" True "" True 0 "" False Telescope_Idle 0 0.00 True 0.00 True 28 2021-02-09T04:56:16 2021-02-09T05:09:07 0 2021-02-09T04:56:16 2021-02-09T05:09:07 0 2021-02-09T04:56:16 2021-02-09T05:09:07 0.214 0.214 0.000 0.000 0.000 0.214 0.214
+External 106 2021-02-08 False False SKY False RXJ0911+0551 False 137.863745 False 5.8485 False WFI.2021-02-09T05:10:17.722 False ESO-2.2m WFI 0106.A-9005(A) 0106.A-9005(A) "Courbin, Frédéric" ACQUISITION IMAGE False SKY False 30 BB#RC/162_ESO844 False RXJ0911+0551 1746213 1.24 False 0.68 False 15 2021-02-09T05:09:07 2021-02-09T05:40:11 1 2021-02-09T05:09:07 2021-02-09T05:13:21 1 2021-02-09T05:10:17 2021-02-09T05:11:46 0.071 0.071 0.000 0.000 0.000 0.071 0.071
+External 106 2021-02-08 False False RXJ0911+0551 False RXJ0911+0551 False 137.89188888 False 5.84103 False WFI.2021-02-09T05:13:40.645 False ESO-2.2m WFI 0106.A-9005(A) 0106.A-9005(A) "Courbin, Frédéric" SCIENCE IMAGE False OBJECT False 320 BB#RC/162_ESO844 False RXJ0911+0551 1746213 1.24 False 0.71 False 15 2021-02-09T05:09:07 2021-02-09T05:40:11 2 2021-02-09T05:13:21 2021-02-09T05:40:11 1 2021-02-09T05:13:40 2021-02-09T05:19:59 0.447 0.447 0.000 0.000 0.000 0.447 0.447
+External 106 2021-02-08 False False RXJ0911+0551 False RXJ0911+0551 False 137.89483694 False 5.84121 False WFI.2021-02-09T05:20:26.540 False ESO-2.2m WFI 0106.A-9005(A) 0106.A-9005(A) "Courbin, Frédéric" SCIENCE IMAGE False OBJECT False 320 BB#RC/162_ESO844 False RXJ0911+0551 1746213 1.25 False 0.73 False 15 2021-02-09T05:09:07 2021-02-09T05:40:11 2 2021-02-09T05:13:21 2021-02-09T05:40:11 2 2021-02-09T05:20:26 2021-02-09T05:26:45 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+External 106 2021-02-08 False False RXJ0911+0551 False RXJ0911+0551 False 137.89312194 False 5.84303 False WFI.2021-02-09T05:27:12.975 False ESO-2.2m WFI 0106.A-9005(A) 0106.A-9005(A) "Courbin, Frédéric" SCIENCE IMAGE False OBJECT False 320 BB#RC/162_ESO844 False RXJ0911+0551 1746213 1.26 False 0.71 False 15 2021-02-09T05:09:07 2021-02-09T05:40:11 2 2021-02-09T05:13:21 2021-02-09T05:40:11 3 2021-02-09T05:27:12 2021-02-09T05:33:31 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+External 106 2021-02-08 False False RXJ0911+0551 False RXJ0911+0551 False 137.89282805 False 5.83978 False WFI.2021-02-09T05:33:52.279 False ESO-2.2m WFI 0106.A-9005(A) 0106.A-9005(A) "Courbin, Frédéric" SCIENCE IMAGE False OBJECT False 320 BB#RC/162_ESO844 False RXJ0911+0551 1746213 1.27 False 0.66 False 15 2021-02-09T05:09:07 2021-02-09T05:40:11 2 2021-02-09T05:13:21 2021-02-09T05:40:11 4 2021-02-09T05:33:52 2021-02-09T05:40:11 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Downtime 106 2021-02-08 False True IDLE False "" True 0.0 True 0.0 True "" True ESO-2.2m IDLE IDLE/NIGHT IDLE/NIGHT "" IDLE "" True "" True 0 "" False Telescope_Idle 0 0.00 True 0.00 True 27 2021-02-09T05:40:11 2021-02-09T05:49:20 0 2021-02-09T05:40:11 2021-02-09T05:49:20 0 2021-02-09T05:40:11 2021-02-09T05:49:20 0.152 0.152 0.000 0.000 0.000 0.152 0.152
+MPIA/A 106 2021-02-08 False False LSTAR_11 False LSTAR_11 False 197.53636694 False -23.88718 False "" True ESO-2.2m FEROS 0106.A-9011(A) 0106.A-9011(A) "Hansens, Camilla Juul" ACQUISITION "" True "" True 0 "" True Lstar_11 1000012659 1.18 False 0.74 False 16 2021-02-09T05:49:20 2021-02-09T06:44:40 1 2021-02-09T05:49:20 2021-02-09T05:53:20 1 2021-02-09T05:49:20 2021-02-09T05:53:20 0.067 0.067 0.000 0.000 0.000 0.067 0.067
+MPIA/A 106 2021-02-08 False False LSTAR_11 False LSTAR_11 False 197.53636694 False -23.88718 False FEROS.2021-02-09T05:53:40.898 False ESO-2.2m FEROS 0106.A-9011(A) 0106.A-9011(A) "Hansens, Camilla Juul" SCIENCE ECHELLE False OBJECT,WAVE False 3000 "" False Lstar_11 1000012659 1.18 False 0.74 False 16 2021-02-09T05:49:20 2021-02-09T06:44:40 2 2021-02-09T05:53:20 2021-02-09T06:44:40 1 2021-02-09T05:53:40 2021-02-09T06:44:40 0.856 0.856 0.000 0.000 0.000 0.856 0.856
+MPIA/A 106 2021-02-08 False False LSTAR_26_1 False LSTAR_26_1 False 178.24555388 False -23.19741 False "" True ESO-2.2m FEROS 0106.A-9011(A) 0106.A-9011(A) "Hansens, Camilla Juul" ACQUISITION "" True "" True 0 "" True Lstar_26_1 1000012659 1.01 False 0.78 False 17 2021-02-09T06:44:40 2021-02-09T07:40:03 1 2021-02-09T06:44:40 2021-02-09T06:48:42 1 2021-02-09T06:44:40 2021-02-09T06:48:42 0.067 0.067 0.000 0.000 0.000 0.067 0.067
+MPIA/A 106 2021-02-08 False False LSTAR_26_1 False LSTAR_26_1 False 178.24555388 False -23.19741 False FEROS.2021-02-09T06:49:03.686 False ESO-2.2m FEROS 0106.A-9011(A) 0106.A-9011(A) "Hansens, Camilla Juul" SCIENCE ECHELLE False OBJECT,WAVE False 3000 "" False Lstar_26_1 1000012659 1.01 False 0.78 False 17 2021-02-09T06:44:40 2021-02-09T07:40:03 2 2021-02-09T06:48:42 2021-02-09T07:40:03 1 2021-02-09T06:49:03 2021-02-09T07:40:03 0.856 0.856 0.000 0.000 0.000 0.856 0.856
+MPIA/A 106 2021-02-08 False False LSTAR_26_2 False LSTAR_26_2 False 178.246855 False -23.19671 False "" True ESO-2.2m FEROS 0106.A-9011(A) 0106.A-9011(A) "Hansens, Camilla Juul" ACQUISITION "" True "" True 0 "" True Lstar_26_2 1000012659 1.03 False 0.61 False 18 2021-02-09T07:40:03 2021-02-09T08:35:02 1 2021-02-09T07:40:03 2021-02-09T07:43:42 1 2021-02-09T07:40:03 2021-02-09T07:43:42 0.061 0.061 0.000 0.000 0.000 0.061 0.061
+MPIA/A 106 2021-02-08 False False LSTAR_26_2 False LSTAR_26_2 False 178.246855 False -23.19671 False FEROS.2021-02-09T07:44:02.832 False ESO-2.2m FEROS 0106.A-9011(A) 0106.A-9011(A) "Hansens, Camilla Juul" SCIENCE ECHELLE False OBJECT,WAVE False 3000 "" False Lstar_26_2 1000012659 1.03 False 0.61 False 18 2021-02-09T07:40:03 2021-02-09T08:35:02 2 2021-02-09T07:43:42 2021-02-09T08:35:02 1 2021-02-09T07:44:02 2021-02-09T08:35:02 0.856 0.179 0.000 0.000 0.000 0.856 0.856
+MPIA/A 106 2021-02-08 False False LSTAR_02 False LSTAR_02 False 221.62582194 False -32.15222 False "" True ESO-2.2m FEROS 0106.A-9011(A) 0106.A-9011(A) "Hansens, Camilla Juul" ACQUISITION "" True "" True 0 "" True Lstar_02 1000012659 1.06 False 0.60 False 19 2021-02-09T08:35:02 2021-02-09T08:45:39 1 2021-02-09T08:35:02 2021-02-09T08:39:09 1 2021-02-09T08:35:02 2021-02-09T08:39:09 0.069 0.000 0.000 0.000 0.000 0.069 0.069
+MPIA/A 106 2021-02-08 False False LSTAR_02 False LSTAR_02 False 221.62582194 False -32.15222 False FEROS.2021-02-09T08:39:29.801 False ESO-2.2m FEROS 0106.A-9011(A) 0106.A-9011(A) "Hansens, Camilla Juul" SCIENCE ECHELLE False OBJECT,WAVE False 310 "" False Lstar_02 1000012659 1.06 False 0.60 False 19 2021-02-09T08:35:02 2021-02-09T08:45:39 2 2021-02-09T08:39:09 2021-02-09T08:45:39 1 2021-02-09T08:39:29 2021-02-09T08:45:39 0.108 0.000 0.000 0.000 0.000 0.108 0.108
+MPIA/A 106 2021-02-08 False False LSTAR_03 False LSTAR_03 False 212.77610805 False -13.29122 False "" True ESO-2.2m FEROS 0106.A-9011(A) 0106.A-9011(A) "Hansens, Camilla Juul" ACQUISITION "" True "" True 0 "" True Lstar_03 1000012659 1.05 False 0.66 False 20 2021-02-09T08:45:39 2021-02-09T09:03:20 1 2021-02-09T08:45:39 2021-02-09T08:49:00 1 2021-02-09T08:45:39 2021-02-09T08:49:00 0.056 0.000 0.000 0.000 0.000 0.056 0.056
+MPIA/A 106 2021-02-08 False False LSTAR_03 False LSTAR_03 False 212.77610805 False -13.29122 False FEROS.2021-02-09T08:49:20.584 False ESO-2.2m FEROS 0106.A-9011(A) 0106.A-9011(A) "Hansens, Camilla Juul" SCIENCE ECHELLE False OBJECT,WAVE False 780 "" False Lstar_03 1000012659 1.05 False 0.66 False 20 2021-02-09T08:45:39 2021-02-09T09:03:20 2 2021-02-09T08:49:00 2021-02-09T09:03:20 1 2021-02-09T08:49:20 2021-02-09T09:03:20 0.085 0.000 0.154 0.000 0.000 0.239 0.239
+Downtime 106 2021-02-08 False True IDLE False "" True 0.0 True 0.0 True "" True ESO-2.2m IDLE IDLE/TWILIGHT IDLE/TWILIGHT "" IDLE "" True "" True 0 "" False Telescope_Idle 0 0.00 True 0.00 True 35 2021-02-09T09:03:20 2021-02-09T09:24:54 0 2021-02-09T09:03:20 2021-02-09T09:24:54 0 2021-02-09T09:03:20 2021-02-09T09:24:54 0.000 0.000 0.359 0.000 0.000 0.359 0.359
+Calib 106 2021-02-08 True True BIAS False DUMMY True 55.09337194 True -29.29464 True WFI.2021-02-08T23:07:09.314 False ESO-2.2m WFI 60.A-9120(A) 60.A-9120(A) Service CALIB IMAGE False BIAS False 0 BB#RC/162_ESO844 False testOB 100120012 1.00 True 1.27 True 1 2021-02-08T23:07:00 2021-02-08T23:08:09 1 2021-02-08T23:07:00 2021-02-08T23:08:09 1 2021-02-08T23:07:09 2021-02-08T23:08:09 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True BIAS False "" True 62.483015 True -29.28197 True FEROS.2021-02-08T23:36:37.794 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False BIAS False 0 "" False 910-StanCal-norm 100319512 1.00 True 1.27 True 3 2021-02-08T23:36:32 2021-02-09T01:11:45 1 2021-02-08T23:36:32 2021-02-08T23:40:37 1 2021-02-08T23:36:37 2021-02-08T23:37:37 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True BIAS False "" True 62.68364111 True -29.28161 True FEROS.2021-02-08T23:37:26.198 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False BIAS False 0 "" False 910-StanCal-norm 100319512 1.00 True 1.27 True 3 2021-02-08T23:36:32 2021-02-09T01:11:45 1 2021-02-08T23:36:32 2021-02-08T23:40:37 2 2021-02-08T23:37:26 2021-02-08T23:38:26 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True BIAS False "" True 62.892625 True -29.28124 True FEROS.2021-02-08T23:38:15.954 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False BIAS False 0 "" False 910-StanCal-norm 100319512 1.00 True 1.27 True 3 2021-02-08T23:36:32 2021-02-09T01:11:45 1 2021-02-08T23:36:32 2021-02-08T23:40:37 3 2021-02-08T23:38:15 2021-02-08T23:39:15 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True BIAS False "" True 63.09324888 True -29.28088 True FEROS.2021-02-08T23:39:04.440 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False BIAS False 0 "" False 910-StanCal-norm 100319512 1.00 True 1.27 True 3 2021-02-08T23:36:32 2021-02-09T01:11:45 1 2021-02-08T23:36:32 2021-02-08T23:40:37 4 2021-02-08T23:39:04 2021-02-08T23:40:04 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True BIAS False "" True 63.30223305 True -29.28051 True FEROS.2021-02-08T23:39:53.875 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False BIAS False 0 "" False 910-StanCal-norm 100319512 1.00 True 1.27 True 3 2021-02-08T23:36:32 2021-02-09T01:11:45 1 2021-02-08T23:36:32 2021-02-08T23:40:37 5 2021-02-08T23:39:53 2021-02-08T23:40:53 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True FLAT False "" True 64.84259805 True -29.27994 True FEROS.2021-02-08T23:46:11.135 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False FLAT False 8 "" False 910-StanCal-norm 100319512 1.00 True 1.27 True 3 2021-02-08T23:36:32 2021-02-09T01:11:45 2 2021-02-08T23:40:37 2021-02-08T23:56:08 1 2021-02-08T23:46:11 2021-02-08T23:47:19 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True FLAT False "" True 65.08501111 True -29.2795 True FEROS.2021-02-08T23:47:09.971 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False FLAT False 8 "" False 910-StanCal-norm 100319512 1.00 True 1.27 True 3 2021-02-08T23:36:32 2021-02-09T01:11:45 2 2021-02-08T23:40:37 2021-02-08T23:56:08 2 2021-02-08T23:47:09 2021-02-08T23:48:17 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True FLAT False "" True 65.33578111 True -29.27905 True FEROS.2021-02-08T23:48:10.378 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False FLAT False 8 "" False 910-StanCal-norm 100319512 1.00 True 1.27 True 3 2021-02-08T23:36:32 2021-02-09T01:11:45 2 2021-02-08T23:40:37 2021-02-08T23:56:08 3 2021-02-08T23:48:10 2021-02-08T23:49:18 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True FLAT False "" True 65.58655111 True -29.27859 True FEROS.2021-02-08T23:49:10.005 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False FLAT False 8 "" False 910-StanCal-norm 100319512 1.00 True 1.27 True 3 2021-02-08T23:36:32 2021-02-09T01:11:45 2 2021-02-08T23:40:37 2021-02-08T23:56:08 4 2021-02-08T23:49:10 2021-02-08T23:50:18 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True FLAT False "" True 65.83732 True -29.27813 True FEROS.2021-02-08T23:50:10.381 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False FLAT False 8 "" False 910-StanCal-norm 100319512 1.03 True 1.27 True 3 2021-02-08T23:36:32 2021-02-09T01:11:45 2 2021-02-08T23:40:37 2021-02-08T23:56:08 5 2021-02-08T23:50:10 2021-02-08T23:51:18 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True FLAT False "" True 84.96360388 True -42.51558 True FEROS.2021-02-08T23:51:09.958 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False FLAT False 8 "" False 910-StanCal-norm 100319512 1.09 True 1.27 True 3 2021-02-08T23:36:32 2021-02-09T01:11:45 2 2021-02-08T23:40:37 2021-02-08T23:56:08 6 2021-02-08T23:51:09 2021-02-08T23:52:17 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True FLAT False "" True 92.16625111 True -47.99993 True FEROS.2021-02-08T23:52:10.424 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False FLAT False 8 "" False 910-StanCal-norm 100319512 1.12 True 1.27 True 3 2021-02-08T23:36:32 2021-02-09T01:11:45 2 2021-02-08T23:40:37 2021-02-08T23:56:08 7 2021-02-08T23:52:10 2021-02-08T23:53:18 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True FLAT False "" True 92.16625305 True -47.99992 True FEROS.2021-02-08T23:53:09.931 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False FLAT False 8 "" False 910-StanCal-norm 100319512 1.12 True 1.27 True 3 2021-02-08T23:36:32 2021-02-09T01:11:45 2 2021-02-08T23:40:37 2021-02-08T23:56:08 8 2021-02-08T23:53:09 2021-02-08T23:54:17 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True FLAT False "" True 92.16626611 True -47.99991 True FEROS.2021-02-08T23:54:10.337 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False FLAT False 8 "" False 910-StanCal-norm 100319512 1.12 True 1.27 True 3 2021-02-08T23:36:32 2021-02-09T01:11:45 2 2021-02-08T23:40:37 2021-02-08T23:56:08 9 2021-02-08T23:54:10 2021-02-08T23:55:18 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True FLAT False "" True 92.16627388 True -47.9999 True FEROS.2021-02-08T23:55:09.864 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False FLAT False 8 "" False 910-StanCal-norm 100319512 1.12 True 1.27 True 3 2021-02-08T23:36:32 2021-02-09T01:11:45 2 2021-02-08T23:40:37 2021-02-08T23:56:08 10 2021-02-08T23:55:09 2021-02-08T23:56:17 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True WAVE False "" True 92.174525 True -47.99425 True FEROS.2021-02-08T23:56:25.482 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 10 "" False 910-StanCal-norm 100319512 1.12 True 1.27 True 3 2021-02-08T23:36:32 2021-02-09T01:11:45 3 2021-02-08T23:56:08 2021-02-08T23:58:27 1 2021-02-08T23:56:25 2021-02-08T23:57:35 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True WAVE False "" True 92.182795 True -47.98868 True FEROS.2021-02-08T23:57:26.678 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 10 "" False 910-StanCal-norm 100319512 1.12 True 1.27 True 3 2021-02-08T23:36:32 2021-02-09T01:11:45 3 2021-02-08T23:56:08 2021-02-08T23:58:27 2 2021-02-08T23:57:26 2021-02-08T23:58:36 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True WAVE False "" True 92.19107694 True -47.98311 True FEROS.2021-02-08T23:58:35.786 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 30 "" False 910-StanCal-norm 100319512 1.12 True 1.27 True 3 2021-02-08T23:36:32 2021-02-09T01:11:45 4 2021-02-08T23:58:27 2021-02-09T00:01:17 1 2021-02-08T23:58:35 2021-02-09T00:00:05 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True WAVE False "" True 92.19935194 True -47.97753 True FEROS.2021-02-08T23:59:58.565 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 30 "" False 910-StanCal-norm 100319512 1.11 True 1.27 True 3 2021-02-08T23:36:32 2021-02-09T01:11:45 4 2021-02-08T23:58:27 2021-02-09T00:01:17 2 2021-02-08T23:59:58 2021-02-09T00:01:28 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True WAVE False "" True 92.19937194 True -47.97752 True FEROS.2021-02-09T00:01:26.614 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 60 "" False 910-StanCal-norm 100319512 1.11 True 1.27 True 3 2021-02-08T23:36:32 2021-02-09T01:11:45 5 2021-02-09T00:01:17 2021-02-09T00:05:06 1 2021-02-09T00:01:26 2021-02-09T00:03:26 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True WAVE False "" True 92.1994 True -47.9775 True FEROS.2021-02-09T00:03:17.707 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 60 "" False 910-StanCal-norm 100319512 1.11 True 1.27 True 3 2021-02-08T23:36:32 2021-02-09T01:11:45 5 2021-02-09T00:01:17 2021-02-09T00:05:06 2 2021-02-09T00:03:17 2021-02-09T00:05:17 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True WAVE False "" True 90.49237388 True -43.47881 True FEROS.2021-02-09T00:25:31.520 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 30 "" False 910-StanCal-norm 100319512 1.06 True 1.27 True 3 2021-02-08T23:36:32 2021-02-09T01:11:45 6 2021-02-09T00:05:06 2021-02-09T00:52:54 1 2021-02-09T00:25:31 2021-02-09T00:27:01 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True WAVE False "" True 90.49235194 True -43.4787 True FEROS.2021-02-09T00:26:54.389 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 30 "" False 910-StanCal-norm 100319512 1.06 True 1.27 True 3 2021-02-08T23:36:32 2021-02-09T01:11:45 6 2021-02-09T00:05:06 2021-02-09T00:52:54 2 2021-02-09T00:26:54 2021-02-09T00:28:24 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True WAVE False "" True 90.49238194 True -43.47883 True FEROS.2021-02-09T00:28:17.249 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 30 "" False 910-StanCal-norm 100319512 1.05 True 1.27 True 3 2021-02-08T23:36:32 2021-02-09T01:11:45 6 2021-02-09T00:05:06 2021-02-09T00:52:54 3 2021-02-09T00:28:17 2021-02-09T00:29:47 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True WAVE False "" True 90.49256888 True -43.47881 True FEROS.2021-02-09T00:29:37.747 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 30 "" False 910-StanCal-norm 100319512 1.05 True 1.27 True 3 2021-02-08T23:36:32 2021-02-09T01:11:45 6 2021-02-09T00:05:06 2021-02-09T00:52:54 4 2021-02-09T00:29:37 2021-02-09T00:31:07 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True WAVE False "" True 90.49258305 True -43.4788 True FEROS.2021-02-09T00:31:00.206 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 30 "" False 910-StanCal-norm 100319512 1.05 True 1.27 True 3 2021-02-08T23:36:32 2021-02-09T01:11:45 6 2021-02-09T00:05:06 2021-02-09T00:52:54 5 2021-02-09T00:31:00 2021-02-09T00:32:30 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True WAVE False "" True 90.49259 True -43.47879 True FEROS.2021-02-09T00:32:22.285 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 30 "" False 910-StanCal-norm 100319512 1.05 True 1.27 True 3 2021-02-08T23:36:32 2021-02-09T01:11:45 6 2021-02-09T00:05:06 2021-02-09T00:52:54 6 2021-02-09T00:32:22 2021-02-09T00:33:52 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True WAVE False "" True 90.49260888 True -43.47877 True FEROS.2021-02-09T00:33:45.064 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 30 "" False 910-StanCal-norm 100319512 1.05 True 1.27 True 3 2021-02-08T23:36:32 2021-02-09T01:11:45 6 2021-02-09T00:05:06 2021-02-09T00:52:54 7 2021-02-09T00:33:45 2021-02-09T00:35:15 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True WAVE False "" True 90.492625 True -43.47876 True FEROS.2021-02-09T00:35:07.192 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 30 "" False 910-StanCal-norm 100319512 1.05 True 1.27 True 3 2021-02-08T23:36:32 2021-02-09T01:11:45 6 2021-02-09T00:05:06 2021-02-09T00:52:54 8 2021-02-09T00:35:07 2021-02-09T00:36:37 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True WAVE False "" True 90.49263805 True -43.47875 True FEROS.2021-02-09T00:36:29.381 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 30 "" False 910-StanCal-norm 100319512 1.05 True 1.27 True 3 2021-02-08T23:36:32 2021-02-09T01:11:45 6 2021-02-09T00:05:06 2021-02-09T00:52:54 9 2021-02-09T00:36:29 2021-02-09T00:37:59 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True WAVE False "" True 90.49264888 True -43.47874 True FEROS.2021-02-09T00:37:50.760 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 30 "" False 910-StanCal-norm 100319512 1.05 True 1.27 True 3 2021-02-08T23:36:32 2021-02-09T01:11:45 6 2021-02-09T00:05:06 2021-02-09T00:52:54 10 2021-02-09T00:37:50 2021-02-09T00:39:20 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True WAVE False "" True 90.49267 True -43.47873 True FEROS.2021-02-09T00:39:13.529 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 30 "" False 910-StanCal-norm 100319512 1.05 True 1.27 True 3 2021-02-08T23:36:32 2021-02-09T01:11:45 6 2021-02-09T00:05:06 2021-02-09T00:52:54 11 2021-02-09T00:39:13 2021-02-09T00:40:43 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True WAVE False "" True 90.49269305 True -43.47872 True FEROS.2021-02-09T00:40:36.458 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 30 "" False 910-StanCal-norm 100319512 1.05 True 1.27 True 3 2021-02-08T23:36:32 2021-02-09T01:11:45 6 2021-02-09T00:05:06 2021-02-09T00:52:54 12 2021-02-09T00:40:36 2021-02-09T00:42:06 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True WAVE False "" True 90.49270194 True -43.47871 True FEROS.2021-02-09T00:41:57.756 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 30 "" False 910-StanCal-norm 100319512 1.04 True 1.27 True 3 2021-02-08T23:36:32 2021-02-09T01:11:45 6 2021-02-09T00:05:06 2021-02-09T00:52:54 13 2021-02-09T00:41:57 2021-02-09T00:43:27 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True WAVE False "" True 90.49272388 True -43.47869 True FEROS.2021-02-09T00:43:20.376 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 30 "" False 910-StanCal-norm 100319512 1.04 True 1.27 True 3 2021-02-08T23:36:32 2021-02-09T01:11:45 6 2021-02-09T00:05:06 2021-02-09T00:52:54 14 2021-02-09T00:43:20 2021-02-09T00:44:50 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True WAVE False "" True 90.49274694 True -43.47868 True FEROS.2021-02-09T00:44:43.555 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 30 "" False 910-StanCal-norm 100319512 1.04 True 1.27 True 3 2021-02-08T23:36:32 2021-02-09T01:11:45 6 2021-02-09T00:05:06 2021-02-09T00:52:54 15 2021-02-09T00:44:43 2021-02-09T00:46:13 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True WAVE False "" True 90.49276888 True -43.47867 True FEROS.2021-02-09T00:46:04.924 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 30 "" False 910-StanCal-norm 100319512 1.04 True 1.27 True 3 2021-02-08T23:36:32 2021-02-09T01:11:45 6 2021-02-09T00:05:06 2021-02-09T00:52:54 16 2021-02-09T00:46:04 2021-02-09T00:47:34 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True WAVE False "" True 90.49278194 True -43.47866 True FEROS.2021-02-09T00:47:27.233 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 30 "" False 910-StanCal-norm 100319512 1.04 True 1.27 True 3 2021-02-08T23:36:32 2021-02-09T01:11:45 6 2021-02-09T00:05:06 2021-02-09T00:52:54 17 2021-02-09T00:47:27 2021-02-09T00:48:57 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True WAVE False "" True 90.49280111 True -43.47865 True FEROS.2021-02-09T00:48:49.391 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 30 "" False 910-StanCal-norm 100319512 1.04 True 1.27 True 3 2021-02-08T23:36:32 2021-02-09T01:11:45 6 2021-02-09T00:05:06 2021-02-09T00:52:54 18 2021-02-09T00:48:49 2021-02-09T00:50:19 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True WAVE False "" True 90.49282888 True -43.47864 True FEROS.2021-02-09T00:50:10.760 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 30 "" False 910-StanCal-norm 100319512 1.04 True 1.27 True 3 2021-02-08T23:36:32 2021-02-09T01:11:45 6 2021-02-09T00:05:06 2021-02-09T00:52:54 19 2021-02-09T00:50:10 2021-02-09T00:51:40 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True WAVE False "" True 90.492845 True -43.47863 True FEROS.2021-02-09T00:51:33.499 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 30 "" False 910-StanCal-norm 100319512 1.04 True 1.27 True 3 2021-02-08T23:36:32 2021-02-09T01:11:45 6 2021-02-09T00:05:06 2021-02-09T00:52:54 20 2021-02-09T00:51:33 2021-02-09T00:53:03 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True WAVE False "" True 90.56664305 True -43.59442 True FEROS.2021-02-09T00:53:02.828 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 150 "" False 910-StanCal-norm 100319512 1.04 True 1.27 True 3 2021-02-08T23:36:32 2021-02-09T01:11:45 7 2021-02-09T00:52:54 2021-02-09T00:59:43 1 2021-02-09T00:53:02 2021-02-09T00:56:32 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True WAVE False "" True 90.59089 True -43.60082 True FEROS.2021-02-09T00:56:24.081 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 150 "" False 910-StanCal-norm 100319512 1.04 True 1.27 True 3 2021-02-08T23:36:32 2021-02-09T01:11:45 7 2021-02-09T00:52:54 2021-02-09T00:59:43 2 2021-02-09T00:56:24 2021-02-09T00:59:54 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True WAVE False "" True 90.591115 True -43.60081 True FEROS.2021-02-09T00:59:52.293 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 300 "" False 910-StanCal-norm 100319512 1.04 True 1.27 True 3 2021-02-08T23:36:32 2021-02-09T01:11:45 8 2021-02-09T00:59:43 2021-02-09T01:11:45 1 2021-02-09T00:59:52 2021-02-09T01:05:52 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True WAVE False "" True 90.59144388 True -43.60079 True FEROS.2021-02-09T01:05:45.421 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 300 "" False 910-StanCal-norm 100319512 1.03 True 1.27 True 3 2021-02-08T23:36:32 2021-02-09T01:11:45 8 2021-02-09T00:59:43 2021-02-09T01:11:45 2 2021-02-09T01:05:45 2021-02-09T01:11:45 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True BIAS False "" True 205.23895 True -29.12824 True WFI.2021-02-09T09:06:26.353 False ESO-2.2m WFI 60.A-9120(A) 60.A-9120(A) Service CALIB IMAGE False BIAS False 0 BB#RC/162_ESO844 False 001-DailyCalibMonday 100185406 1.00 True 0.69 True 21 2021-02-09T09:06:18 2021-02-09T09:14:05 1 2021-02-09T09:06:18 2021-02-09T09:12:21 1 2021-02-09T09:06:26 2021-02-09T09:07:26 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True BIAS False "" True 205.397565 True -29.12838 True WFI.2021-02-09T09:07:02.577 False ESO-2.2m WFI 60.A-9120(A) 60.A-9120(A) Service CALIB IMAGE False BIAS False 0 BB#RC/162_ESO844 False 001-DailyCalibMonday 100185406 1.00 True 0.69 True 21 2021-02-09T09:06:18 2021-02-09T09:14:05 1 2021-02-09T09:06:18 2021-02-09T09:12:21 2 2021-02-09T09:07:02 2021-02-09T09:08:02 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True BIAS False "" True 205.54783388 True -29.12851 True WFI.2021-02-09T09:07:38.931 False ESO-2.2m WFI 60.A-9120(A) 60.A-9120(A) Service CALIB IMAGE False BIAS False 0 BB#RC/162_ESO844 False 001-DailyCalibMonday 100185406 1.00 True 0.69 True 21 2021-02-09T09:06:18 2021-02-09T09:14:05 1 2021-02-09T09:06:18 2021-02-09T09:12:21 3 2021-02-09T09:07:38 2021-02-09T09:08:38 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True BIAS False "" True 205.69810194 True -29.12864 True WFI.2021-02-09T09:08:15.305 False ESO-2.2m WFI 60.A-9120(A) 60.A-9120(A) Service CALIB IMAGE False BIAS False 0 BB#RC/162_ESO844 False 001-DailyCalibMonday 100185406 1.00 True 0.69 True 21 2021-02-09T09:06:18 2021-02-09T09:14:05 1 2021-02-09T09:06:18 2021-02-09T09:12:21 4 2021-02-09T09:08:15 2021-02-09T09:09:15 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True BIAS False "" True 205.84837111 True -29.12878 True WFI.2021-02-09T09:08:51.579 False ESO-2.2m WFI 60.A-9120(A) 60.A-9120(A) Service CALIB IMAGE False BIAS False 0 BB#RC/162_ESO844 False 001-DailyCalibMonday 100185406 1.00 True 0.69 True 21 2021-02-09T09:06:18 2021-02-09T09:14:05 1 2021-02-09T09:06:18 2021-02-09T09:12:21 5 2021-02-09T09:08:51 2021-02-09T09:09:51 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True BIAS False "" True 205.99864 True -29.12891 True WFI.2021-02-09T09:09:27.933 False ESO-2.2m WFI 60.A-9120(A) 60.A-9120(A) Service CALIB IMAGE False BIAS False 0 BB#RC/162_ESO844 False 001-DailyCalibMonday 100185406 1.00 True 0.69 True 21 2021-02-09T09:06:18 2021-02-09T09:14:05 1 2021-02-09T09:06:18 2021-02-09T09:12:21 6 2021-02-09T09:09:27 2021-02-09T09:10:27 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True BIAS False "" True 206.14890888 True -29.12905 True WFI.2021-02-09T09:10:04.297 False ESO-2.2m WFI 60.A-9120(A) 60.A-9120(A) Service CALIB IMAGE False BIAS False 0 BB#RC/162_ESO844 False 001-DailyCalibMonday 100185406 1.00 True 0.69 True 21 2021-02-09T09:06:18 2021-02-09T09:14:05 1 2021-02-09T09:06:18 2021-02-09T09:12:21 7 2021-02-09T09:10:04 2021-02-09T09:11:04 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True BIAS False "" True 206.30752694 True -29.12919 True WFI.2021-02-09T09:10:40.581 False ESO-2.2m WFI 60.A-9120(A) 60.A-9120(A) Service CALIB IMAGE False BIAS False 0 BB#RC/162_ESO844 False 001-DailyCalibMonday 100185406 1.00 True 0.69 True 21 2021-02-09T09:06:18 2021-02-09T09:14:05 1 2021-02-09T09:06:18 2021-02-09T09:12:21 8 2021-02-09T09:10:40 2021-02-09T09:11:40 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True BIAS False "" True 206.45779694 True -29.12933 True WFI.2021-02-09T09:11:16.934 False ESO-2.2m WFI 60.A-9120(A) 60.A-9120(A) Service CALIB IMAGE False BIAS False 0 BB#RC/162_ESO844 False 001-DailyCalibMonday 100185406 1.00 True 0.69 True 21 2021-02-09T09:06:18 2021-02-09T09:14:05 1 2021-02-09T09:06:18 2021-02-09T09:12:21 9 2021-02-09T09:11:16 2021-02-09T09:12:16 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True BIAS False "" True 206.60806611 True -29.12946 True WFI.2021-02-09T09:11:53.349 False ESO-2.2m WFI 60.A-9120(A) 60.A-9120(A) Service CALIB IMAGE False BIAS False 0 BB#RC/162_ESO844 False 001-DailyCalibMonday 100185406 1.00 True 0.69 True 21 2021-02-09T09:06:18 2021-02-09T09:14:05 1 2021-02-09T09:06:18 2021-02-09T09:12:21 10 2021-02-09T09:11:53 2021-02-09T09:12:53 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True BIAS False "" True 206.75833694 True -29.1296 True WFI.2021-02-09T09:12:29.673 False ESO-2.2m WFI 60.A-9120(A) 60.A-9120(A) Service CALIB IMAGE False BIAS False 0 BB#RC/162_ESO844 False 001-DailyCalibMonday 100185406 1.00 True 0.69 True 21 2021-02-09T09:06:18 2021-02-09T09:14:05 2 2021-02-09T09:12:21 2021-02-09T09:14:05 1 2021-02-09T09:12:29 2021-02-09T09:13:29 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+Calib 106 2021-02-08 True True BIAS False "" True 206.90860694 True -29.12974 True WFI.2021-02-09T09:13:05.757 False ESO-2.2m WFI 60.A-9120(A) 60.A-9120(A) Service CALIB IMAGE False BIAS False 0 BB#RC/162_ESO844 False 001-DailyCalibMonday 100185406 1.00 True 0.69 True 21 2021-02-09T09:06:18 2021-02-09T09:14:05 2 2021-02-09T09:12:21 2021-02-09T09:14:05 2 2021-02-09T09:13:05 2021-02-09T09:14:05 0.000 0.000 0.000 0.000 0.000 0.000 0.000
+xxxxxxxxxxxx 0 xxxxxxxxxx False False xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx False xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx False 0.0 False 0.0 False xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx False xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxx xxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx False xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx False 0 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx False xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 0 0.00 False 0.00 False 0 xxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxx 0 xxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxx 0 xxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxx 0.000 0.000 0.000 0.000 0.000 0.000 0.000

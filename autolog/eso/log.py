@@ -5,7 +5,7 @@ from .date import night_to_period
 from . import path
 from .tapquery import NightQuery
 from .allocation import Allocation
-
+import datetime
 
 from pyvo.dal import tap
 from astropy.coordinates import EarthLocation
@@ -19,10 +19,56 @@ import os
 import json
 import re
 
+def linkify_pid(summary, soup, *, link_type='archive'):
+        
+    pid_re = '[ 012][0-9]{2,3}\.[A-Z]-[0-9]{4}\([A-Z]\)'
+    archive = 'http://archive.eso.org/wdb/wdb/eso/sched_rep_arc'
+            
+    for i, th in enumerate(soup.table.tr.find_all('th')):
+
+        if th.get_text() not in ['pid', 'used_pid']:
+            continue
+            
+        for tr in soup.table.find_all('tr'):
+            td = tr.find_all('td')[i]
+            
+            pid = td.get_text()
+            if re.match(pid_re, pid):
+
+                if link_type == 'archive':
+                    url = f'{archive}/query?progid={text}'
+                elif link_type == 'local':
+                    url = f'./{pid}'
+                else:
+                    return # nothing to do
+        
+                link = BS(f'<td><a href="{url}">{pid}</a></td>').td
+                td.replace_with(link)
+
+def linkify_night(soup, *, link_type='local'):
+
+    for i, th in enumerate(soup.table.tr.find_all('th')):
+
+        if th.get_text() not in ['night', 'start date']:
+            continue
+
+        for tr in soup.table.find_all('tr'):
+
+            td = tr.find_all('td')[i]
+            night = td.get_text()
+
+            if link_type == 'local':
+                url = f'./{night}'
+            else:
+                return # nothing to do
+
+            link = BS(f'<td><a href="{url}">{night}</a></td>').td
+            td.replace_with(link)
+           
+        break 
 
 def BS(arg):
     return BeautifulSoup(arg, features='lxml')
-
 
 def rangify(x):
     a, b = min(x), max(x)
@@ -30,11 +76,40 @@ def rangify(x):
         return a
     return f"{a} .. {b}" 
 
-def join(x):
+def join_dates(dates, upper_limit='open'):
+    
+    dates = [datetime.date.fromisoformat(d) for d in dates]
+
+    discont = [(dates[i + 1] - dates[i]).days > 1 
+                            for i in range(len(dates) - 1)]
+    discont = np.argwhere(discont)[:,0] + 1
+
+    min_date = np.hstack([0, discont])      
+    max_date = np.hstack([discont - 1, len(dates) - 1]) 
+    
+    intervals = []
+        
+    for mn, mx in zip(min_date, max_date):
+        d1 = dates[mn]
+        d2 = dates[mx]
+        if upper_limit = 'open':
+            d2 += datetime.timedelta(1)
+        if d2 > d1:
+            intervals.append(f"{d1}..{d2}")
+        else:
+            intervals.append(f"{d1}")
+
+    return ', '.join(intervals)
+
+def join_unique(x):
+    
     x = [str(i) for i in np.unique(x)]
+    
     for val in ['None', 'NONE']:
         if val in x:
             x.remove(val)
+
+        
     return ' '.join(x)
 
 def keep_track(log):
@@ -44,8 +119,8 @@ def keep_external(log):
     return log[~log['internal'] & (log['sun_down_hours'] > 0)]
 
 def keep_target(log):
-    obj, ins = log['object'], log['instrument']
-    return log[~obj.mask & ~ins.mask & (obj != '') & (ins != '')]
+    targ, ins = log['target'], log['instrument']
+    return log[~targ.mask & (targ != '') & (ins != '')]
 
 def keep_all(log):
     return log
@@ -55,9 +130,11 @@ class Log(Table):
     HTML_CAPTIONS = {
         'pid': 'summary of programme execution',
         'object': 'list of observed targets',
-        'ob_start': 'detailed log',
-        'night': 'observed programmes by night',
+        'ob_start': 'detailed observing log',
+        'night': 'observed programmes in each night',
         'dp_cat': 'summary of telescope use',
+        'start date': 'schedule',
+        'support': 'shifts',
     }
     HTML_TITLES = {
         'target': 'list of targets',
@@ -69,12 +146,17 @@ class Log(Table):
         'ob_start': keep_external,
         'night': keep_external,
         'dp_cat': keep_external,
+        'start date': keep_all,
+        'support': keep_all,
     }
     HTML_PROGRESS = { }
 
     def fix_pids(self):
             
         if not (period := self.meta.get('period', None)):
+            return
+
+        if not 'used_pid' in self.colnames:
             return
         
         telescope = self.meta['telescope']
@@ -93,13 +175,21 @@ class Log(Table):
             
             used_pid = log_entry['used_pid']
             prog = allocation.lookup(log_entry)
-            pid, pi, tac = prog['PID', 'PI', 'TAC']
+            pid, pi, tac, ins = prog['PID', 'PI', 'TAC', 'Instrument']
 
+            log_entry['instrument'] = ins
             log_entry['pid'] = pid
             log_entry['pi'] = pi
             log_entry['tac'] = tac
 
-    def save(self, log_type='log', overwrite=False, format='csv'):
+    def default_log_type(self):
+
+        return list(self.LOG_TYPES.keys())[0]
+
+    def save(self, log_type=None, overwrite=False, format='csv'):
+
+        if  log_type is None:
+            log_type = self.defaut_log_type()
 
         if format == 'csv':
             ext = 'csv'
@@ -114,8 +204,11 @@ class Log(Table):
 
         self.write(filename, overwrite=overwrite, format=format, **kwargs)
 
-    def publish(self, log_type='log'):
+    def publish(self, log_type=None):
 
+        if  log_type is None:
+            log_type = self.defaut_log_type()
+        
         source = self.get_filename(log_type, ext='shtml')
         dest = self.get_filename(log_type, ext='shtml', www=True, makedirs=True)
 
@@ -136,7 +229,8 @@ class Log(Table):
     
     def as_beautiful_soup(self, htmldict={}, **kwargs):
 
-        log_type = htmldict.get('log_type', 'log')
+        deflog = list(self.LOG_TYPES.keys())[0]
+        log_type = htmldict.get('log_type', self.LOG_TYPES.keys()[0])
 
         table_types = [key for key in self.LOG_TYPES[log_type]]
         soup = self._as_bs_helper(table_type=table_types[0], 
@@ -152,7 +246,27 @@ class Log(Table):
             soup.h2.extract()
 
         return soup
-        
+
+    def process_kept_keys(self, table_type):
+
+        all = self.colnames
+        names = self.HTML_COLUMNS.get(table_type, None).copy()
+
+        if names is None:
+            
+            kept = all
+
+        elif names[0][0] == '-':
+            
+            names = [n[1:] for n in names]
+            kept = [a for a in all if a not in names]
+
+        else:
+
+            kept = names
+
+        return names
+
     def _as_bs_helper(self, *, table_type, htmldict={}, **kwargs):
 
         # Scalar call for detail.  
@@ -165,7 +279,8 @@ class Log(Table):
         else:
             what = f'at {telescope}'
        
-        kept_keys = self.HTML_COLUMNS[table_type]
+        all_keys = self.colnames
+        kept_keys = self.HTML_COLUMNS.get(table_type, all_keys).copy()
         group_keys = self.HTML_ROW_GROUPS[table_type]
         sort_keys = self.HTML_SORT_KEYS.get(table_type, [])
         filter = self.HTML_ROW_FILTRES[table_type] 
@@ -174,7 +289,8 @@ class Log(Table):
 
         units = [c.unit.name if c.unit else '' for c in self.itercols()]
 
-        summary = filter(self).summary(group_keys)
+        summary = filter(self)
+        summary = summary.summary(group_keys)
             
         # Report progress as a function of total available time
 
@@ -182,7 +298,7 @@ class Log(Table):
             for name in ['night_hours', 'twilight_hours']:
                 fname = name[:-6] + '_fraction'
                 fval = summary[name] / self.meta['ephemeris'][name]
-                col = Column(fval, name=fname, format='.1%')
+                col = Column(fval, name=fname, format='.1%', unit=None)
                 summary.add_column(col)
                 kept_keys.append(fname)
 
@@ -232,7 +348,8 @@ class Log(Table):
     
             col = MaskedColumn(progress, name='progress', format='.0%')
             summary.add_column(col)
-            kept_keys += ['allocated', 'progress']
+            
+            kept_keys +=  ['allocated', 'progress']
         
         # add a subtotal line in each group
 
@@ -241,7 +358,10 @@ class Log(Table):
             for name in subtotals.colnames:
                 if subtotals[name].dtype.char == 'U' and name not in sort_keys:
                     subtotals[name] = 'all'
-            subtotals['progress'] = subtotals['executed'] / subtotals['allocated']
+                if name == 'progress':
+                    exec = subtotals['executed']
+                    alloc = subtotals['allocated']
+                    subtotals['progress'] = exec / alloc
             for subtotal in subtotals:
                 summary.add_row(subtotal)
 
@@ -253,21 +373,22 @@ class Log(Table):
 
         summary = summary[kept_keys]
 
-        # Shorten some keys / values for visual compactness
+        # Shorten some values for visual compactness
  
-        for key in ['ob_start', 'ob_end']:
-            if key in summary.colnames:
-                summary[key] = [s[11:16] for s in summary[key]]
+        for key in summary.colnames:
+            if (key[-5:] == 'start' or key[-3:] == 'end' or 
+                    key[-3:] == 'set' or key[-4:] == 'rise'):
+                summary[key][...] = [s[11:16] for s in summary[key]]
 
         caption = f"{subtitle} for {what}"
 
         tel = telescope.split('-')[-1]
 
         log_type = htmldict.get('log_type', 'log')
-        log_type = log_type[0].upper() + log_type[1:]
+        Log_type = log_type[0].upper() + log_type[1:]
 
-        doc_title = self.HTML_TITLES.get(log_type, log_type)
-        doc_title = f"{log_type} for {what}"
+        doc_title = self.HTML_TITLES.get(log_type, Log_type)
+        doc_title = f"{doc_title} for {what}"
 
         htmldict=dict(
             **htmldict,
@@ -286,14 +407,16 @@ class Log(Table):
         navbar = f'#include virtual="/{tel}/style/navbar.shtml"'
         soup.body.insert(0, BSComment(navbar))
 
-        # If above night level, place a link to lower level
-        if sort_keys and sort_keys[0] == 'night' and kept_keys[0] == 'night':
-            for group in soup.table.find_all('tbody'):
-                tr1 = group.tr
-                text = tr1.td.get_text()
-                link = BS(f'<td><a href="./{text}">{text}</a></td>').td
-                tr1.td.replace_with(link)
+        # Some links to details
+        if table_type == 'night':
+            linkify_night(soup, link_type='local')
 
+        if table_type == 'start date':
+            linkify_night(soup, link_type='archive')
+
+        if table_type == 'pid':
+            linkify_pid(soup, link_type='archive')
+ 
         return soup
 
     def summary(self, keys=['pid']):
@@ -316,6 +439,12 @@ class Log(Table):
                 desc = re.sub(' sequence.*', '', col.description)
                 desc = f"Number of {desc}s"
                 name = f"n_{name[:-3]}"
+                if name == 'n_ob':
+                    name = 'total number of observations (OBs)'
+                elif name == 'n_exp':
+                    name = 'total number of exposures'
+                elif name == 'n_tpl':
+                    name = 'total number of observing templates'
 
             descriptions.append(desc)
             names.append(name)
@@ -329,12 +458,14 @@ class Log(Table):
             for col in group.columns.values():
                 
                 name, values = col.name, col.data
-     
-                if name[-6:] == '_start':
+    
+                if name == 'date':
+                    value = join_dates(values, upper_limit='open')
+                elif name[-6:] in [' start', '_start', 'sun_set']:
                     value = min(values)
-                elif name[-4:] == '_end':
+                elif name[-4:] in [' end', '_end', 'sun_rise']:
                     value = max(values)
-                elif name[-6:] == '_hours' or name in ['exposure', 'allocated']:
+                elif col.unit and col.unit.physical_type == 'time':
                     value = sum(values)
                 elif name == 'exp_no':
                     value = len(np.unique(group['exp_start']))
@@ -345,11 +476,11 @@ class Log(Table):
                 elif name[0:2] == 'n_': # it's an average already
                     value = sum(values)
                 elif col.dtype.char == 'U':
-                    value = join(values)
+                    value = join_unique(values)
                 elif col.dtype.char == '?':
                     value = values[0]
                     if any(values != value):
-                        value = '?'
+                        value = np.mean(values)
                 else:
                     value = np.mean(values)
                 

@@ -1,4 +1,6 @@
 from ..utils.date import night_to_date_range, add_seconds, total_seconds
+from ..utils.telescope import parse_telescope
+from ..eso import path
 
 from astropy import units as u
 from astropy.coordinates import EarthLocation
@@ -151,9 +153,34 @@ def _get_twilights(observer, start, midnight, end):
 def night_ephemeris(location, night, /, *, basedir='.', overwrite=False):
 
     if isinstance(location, str):
+
+        try:
+            location, telescope_names = parse_telescope(location)
+            telescope = telescope_names[0]
+        except NotImplementedError:
+            telescope = None
+
         location = EarthLocation.of_site(location)
+
     elif isinstance(location, tuple):
         location = EarthLocatation(*location)
+    
+    # try to read from file
+
+    if telescope is not None:
+
+        filename = path.filename(telescope, night=night,
+                    log_type='ephem', ext='json', makedirs=True)
+        try:
+            with open(filename, 'r') as fh:
+                ephem = json.load(fh)
+                print(f"{night}: ephemeris read from disk")
+                return ephem
+
+        except Exception as e:
+            pass
+            
+    print(f"{night}: compute ephemeris")
 
     try: # locally redefines Time.precision
 
@@ -172,10 +199,17 @@ def night_ephemeris(location, night, /, *, basedir='.', overwrite=False):
         
         ephem = dict(moon_illumination=moon_illumination, **dark, **twilights)
 
-        return ephem
-
     except Exception as e:
 
         del Time.precision
         raise e
+
+    # save to telescope ephemeris 
+
+    if telescope is not None:
+        
+        with open(filename, 'w') as fh:
+            json.dump(ephem, fh)
+        
+    return ephem
 

@@ -37,8 +37,8 @@ class Allocation(Table):
         filename = path.filename(telescope, period=period,
                 log_type='program', ext='xls', rootdir=rootdir)
 
-        alloc = table_from_excel(filename, cls=cls) 
-        fixes = table_from_excel(filename, sheetnum=1)
+        alloc = table_from_excel(filename, 0, cls=cls) 
+        fixes = table_from_excel(filename, 1)
 
         for row in alloc:
             row['PID'] = row['PID'].strip() 
@@ -55,6 +55,8 @@ class Allocation(Table):
  
         for row in alloc:
             pid = row['PID']
+            if row['Identifiers'] is np.ma.masked:
+                continue
             for id in row['Identifiers'].split(','):
                 id = id.strip()
                 if id != '':
@@ -106,8 +108,8 @@ class Allocation(Table):
                 
                 if (obj != '' and not re.search(obj, object) or
                     name != '' and not re.search(name, ob_name) or
-                    d1 != '' and date < d1 or
-                    d2 != '' and date > d2):
+                    d1 is not np.ma.masked and date < d1.isoformat() or
+                    d2 is not np.ma.masked and date > d2.isoformat()):
                     continue
 
                 pid = fix['Nominal PID']
@@ -130,7 +132,6 @@ class Allocation(Table):
         new['TAC'] = tac
         new['PI'] = pi 
         new['Instrument'] = instrument
-        new['Identifiers'] = ''
         new['Link'] = 'no'
 
         return new

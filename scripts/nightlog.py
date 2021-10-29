@@ -12,7 +12,7 @@ warnings.filterwarnings('error', category=Warning)
 
 import numpy as np
 
-night = '2021-04-13'
+night = '2021-09-16'
 telescope = 'ESO-2.2m'
 opts = dict(
     use_tap_cache = False, 

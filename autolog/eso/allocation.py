@@ -105,11 +105,11 @@ class Allocation(Table):
                 
                 obj, name = fix['Object', 'OB name']
                 d1, d2 = fix['Start date', 'End date']
-                
+ 
                 if (obj != '' and not re.search(obj, object) or
                     name != '' and not re.search(name, ob_name) or
-                    d1 is not np.ma.masked and date < d1.isoformat() or
-                    d2 is not np.ma.masked and date > d2.isoformat()):
+                    d1 is not np.ma.masked and date < d1 or
+                    d2 is not np.ma.masked and date > d2):
                     continue
 
                 pid = fix['Nominal PID']

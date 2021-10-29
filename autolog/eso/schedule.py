@@ -5,10 +5,11 @@ from autolog.eso import path
 from autolog.eso import log 
 from autolog.utils.telescope import parse_telescope
 
+from collections import OrderedDict
 import numpy as np
 import copy
 import re
-from astropy.table import MaskedColumn
+from astropy.table import MaskedColumn, Column
         
 EPHEMERIS_COLUMNS = {
     'sun set': ('sun set time', '<U5'),
@@ -30,23 +31,44 @@ class Schedule(log.Log):
     _INSTANCES = {}
 
     HTML_ROW_GROUPS = OrderedDict(
-        'date'=['date'],
-        'support'=['support', 'tac', 'pi'],
+        date=['date'],
+        support=['support', 'date'],
     )
     HTML_COLUMNS = OrderedDict(
-        'date'=['-night_no'],
-        'support'=['support', 'date', 'tac', 'pi', 'observer'],
+        date=['-n_night', '-night_no'],
+        support=['support', 'date', 'tac', 'pi', 'observer', 'n_night'],
     )
     HTML_SORT_KEYS = OrderedDict(
-        'support'=['support'],
+        support=['support'],
     )
     LOG_TYPES = OrderedDict(
-        'schedule'=['date'],
-        'support'=['support']
+        schedule=['date'],
+        support=['support']
     )
 
+    def shifts(self):
+
+        rows = []
+
+        support = [s for s in self['support'] if s]
+        tios = np.unique(np.hstack([tios.split(', ') for tios in support]))
+        for tio in tios:
+            on_duty = [tio in support for support in self['support']]
+            duty = self[on_duty]
+            date_ranges = np.array(log.join_dates(duty['date']).split(', '))
+            for row in duty:
+                date = row['date']
+                dates = date_ranges[[d[:10] <= date < d[12:] for d in date_ranges]]
+                rows.append((tio, dates[0], row[1], row[2], row[4], row[-1])) 
+           
+        names = ('support', 'date', 'tac', 'pi', 'observer', 'n_night') 
+
+        support = type(self)(rows=rows, names=names, meta=self.meta)
+
+        return support
+
     @classmethod
-    def read(cls, *, telescope, period, rootdir='.', 
+    def read(cls, *, telescope: str, period: int, rootdir='.', 
                 wwwdir='/data/www/twoptwo.com'):
         
         key = (telescope, period)
@@ -78,27 +100,15 @@ class Schedule(log.Log):
         schedule['fli'].format = '.0%'
        
         # add number of nights 
-        n_night = np.ones((len(night),), dtype=int)
+        n_night = np.ones((len(schedule),), dtype=int)
         n_night = Column(n_night, name='n_night')
         schedule.add_column(n_night)
-
-        # parse supports, one row for each
-        for i, row in reversed(enumerate(schedule)):
-            supports = row['supports']
-            if ',' not in row['supports']:
-                continue
-            supports = re.split('\s*,\s*', supports)
-            row['supports'] = supports[0]
-            for s in supports[1:]:
-                new_row = copy.copy(row)  
-                new_row[supports] = s
-                schedule.insert_row(i, new_row)
 
         # check if more than 1 dark/night/... span in any night
         for name, (start, end) in EPHEMERIS_TIME_SPANS.items():
             
             nspan = max(len(e[name]) for e in ephems)
-            print(name, nspan)
+            # print(name, nspan)
  
             for i in range(2, nspan + 1):
                 for bound in [start, end]: 
@@ -113,12 +123,12 @@ class Schedule(log.Log):
                 
                 time = ephem[name]
                 if len(time):
-                    row[start] = time[0][0]
-                    row[end] = time[0][1]                
+                    row[start] = time[0][0][11:16] # hh:mm only
+                    row[end] = time[0][1][11:16]                
 
                 for i in range(2, len(time) + 1):
-                    row[f"{start} {i}"] = time[i][0]
-                    row[f"{end} {i}"] = time[i][1]
+                    row[f"{start} {i}"] = time[i][0][11:16]
+                    row[f"{end} {i}"] = time[i][1][11:16]
 
             row['fli'] = ephem['moon_illumination']
 
@@ -127,54 +137,8 @@ class Schedule(log.Log):
         schedule.meta['period'] = period
         schedule.meta['telescope'] = telescope
         schedule.meta['site'] = site
+        schedule.meta['rootdir'] = rootdir
+        schedule.meta['wwwdir'] = wwwdir
     
         return schedule
-
-    def save(self, format='csv'):
-
-        filename = self.get_filename('schedule', ext=ext, makedirs=True)
-
-        if format == 'csv':
-            ext = 'csv'
-            format = 'ascii.ecsv'
-        elif format == 'html':
-            ext = 'shtml'
-            format = 'ascii.html'
-
-        filename = self.get_filename('schedule', ext=ext, makedirs=True)
-
-        self.write(filename, overwrite=overwrite, format=format)
-
-    def publish(self):
-
-        source = self.get_filename('schedule', ext='shtml')
-        dest = self.get_filename('schedule', ext='shtml', www=True, makedirs=True)
-
-        shutil.copy2(source, dest)
-
-    def as_beautiful_soup(self, htmldict={}):
-
-        tel, per = self.meta['telescope'], self.meta['period']
-        start, end = self['date'][[0, -1]]
-        htmldict=dict(
-            **htmldict,
-            caption='Schedule for ESO period P{per} (from {start} to {end}) at {tel}',
-            title=f'Schedule for ESO period P{per} at {tel}',
-            h1=f'Schedule for ESO period P{per} at {tel}',
-            table_class='horizontal',
-            cssfiles=[f'/{tel}/style/navbar.css',
-                      f'/{tel}/style/twoptwo.css']
-        )
-        
-        summary.__class__ = Table # want to keep groups!
-        soup = summary.as_beautiful_soup(htmldict=htmldict, **kwargs)
-
-        # flag lines by tac       
-        for tr in soup.find_all('tr'):
-            tac = tr.find_all('td')[1].contents[0]
-            tr.class_[tac.lower()]
-
-        #
- 
-        return soup
 

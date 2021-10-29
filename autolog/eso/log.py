@@ -19,24 +19,29 @@ import os
 import json
 import re
 
-def linkify_pid(summary, soup, *, link_type='archive'):
+def linkify_pid(soup, *, link_type='archive'):
         
     pid_re = '[ 012][0-9]{2,3}\.[A-Z]-[0-9]{4}\([A-Z]\)'
     archive = 'http://archive.eso.org/wdb/wdb/eso/sched_rep_arc'
             
-    for i, th in enumerate(soup.table.tr.find_all('th')):
+    for colnum, th in enumerate(soup.table.tr.find_all('th')):
 
-        if th.get_text() not in ['pid', 'used_pid']:
-            continue
+        if th.get_text() in ['pid', 'used_pid']:
+            break
+    
+    else:
+        return
             
-        for tr in soup.table.find_all('tr'):
-            td = tr.find_all('td')[i]
+    for body in soup.table.find_all('tbody'):
+        for tr in body.find_all('tr'):
+
+            td = tr.find_all('td')[colnum]
             
             pid = td.get_text()
             if re.match(pid_re, pid):
 
                 if link_type == 'archive':
-                    url = f'{archive}/query?progid={text}'
+                    url = f'{archive}/query?progid={pid}'
                 elif link_type == 'local':
                     url = f'./{pid}'
                 else:
@@ -47,14 +52,18 @@ def linkify_pid(summary, soup, *, link_type='archive'):
 
 def linkify_night(soup, *, link_type='local'):
 
-    for i, th in enumerate(soup.table.tr.find_all('th')):
+    for colnum, th in enumerate(soup.table.tr.find_all('th')):
 
-        if th.get_text() not in ['night', 'start date']:
-            continue
+        if th.get_text() in ['night', 'start date']:
+            break
+      
+    else:
+        return
 
-        for tr in soup.table.find_all('tr'):
+    for body in soup.table.find_all('tbody'):
+        for tr in body.find_all('tr'):
 
-            td = tr.find_all('td')[i]
+            td = tr.find_all('td')[colnum]
             night = td.get_text()
 
             if link_type == 'local':
@@ -65,7 +74,6 @@ def linkify_night(soup, *, link_type='local'):
             link = BS(f'<td><a href="{url}">{night}</a></td>').td
             td.replace_with(link)
            
-        break 
 
 def BS(arg):
     return BeautifulSoup(arg, features='lxml')
@@ -77,27 +85,30 @@ def rangify(x):
     return f"{a} .. {b}" 
 
 def join_dates(dates, upper_limit='open'):
-    
-    dates = [datetime.date.fromisoformat(d) for d in dates]
+   
+    try: 
+        dates = [datetime.date.fromisoformat(d) for d in dates]
 
-    discont = [(dates[i + 1] - dates[i]).days > 1 
-                            for i in range(len(dates) - 1)]
-    discont = np.argwhere(discont)[:,0] + 1
+        discont = [(dates[i + 1] - dates[i]).days > 1 
+                                for i in range(len(dates) - 1)]
+        discont = np.argwhere(discont)[:,0] + 1
 
-    min_date = np.hstack([0, discont])      
-    max_date = np.hstack([discont - 1, len(dates) - 1]) 
-    
-    intervals = []
+        min_date = np.hstack([0, discont])      
+        max_date = np.hstack([discont - 1, len(dates) - 1]) 
         
-    for mn, mx in zip(min_date, max_date):
-        d1 = dates[mn]
-        d2 = dates[mx]
-        if upper_limit = 'open':
-            d2 += datetime.timedelta(1)
-        if d2 > d1:
-            intervals.append(f"{d1}..{d2}")
-        else:
-            intervals.append(f"{d1}")
+        intervals = []
+            
+        for mn, mx in zip(min_date, max_date):
+            d1 = dates[mn]
+            d2 = dates[mx]
+            if upper_limit == 'open':
+                d2 += datetime.timedelta(1)
+            if d2 > d1:
+                intervals.append(f"{d1}..{d2}")
+            else:
+                intervals.append(f"{d1}")
+    except:
+        intervals = np.unique(dates)
 
     return ', '.join(intervals)
 
@@ -133,7 +144,7 @@ class Log(Table):
         'ob_start': 'detailed observing log',
         'night': 'observed programmes in each night',
         'dp_cat': 'summary of telescope use',
-        'start date': 'schedule',
+        'date': 'schedule',
         'support': 'shifts',
     }
     HTML_TITLES = {
@@ -146,18 +157,21 @@ class Log(Table):
         'ob_start': keep_external,
         'night': keep_external,
         'dp_cat': keep_external,
-        'start date': keep_all,
+        'date': keep_all,
         'support': keep_all,
     }
     HTML_PROGRESS = { }
 
     def fix_pids(self):
-            
+           
+        # print('fix_pids') 
         if not (period := self.meta.get('period', None)):
             return
 
         if not 'used_pid' in self.colnames:
             return
+
+        # print('will fix pids')
         
         telescope = self.meta['telescope']
         allocation = Allocation.read(telescope=telescope, period=period)
@@ -172,7 +186,7 @@ class Log(Table):
             self.add_column(tac, name='tac', index=0)
         
         for i, log_entry in enumerate(self):
-            
+           
             used_pid = log_entry['used_pid']
             prog = allocation.lookup(log_entry)
             pid, pi, tac, ins = prog['PID', 'PI', 'TAC', 'Instrument']
@@ -181,7 +195,10 @@ class Log(Table):
             log_entry['pid'] = pid
             log_entry['pi'] = pi
             log_entry['tac'] = tac
-
+            
+            #if used_pid == '0107.A-9033(A)':
+            #    print(used_pid, prog, pid, log_entry['pid'], pi) 
+           
     def default_log_type(self):
 
         return list(self.LOG_TYPES.keys())[0]
@@ -189,7 +206,7 @@ class Log(Table):
     def save(self, log_type=None, overwrite=False, format='csv'):
 
         if  log_type is None:
-            log_type = self.defaut_log_type()
+            log_type = self.default_log_type()
 
         if format == 'csv':
             ext = 'csv'
@@ -207,11 +224,11 @@ class Log(Table):
     def publish(self, log_type=None):
 
         if  log_type is None:
-            log_type = self.defaut_log_type()
+            log_type = self.default_log_type()
         
         source = self.get_filename(log_type, ext='shtml')
         dest = self.get_filename(log_type, ext='shtml', www=True, makedirs=True)
-
+        print(f'publish: {source} {dest}')
         shutil.copy2(source, dest)
 
     def get_filename(self, log_type, makedirs=False, ext='csv', www=False):
@@ -230,7 +247,7 @@ class Log(Table):
     def as_beautiful_soup(self, htmldict={}, **kwargs):
 
         deflog = list(self.LOG_TYPES.keys())[0]
-        log_type = htmldict.get('log_type', self.LOG_TYPES.keys()[0])
+        log_type = htmldict.get('log_type', deflog)
 
         table_types = [key for key in self.LOG_TYPES[log_type]]
         soup = self._as_bs_helper(table_type=table_types[0], 
@@ -267,6 +284,20 @@ class Log(Table):
 
         return names
 
+    def get_kept_keys(self, table_type):
+        
+        all_keys = self.colnames
+        kept_keys = self.HTML_COLUMNS.get(table_type, all_keys).copy()
+
+        if kept_keys[0][0] == '-':
+            removed_keys = [k.removeprefix('-') for k in kept_keys]
+            kept_keys = all_keys
+            for key in removed_keys:
+                if key in kept_keys:
+                    kept_keys.remove(key.strip('-'))
+
+        return kept_keys
+
     def _as_bs_helper(self, *, table_type, htmldict={}, **kwargs):
 
         # Scalar call for detail.  
@@ -279,8 +310,7 @@ class Log(Table):
         else:
             what = f'at {telescope}'
        
-        all_keys = self.colnames
-        kept_keys = self.HTML_COLUMNS.get(table_type, all_keys).copy()
+        kept_keys = self.get_kept_keys(table_type)
         group_keys = self.HTML_ROW_GROUPS[table_type]
         sort_keys = self.HTML_SORT_KEYS.get(table_type, [])
         filter = self.HTML_ROW_FILTRES[table_type] 
@@ -373,14 +403,8 @@ class Log(Table):
 
         summary = summary[kept_keys]
 
-        # Shorten some values for visual compactness
- 
-        for key in summary.colnames:
-            if (key[-5:] == 'start' or key[-3:] == 'end' or 
-                    key[-3:] == 'set' or key[-4:] == 'rise'):
-                summary[key][...] = [s[11:16] for s in summary[key]]
-
-        caption = f"{subtitle} for {what}"
+        today = datetime.date.today().strftime('%Y-%m-%d')
+        caption = f"{subtitle} for {what} (updated on {today})"
 
         tel = telescope.split('-')[-1]
 
@@ -410,11 +434,10 @@ class Log(Table):
         # Some links to details
         if table_type == 'night':
             linkify_night(soup, link_type='local')
-
-        if table_type == 'start date':
+        elif table_type == 'start date':
             linkify_night(soup, link_type='archive')
 
-        if table_type == 'pid':
+        elif table_type == 'pid':
             linkify_pid(soup, link_type='archive')
  
         return soup
@@ -440,16 +463,21 @@ class Log(Table):
                 desc = f"Number of {desc}s"
                 name = f"n_{name[:-3]}"
                 if name == 'n_ob':
-                    name = 'total number of observations (OBs)'
+                    desc = 'total number of observing blocks'
                 elif name == 'n_exp':
-                    name = 'total number of exposures'
+                    desc = 'total number of exposures'
                 elif name == 'n_tpl':
-                    name = 'total number of observing templates'
+                    desc = 'total number of observing templates'
 
             descriptions.append(desc)
             names.append(name)
 
         # averaging / merging depending on column
+
+        def reduce(fun, val):
+            if np.ma.is_masked(val):
+                return np.ma.masked
+            return fun(val)
 
         rows = []
         for group in grouped.groups:
@@ -462,9 +490,9 @@ class Log(Table):
                 if name == 'date':
                     value = join_dates(values, upper_limit='open')
                 elif name[-6:] in [' start', '_start', 'sun_set']:
-                    value = min(values)
+                    value = reduce(min, values)
                 elif name[-4:] in [' end', '_end', 'sun_rise']:
-                    value = max(values)
+                    value = reduce(max, values)
                 elif col.unit and col.unit.physical_type == 'time':
                     value = sum(values)
                 elif name == 'exp_no':

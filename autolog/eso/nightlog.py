@@ -540,7 +540,9 @@ class NightLog(Log):
         exp_end.name = 'exp_end'
         exp_end.description = 'estimated end time of the exposure'
         start, exposure = self['exp_start'], self['exposure']
-        
+       
+        if np.ma.is_masked(exposure):
+            exposure[exposure.mask] = 0. 
         # IR/optical exposure overheads differ. About 1 min overhead per
         # optical exposure (works pretty well for WFI/FEROS/GROND in the common
         # modes) and 10 s for GROND IR.  Unfortunately the TAP doesn't give the
@@ -550,10 +552,8 @@ class NightLog(Log):
         
         # Add time for focus subexposures
         overhead += 320 * (self['dp_tech'] == 'TEL-THROUGH')
-        
         exp_end[...] = [add_seconds(s, float(e + o), timespec='seconds') 
-                    for s, e, o in zip(start, exposure, overhead)]  
-
+                        for s, e, o in zip(start, exposure, overhead)]  
         self.add_column(exp_end)
 
     def _average_conditions(self):

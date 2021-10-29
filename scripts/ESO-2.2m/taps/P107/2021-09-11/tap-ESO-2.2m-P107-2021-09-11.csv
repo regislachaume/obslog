@@ -1,0 +1,410 @@
+# %ECSV 0.9
+# ---
+# datatype:
+# - name: period
+#   datatype: int16
+#   description: ESO proposal cycle
+#   meta: !!omap
+#   - {ucd: obs.proposal.cycle}
+# - {name: object, datatype: string}
+# - {name: target, datatype: string}
+# - {name: target.mask, datatype: bool}
+# - name: ra
+#   unit: deg
+#   datatype: float64
+#   description: Right Ascension FK5 J2000
+#   meta: !!omap
+#   - {ucd: pos.eq.ra;meta.main}
+# - name: dec
+#   unit: deg
+#   datatype: float64
+#   description: Declination FK5 J2000
+#   meta: !!omap
+#   - {ucd: pos.eq.dec;meta.main}
+# - {name: dp_id, datatype: string}
+# - {name: telescope, datatype: string}
+# - {name: instrument, datatype: string}
+# - {name: prog_id, datatype: string}
+# - {name: pi_coi, datatype: string}
+# - {name: dp_cat, datatype: string}
+# - {name: dp_tech, datatype: string}
+# - {name: dp_type, datatype: string}
+# - name: exposure
+#   unit: s
+#   datatype: float32
+#   description: Total exposure time on target.
+#   meta: !!omap
+#   - {ucd: time.duration;obs.exposure}
+# - {name: det_dit, unit: s, datatype: float32, description: Detector Integration Time (Infrared instruments).}
+# - {name: det_dit.mask, datatype: bool}
+# - {name: filter_path, datatype: string}
+# - {name: ob_name, datatype: string}
+# - name: ob_id
+#   datatype: int32
+#   description: The identifier of the ESO Observation Block, a unique numeric ID assigned by the Observation Handling System
+#   meta: !!omap
+#   - {ucd: meta.id;obs;meta.main}
+# - name: tel_airm_start
+#   datatype: float32
+#   description: The airmass at the start of the observation.
+#   meta: !!omap
+#   - {ucd: obs.airMass;time.start}
+# - {name: tel_airm_start.mask, datatype: bool}
+# - name: tel_airm_end
+#   datatype: float32
+#   description: The airmass at the end of the observation.
+#   meta: !!omap
+#   - {ucd: obs.airMass;time.end}
+# - {name: tel_airm_end.mask, datatype: bool}
+# - name: tel_ambi_fwhm_start
+#   unit: arcsec
+#   datatype: float32
+#   description: The seeing measured by XXX at the start of the observation.
+#   meta: !!omap
+#   - {ucd: instr.obsty.seeing;time.start}
+# - {name: tel_ambi_fwhm_start.mask, datatype: bool}
+# - name: tel_ambi_fwhm_end
+#   unit: arcsec
+#   datatype: float32
+#   description: The seeing measured by XXX at the end of the observation.
+#   meta: !!omap
+#   - {ucd: instr.obsty.seeing;time.end}
+# - {name: tel_ambi_fwhm_end.mask, datatype: bool}
+# - name: tpl_seqno
+#   datatype: int32
+#   description: The template sequence number within the Observing Block
+#   meta: !!omap
+#   - {ucd: meta.id;obs;meta.number}
+# - {name: tpl_start, datatype: string}
+# - name: tpl_expno
+#   datatype: int32
+#   description: The exposure number within its template execution.
+#   meta: !!omap
+#   - {ucd: meta.id;obs;meta.number}
+# - {name: exp_start, datatype: string}
+# meta: !!omap
+# - {site: La Silla Observatory}
+# - {lon: -70.73000000000005}
+# - {lat: -29.25666666666666}
+# - {alt: 2346.999999998842}
+# - {telescope: ESO-2.2m}
+# - {period: 107}
+# - {night: '2021-09-11'}
+# - {rootdir: .}
+# - __serialized_columns__:
+#     dec:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: dec}
+#     det_dit:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: det_dit}
+#       mask: !astropy.table.SerializedColumn {name: det_dit.mask}
+#     dp_id:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: dp_id}
+#     dp_tech:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: dp_tech}
+#     dp_type:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: dp_type}
+#     exposure:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: exposure}
+#     filter_path:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: filter_path}
+#     ob_id:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: ob_id}
+#     period:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: period}
+#     ra:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: ra}
+#     target:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: target}
+#       mask: !astropy.table.SerializedColumn {name: target.mask}
+#     tel_airm_end:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: tel_airm_end}
+#       mask: !astropy.table.SerializedColumn {name: tel_airm_end.mask}
+#     tel_airm_start:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: tel_airm_start}
+#       mask: !astropy.table.SerializedColumn {name: tel_airm_start.mask}
+#     tel_ambi_fwhm_end:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: tel_ambi_fwhm_end}
+#       mask: !astropy.table.SerializedColumn {name: tel_ambi_fwhm_end.mask}
+#     tel_ambi_fwhm_start:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: tel_ambi_fwhm_start}
+#       mask: !astropy.table.SerializedColumn {name: tel_ambi_fwhm_start.mask}
+#     tpl_expno:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: tpl_expno}
+#     tpl_seqno:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: tpl_seqno}
+# schema: astropy-2.0
+period object target target.mask ra dec dp_id telescope instrument prog_id pi_coi dp_cat dp_tech dp_type exposure det_dit det_dit.mask filter_path ob_name ob_id tel_airm_start tel_airm_start.mask tel_airm_end tel_airm_end.mask tel_ambi_fwhm_start tel_ambi_fwhm_start.mask tel_ambi_fwhm_end tel_ambi_fwhm_end.mask tpl_seqno tpl_start tpl_expno exp_start
+60 BIAS DUMMY False 187.6858 -29.0017 WFI.2021-09-11T17:51:23.309 ESO-2.2m WFI 60.A-9120(A) "2P2 TEAM 20" CALIB IMAGE BIAS 0.0 nan True BB#RC/162_ESO844 testOB 100120012 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T17:51:15 1 2021-09-11T17:51:23
+60 FLAT,SCREEN "" True 192.44704388 -79.88189 WFI.2021-09-11T18:10:26.022 ESO-2.2m WFI 60.A-9120(A) "2P2 TEAM 20" CALIB IMAGE FLAT,SCREEN 0.91 nan True BB#RC/162_ESO844 DomeFlatsP106 100185402 1.574 False 1.574 False 4.56 False 4.56 False 1 2021-09-11T18:09:33 2 2021-09-11T18:10:26
+60 FLAT,SCREEN "" True 192.62048305 -79.88195 WFI.2021-09-11T18:11:08.026 ESO-2.2m WFI 60.A-9120(A) "2P2 TEAM 20" CALIB IMAGE FLAT,SCREEN 0.91 nan True BB#RC/162_ESO844 DomeFlatsP106 100185402 1.574 False 1.574 False 4.56 False 4.56 False 1 2021-09-11T18:09:33 3 2021-09-11T18:11:08
+60 FLAT,SCREEN "" True 192.79392388 -79.88201 WFI.2021-09-11T18:11:50.030 ESO-2.2m WFI 60.A-9120(A) "2P2 TEAM 20" CALIB IMAGE FLAT,SCREEN 0.91 nan True BB#RC/162_ESO844 DomeFlatsP106 100185402 1.574 False 1.574 False 4.56 False 4.56 False 1 2021-09-11T18:09:33 4 2021-09-11T18:11:50
+60 FLAT,SCREEN "" True 192.96736611 -79.88208 WFI.2021-09-11T18:12:32.035 ESO-2.2m WFI 60.A-9120(A) "2P2 TEAM 20" CALIB IMAGE FLAT,SCREEN 0.911 nan True BB#RC/162_ESO844 DomeFlatsP106 100185402 1.574 False 1.574 False 4.56 False 4.56 False 1 2021-09-11T18:09:33 5 2021-09-11T18:12:32
+60 FLAT,SCREEN "" True 193.14080805 -79.88214 WFI.2021-09-11T18:13:14.039 ESO-2.2m WFI 60.A-9120(A) "2P2 TEAM 20" CALIB IMAGE FLAT,SCREEN 0.91 nan True BB#RC/162_ESO844 DomeFlatsP106 100185402 1.574 False 1.574 False 4.56 False 4.56 False 1 2021-09-11T18:09:33 6 2021-09-11T18:13:14
+60 BIAS "" True -596.52323555 -596.52323555 FEROS.2021-09-11T18:19:39.497 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE BIAS 0.0 nan True "" "Calibration 1x1,normal" 100319512 nan True nan True nan True nan True 1 2021-09-11T18:19:34 1 2021-09-11T18:19:39
+60 BIAS "" True -596.52323555 -596.52323555 FEROS.2021-09-11T18:20:29.032 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE BIAS 0.0 nan True "" "Calibration 1x1,normal" 100319512 nan True nan True nan True nan True 1 2021-09-11T18:19:34 2 2021-09-11T18:20:29
+60 BIAS "" True -596.52323555 -596.52323555 FEROS.2021-09-11T18:21:17.128 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE BIAS 0.0 nan True "" "Calibration 1x1,normal" 100319512 nan True nan True nan True nan True 1 2021-09-11T18:19:34 3 2021-09-11T18:21:17
+106 "" "" True -596.52323555 -596.52323555 GROND.2021-09-11T18:21:49.054 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 nan True nan True nan True nan True 1 2021-09-11T18:21:38 2 2021-09-11T18:21:49
+106 "" "" True -596.52323555 -596.52323555 GROND.2021-09-11T18:21:49.466 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 6.474 nan True G,R,I,Z testOB -1 nan True nan True nan True nan True 1 2021-09-11T18:21:38 1 2021-09-11T18:21:49
+106 "" "" True -596.52323555 -596.52323555 GROND.2021-09-11T18:21:55.258 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 nan True nan True nan True nan True 1 2021-09-11T18:21:38 3 2021-09-11T18:21:55
+106 "" "" True -596.52323555 -596.52323555 GROND.2021-09-11T18:22:01.600 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 nan True nan True nan True nan True 1 2021-09-11T18:21:38 4 2021-09-11T18:22:01
+60 BIAS "" True -596.52323555 -596.52323555 FEROS.2021-09-11T18:22:06.643 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE BIAS 0.0 nan True "" "Calibration 1x1,normal" 100319512 nan True nan True nan True nan True 1 2021-09-11T18:19:34 4 2021-09-11T18:22:06
+106 "" "" True -596.52323555 -596.52323555 GROND.2021-09-11T18:22:07.806 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 nan True nan True nan True nan True 1 2021-09-11T18:21:38 5 2021-09-11T18:22:07
+106 "" "" True -596.52323555 -596.52323555 GROND.2021-09-11T18:22:14.038 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 nan True nan True nan True nan True 1 2021-09-11T18:21:38 6 2021-09-11T18:22:14
+106 "" "" True -596.52323555 -596.52323555 GROND.2021-09-11T18:22:20.338 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 nan True nan True nan True nan True 1 2021-09-11T18:21:38 7 2021-09-11T18:22:20
+60 BIAS "" True -596.52323555 -596.52323555 FEROS.2021-09-11T18:22:54.477 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE BIAS 0.0 nan True "" "Calibration 1x1,normal" 100319512 nan True nan True nan True nan True 1 2021-09-11T18:19:34 5 2021-09-11T18:22:54
+106 "" "" True 196.02566388 -29.15245 GROND.2021-09-11T18:24:26.154 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 6.509 nan True G,R,I,Z testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:23:50 1 2021-09-11T18:24:26
+106 "" "" True 196.33447305 -29.15261 GROND.2021-09-11T18:25:19.445 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 6.508 nan True G,R,I,Z testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:24:59 1 2021-09-11T18:25:19
+106 "" "" True 196.25935694 -29.15257 GROND.2021-09-11T18:25:19.665 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:24:59 2 2021-09-11T18:25:19
+106 "" "" True 196.28439611 -29.15259 GROND.2021-09-11T18:25:25.869 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:24:59 3 2021-09-11T18:25:25
+106 "" "" True 196.30943388 -29.1526 GROND.2021-09-11T18:25:32.124 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:24:59 4 2021-09-11T18:25:32
+106 "" "" True 196.33447305 -29.15261 GROND.2021-09-11T18:25:38.339 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:24:59 5 2021-09-11T18:25:38
+106 "" "" True 196.35951111 -29.15263 GROND.2021-09-11T18:25:44.578 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:24:59 6 2021-09-11T18:25:44
+106 "" "" True 196.39289611 -29.15264 GROND.2021-09-11T18:25:50.889 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:24:59 7 2021-09-11T18:25:50
+106 "" "" True 197.010515 -29.15298 GROND.2021-09-11T18:28:06.718 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 0.0 nan True G,R,I,Z testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 1 2021-09-11T18:28:06
+106 "" "" True 196.95209194 -29.15295 GROND.2021-09-11T18:28:07.324 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 2 2021-09-11T18:28:07
+106 "" "" True 196.98547694 -29.15297 GROND.2021-09-11T18:28:13.529 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 3 2021-09-11T18:28:13
+106 "" "" True 197.010515 -29.15298 GROND.2021-09-11T18:28:19.734 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 4 2021-09-11T18:28:19
+106 "" "" True 197.03555388 -29.15299 GROND.2021-09-11T18:28:25.937 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 5 2021-09-11T18:28:25
+106 "" "" True 197.06059305 -29.15301 GROND.2021-09-11T18:28:32.140 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 6 2021-09-11T18:28:32
+106 "" "" True 197.08563111 -29.15302 GROND.2021-09-11T18:28:38.344 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 7 2021-09-11T18:28:38
+106 "" "" True 197.11067 -29.15304 GROND.2021-09-11T18:28:44.547 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 8 2021-09-11T18:28:44
+106 "" "" True 197.13570888 -29.15305 GROND.2021-09-11T18:28:50.751 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 9 2021-09-11T18:28:50
+60 FLAT "" True -596.52323555 -596.52323555 FEROS.2021-09-11T18:28:54.204 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE FLAT 8.044 nan True "" "Calibration 1x1,normal" 100319512 nan True nan True nan True nan True 2 2021-09-11T18:23:39 1 2021-09-11T18:28:54
+106 "" "" True 197.16074694 -29.15306 GROND.2021-09-11T18:28:56.954 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 10 2021-09-11T18:28:56
+106 "" "" True 197.18578611 -29.15308 GROND.2021-09-11T18:29:03.158 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 11 2021-09-11T18:29:03
+106 "" "" True 197.21917111 -29.1531 GROND.2021-09-11T18:29:09.369 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 12 2021-09-11T18:29:09
+106 "" "" True 197.24420888 -29.15311 GROND.2021-09-11T18:29:15.574 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 13 2021-09-11T18:29:15
+106 "" "" True 197.26924805 -29.15312 GROND.2021-09-11T18:29:21.776 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 14 2021-09-11T18:29:21
+106 "" "" True 197.29428694 -29.15314 GROND.2021-09-11T18:29:27.980 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 15 2021-09-11T18:29:27
+106 "" "" True 197.319325 -29.15315 GROND.2021-09-11T18:29:34.185 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 16 2021-09-11T18:29:34
+106 "" "" True 197.34436388 -29.15317 GROND.2021-09-11T18:29:40.388 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 17 2021-09-11T18:29:40
+106 "" "" True 197.36940305 -29.15318 GROND.2021-09-11T18:29:46.593 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 18 2021-09-11T18:29:46
+106 "" "" True 197.39444111 -29.1532 GROND.2021-09-11T18:29:52.797 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 19 2021-09-11T18:29:52
+60 FLAT "" True -596.52323555 -596.52323555 FEROS.2021-09-11T18:29:54.480 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE FLAT 8.044 nan True "" "Calibration 1x1,normal" 100319512 nan True nan True nan True nan True 2 2021-09-11T18:23:39 2 2021-09-11T18:29:54
+106 "" "" True 197.41948 -29.15321 GROND.2021-09-11T18:29:59.000 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 20 2021-09-11T18:29:59
+106 "" "" True 197.44451888 -29.15322 GROND.2021-09-11T18:30:05.203 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 21 2021-09-11T18:30:05
+106 "" "" True 197.47790388 -29.15324 GROND.2021-09-11T18:30:13.436 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 22 2021-09-11T18:30:13
+106 "" "" True 197.51128888 -29.15326 GROND.2021-09-11T18:30:19.640 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 23 2021-09-11T18:30:19
+106 "" "" True 197.53632694 -29.15328 GROND.2021-09-11T18:30:25.844 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 24 2021-09-11T18:30:25
+106 "" "" True 197.56136611 -29.15329 GROND.2021-09-11T18:30:32.046 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 25 2021-09-11T18:30:32
+106 "" "" True 197.586405 -29.15331 GROND.2021-09-11T18:30:38.252 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 26 2021-09-11T18:30:38
+106 "" "" True 197.61144388 -29.15332 GROND.2021-09-11T18:30:44.453 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 27 2021-09-11T18:30:44
+106 "" "" True 197.63648194 -29.15333 GROND.2021-09-11T18:30:50.657 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 28 2021-09-11T18:30:50
+60 FLAT "" True -596.52323555 -596.52323555 FEROS.2021-09-11T18:30:54.016 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE FLAT 8.044 nan True "" "Calibration 1x1,normal" 100319512 nan True nan True nan True nan True 2 2021-09-11T18:23:39 3 2021-09-11T18:30:54
+106 "" "" True 197.66152111 -29.15335 GROND.2021-09-11T18:30:56.861 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 29 2021-09-11T18:30:56
+106 "" "" True 197.68656 -29.15336 GROND.2021-09-11T18:31:03.064 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 30 2021-09-11T18:31:03
+106 "" "" True 197.71159805 -29.15338 GROND.2021-09-11T18:31:09.269 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 31 2021-09-11T18:31:09
+106 "" "" True 197.74498305 -29.1534 GROND.2021-09-11T18:31:15.473 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 32 2021-09-11T18:31:15
+106 "" "" True 197.77002194 -29.15341 GROND.2021-09-11T18:31:21.675 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 33 2021-09-11T18:31:21
+106 "" "" True 197.79506111 -29.15343 GROND.2021-09-11T18:31:27.880 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 34 2021-09-11T18:31:27
+106 "" "" True 197.8201 -29.15344 GROND.2021-09-11T18:31:34.083 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 35 2021-09-11T18:31:34
+106 "" "" True 197.84513805 -29.15345 GROND.2021-09-11T18:31:40.286 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 36 2021-09-11T18:31:40
+106 "" "" True 197.87017694 -29.15347 GROND.2021-09-11T18:31:46.489 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 37 2021-09-11T18:31:46
+106 "" "" True 197.89521611 -29.15348 GROND.2021-09-11T18:31:52.694 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 38 2021-09-11T18:31:52
+60 FLAT "" True -596.52323555 -596.52323555 FEROS.2021-09-11T18:31:54.482 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE FLAT 8.044 nan True "" "Calibration 1x1,normal" 100319512 nan True nan True nan True nan True 2 2021-09-11T18:23:39 4 2021-09-11T18:31:54
+106 "" "" True 197.92025388 -29.1535 GROND.2021-09-11T18:31:58.898 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 39 2021-09-11T18:31:58
+106 "" "" True 197.94529305 -29.15351 GROND.2021-09-11T18:32:05.101 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 40 2021-09-11T18:32:05
+106 "" "" True 197.97033194 -29.15353 GROND.2021-09-11T18:32:11.304 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 41 2021-09-11T18:32:11
+106 "" "" True 198.00371694 -29.15355 GROND.2021-09-11T18:32:17.588 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 42 2021-09-11T18:32:17
+106 "" "" True 198.02875611 -29.15356 GROND.2021-09-11T18:32:23.794 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 43 2021-09-11T18:32:23
+106 "" "" True 198.05379388 -29.15358 GROND.2021-09-11T18:32:29.997 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 44 2021-09-11T18:32:29
+106 "" "" True 198.07883305 -29.15359 GROND.2021-09-11T18:32:36.198 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 45 2021-09-11T18:32:36
+106 "" "" True 198.10387194 -29.15361 GROND.2021-09-11T18:32:42.403 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 46 2021-09-11T18:32:42
+106 "" "" True 198.12891111 -29.15362 GROND.2021-09-11T18:32:48.608 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 47 2021-09-11T18:32:48
+60 FLAT "" True -596.52323555 -596.52323555 FEROS.2021-09-11T18:32:54.008 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE FLAT 8.044 nan True "" "Calibration 1x1,normal" 100319512 nan True nan True nan True nan True 2 2021-09-11T18:23:39 5 2021-09-11T18:32:54
+106 "" "" True 198.15395 -29.15364 GROND.2021-09-11T18:32:54.811 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 48 2021-09-11T18:32:54
+106 "" "" True 198.17898888 -29.15365 GROND.2021-09-11T18:33:01.015 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 49 2021-09-11T18:33:01
+106 "" "" True 198.20402694 -29.15367 GROND.2021-09-11T18:33:07.219 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 50 2021-09-11T18:33:07
+106 "" "" True 198.22906611 -29.15368 GROND.2021-09-11T18:33:13.423 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 51 2021-09-11T18:33:13
+106 "" "" True 198.26245111 -29.1537 GROND.2021-09-11T18:33:19.798 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 52 2021-09-11T18:33:19
+106 "" "" True 198.28749 -29.15372 GROND.2021-09-11T18:33:26.002 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 53 2021-09-11T18:33:26
+106 "" "" True 198.31252805 -29.15373 GROND.2021-09-11T18:33:32.206 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 54 2021-09-11T18:33:32
+106 "" "" True 198.33756694 -29.15375 GROND.2021-09-11T18:33:38.410 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 55 2021-09-11T18:33:38
+106 "" "" True 198.36260611 -29.15376 GROND.2021-09-11T18:33:44.615 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 56 2021-09-11T18:33:44
+106 "" "" True 198.387645 -29.15378 GROND.2021-09-11T18:33:50.818 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 57 2021-09-11T18:33:50
+60 FLAT "" True -596.52323555 -596.52323555 FEROS.2021-09-11T18:33:54.444 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE FLAT 8.044 nan True "" "Calibration 1x1,normal" 100319512 nan True nan True nan True nan True 2 2021-09-11T18:23:39 6 2021-09-11T18:33:54
+106 "" "" True 198.41268388 -29.15379 GROND.2021-09-11T18:33:57.024 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 58 2021-09-11T18:33:57
+106 "" "" True 198.43772194 -29.15381 GROND.2021-09-11T18:34:03.230 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 59 2021-09-11T18:34:03
+106 "" "" True 198.46276111 -29.15382 GROND.2021-09-11T18:34:09.432 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 60 2021-09-11T18:34:09
+106 "" "" True 198.49614611 -29.15384 GROND.2021-09-11T18:34:15.635 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:27:40 61 2021-09-11T18:34:15
+60 FLAT "" True -596.52323555 -596.52323555 FEROS.2021-09-11T18:34:54.001 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE FLAT 8.044 nan True "" "Calibration 1x1,normal" 100319512 nan True nan True nan True nan True 2 2021-09-11T18:23:39 7 2021-09-11T18:34:54
+106 "" "" True 198.77157305 -29.15401 GROND.2021-09-11T18:35:10.987 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 0.0 nan True G,R,I,Z testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:34:49 1 2021-09-11T18:35:10
+106 "" "" True 198.72984305 -29.15398 GROND.2021-09-11T18:35:12.855 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 1.772 1.7726 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:34:49 2 2021-09-11T18:35:12
+106 "" "" True 198.77157305 -29.15401 GROND.2021-09-11T18:35:22.737 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 1.772 1.7726 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:34:49 3 2021-09-11T18:35:22
+106 "" "" True 198.813305 -29.15404 GROND.2021-09-11T18:35:32.622 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 1.772 1.7726 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:34:49 4 2021-09-11T18:35:32
+106 "" "" True 198.85503611 -29.15406 GROND.2021-09-11T18:35:42.508 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 1.772 1.7726 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:34:49 5 2021-09-11T18:35:42
+106 "" "" True 198.89676805 -29.15409 GROND.2021-09-11T18:35:52.392 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 1.772 1.7726 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:34:49 6 2021-09-11T18:35:52
+60 FLAT "" True -596.52323555 -596.52323555 FEROS.2021-09-11T18:35:54.487 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE FLAT 8.044 nan True "" "Calibration 1x1,normal" 100319512 nan True nan True nan True nan True 2 2021-09-11T18:23:39 8 2021-09-11T18:35:54
+106 "" "" True 198.93849888 -29.15411 GROND.2021-09-11T18:36:02.275 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 1.772 1.7726 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:34:49 7 2021-09-11T18:36:02
+106 "" "" True 198.98023 -29.15414 GROND.2021-09-11T18:36:12.164 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 1.772 1.7726 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:34:49 8 2021-09-11T18:36:12
+106 "" "" True 199.02196194 -29.15417 GROND.2021-09-11T18:36:22.048 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 1.772 1.7726 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:34:49 9 2021-09-11T18:36:22
+106 "" "" True 199.05534694 -29.15419 GROND.2021-09-11T18:36:31.973 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 1.772 1.7726 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:34:49 10 2021-09-11T18:36:31
+106 "" "" True 199.09707888 -29.15421 GROND.2021-09-11T18:36:41.897 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 1.772 1.7726 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-11T18:34:49 11 2021-09-11T18:36:41
+60 FLAT "" True -596.52323555 -596.52323555 FEROS.2021-09-11T18:36:54.003 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE FLAT 8.044 nan True "" "Calibration 1x1,normal" 100319512 nan True nan True nan True nan True 2 2021-09-11T18:23:39 9 2021-09-11T18:36:54
+60 FLAT "" True -596.52323555 -596.52323555 FEROS.2021-09-11T18:37:54.458 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE FLAT 8.044 nan True "" "Calibration 1x1,normal" 100319512 nan True nan True nan True nan True 2 2021-09-11T18:23:39 10 2021-09-11T18:37:54
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2021-09-11T18:39:08.647 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 10.044 nan True "" "Calibration 1x1,normal" 100319512 nan True nan True nan True nan True 3 2021-09-11T18:38:51 1 2021-09-11T18:39:08
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2021-09-11T18:40:11.483 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 10.045 nan True "" "Calibration 1x1,normal" 100319512 nan True nan True nan True nan True 3 2021-09-11T18:38:51 2 2021-09-11T18:40:11
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2021-09-11T18:41:19.119 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 30.044 nan True "" "Calibration 1x1,normal" 100319512 nan True nan True nan True nan True 4 2021-09-11T18:41:10 1 2021-09-11T18:41:19
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2021-09-11T18:42:41.498 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 30.044 nan True "" "Calibration 1x1,normal" 100319512 nan True nan True nan True nan True 4 2021-09-11T18:41:10 2 2021-09-11T18:42:41
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2021-09-11T18:44:09.577 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 60.044 nan True "" "Calibration 1x1,normal" 100319512 nan True nan True nan True nan True 5 2021-09-11T18:44:00 1 2021-09-11T18:44:09
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2021-09-11T18:46:02.159 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 60.044 nan True "" "Calibration 1x1,normal" 100319512 nan True nan True nan True nan True 5 2021-09-11T18:44:00 2 2021-09-11T18:46:02
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2021-09-11T19:08:14.815 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 30.044 nan True "" "Calibration 1x1,normal" 100319512 nan True nan True nan True nan True 6 2021-09-11T18:47:50 1 2021-09-11T19:08:14
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2021-09-11T19:09:35.873 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 30.044 nan True "" "Calibration 1x1,normal" 100319512 nan True nan True nan True nan True 6 2021-09-11T18:47:50 2 2021-09-11T19:09:35
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2021-09-11T19:10:58.562 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 30.044 nan True "" "Calibration 1x1,normal" 100319512 nan True nan True nan True nan True 6 2021-09-11T18:47:50 3 2021-09-11T19:10:58
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2021-09-11T19:12:21.470 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 30.044 nan True "" "Calibration 1x1,normal" 100319512 nan True nan True nan True nan True 6 2021-09-11T18:47:50 4 2021-09-11T19:12:21
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2021-09-11T19:13:42.669 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 30.044 nan True "" "Calibration 1x1,normal" 100319512 nan True nan True nan True nan True 6 2021-09-11T18:47:50 5 2021-09-11T19:13:42
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2021-09-11T19:15:05.477 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 30.044 nan True "" "Calibration 1x1,normal" 100319512 nan True nan True nan True nan True 6 2021-09-11T18:47:50 6 2021-09-11T19:15:05
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2021-09-11T19:16:28.186 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 30.044 nan True "" "Calibration 1x1,normal" 100319512 nan True nan True nan True nan True 6 2021-09-11T18:47:50 7 2021-09-11T19:16:28
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2021-09-11T19:17:49.044 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 30.044 nan True "" "Calibration 1x1,normal" 100319512 nan True nan True nan True nan True 6 2021-09-11T18:47:50 8 2021-09-11T19:17:49
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2021-09-11T19:19:11.492 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 30.044 nan True "" "Calibration 1x1,normal" 100319512 nan True nan True nan True nan True 6 2021-09-11T18:47:50 9 2021-09-11T19:19:11
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2021-09-11T19:20:33.151 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 30.044 nan True "" "Calibration 1x1,normal" 100319512 nan True nan True nan True nan True 6 2021-09-11T18:47:50 10 2021-09-11T19:20:33
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2021-09-11T19:21:54.049 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 30.044 nan True "" "Calibration 1x1,normal" 100319512 nan True nan True nan True nan True 6 2021-09-11T18:47:50 11 2021-09-11T19:21:54
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2021-09-11T19:23:16.467 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 30.044 nan True "" "Calibration 1x1,normal" 100319512 nan True nan True nan True nan True 6 2021-09-11T18:47:50 12 2021-09-11T19:23:16
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2021-09-11T19:24:39.466 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 30.044 nan True "" "Calibration 1x1,normal" 100319512 nan True nan True nan True nan True 6 2021-09-11T18:47:50 13 2021-09-11T19:24:39
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2021-09-11T19:26:00.674 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 30.044 nan True "" "Calibration 1x1,normal" 100319512 nan True nan True nan True nan True 6 2021-09-11T18:47:50 14 2021-09-11T19:26:00
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2021-09-11T19:27:23.173 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 30.044 nan True "" "Calibration 1x1,normal" 100319512 nan True nan True nan True nan True 6 2021-09-11T18:47:50 15 2021-09-11T19:27:23
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2021-09-11T19:28:45.191 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 30.044 nan True "" "Calibration 1x1,normal" 100319512 nan True nan True nan True nan True 6 2021-09-11T18:47:50 16 2021-09-11T19:28:45
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2021-09-11T19:30:06.629 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 30.044 nan True "" "Calibration 1x1,normal" 100319512 nan True nan True nan True nan True 6 2021-09-11T18:47:50 17 2021-09-11T19:30:06
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2021-09-11T19:31:28.169 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 30.044 nan True "" "Calibration 1x1,normal" 100319512 nan True nan True nan True nan True 6 2021-09-11T18:47:50 18 2021-09-11T19:31:28
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2021-09-11T19:32:50.437 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 30.044 nan True "" "Calibration 1x1,normal" 100319512 nan True nan True nan True nan True 6 2021-09-11T18:47:50 19 2021-09-11T19:32:50
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2021-09-11T19:34:10.684 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 30.044 nan True "" "Calibration 1x1,normal" 100319512 nan True nan True nan True nan True 6 2021-09-11T18:47:50 20 2021-09-11T19:34:10
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2021-09-11T19:35:39.544 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 150.044 nan True "" "Calibration 1x1,normal" 100319512 nan True nan True nan True nan True 7 2021-09-11T19:35:30 1 2021-09-11T19:35:39
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2021-09-11T19:39:02.125 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 150.044 nan True "" "Calibration 1x1,normal" 100319512 nan True nan True nan True nan True 7 2021-09-11T19:35:30 2 2021-09-11T19:39:02
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2021-09-11T19:42:29.035 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 300.044 nan True "" "Calibration 1x1,normal" 100319512 nan True nan True nan True nan True 8 2021-09-11T19:42:20 1 2021-09-11T19:42:29
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2021-09-11T19:48:19.992 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 300.044 nan True "" "Calibration 1x1,normal" 100319512 nan True nan True nan True nan True 8 2021-09-11T19:42:20 2 2021-09-11T19:48:19
+106 "" "" True 293.57140305 -29.27888 GROND.2021-09-12T00:53:12.109 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 6.5 nan True G,R,I,Z testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-12T00:52:47 1 2021-09-12T00:53:12
+106 "" "" True 293.48781305 -29.27872 GROND.2021-09-12T00:53:14.924 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-12T00:52:47 2 2021-09-12T00:53:14
+106 "" "" True 293.52125 -29.27879 GROND.2021-09-12T00:53:21.169 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-12T00:52:47 3 2021-09-12T00:53:21
+106 "" "" True 293.546325 -29.27884 GROND.2021-09-12T00:53:27.570 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-12T00:52:47 4 2021-09-12T00:53:27
+106 "" "" True 293.57140305 -29.27888 GROND.2021-09-12T00:53:33.788 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-12T00:52:47 5 2021-09-12T00:53:33
+106 "" "" True 293.59648 -29.27893 GROND.2021-09-12T00:53:40.152 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-12T00:52:47 6 2021-09-12T00:53:40
+106 "" "" True 293.62155694 -29.27898 GROND.2021-09-12T00:53:46.355 ESO-2.2m GROND 0106.A-9099(A) "RAU, A" SCIENCE IMAGE OBJECT 2.0 2.0 False J,H,K testOB -1 1.0 False 1.0 False 4.56 False 4.56 False 1 2021-09-12T00:52:47 7 2021-09-12T00:53:46
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92431611 -19.72598 GROND.2021-09-12T01:03:56.311 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 114.856 nan True G,R,I,Z PSO242.92510-19.72637_P2 -1 1.537 False 1.537 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 1 2021-09-12T01:03:56
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92456805 -19.72588 GROND.2021-09-12T01:03:59.005 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.523 False 1.524 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 2 2021-09-12T01:03:59
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.924585 -19.72588 GROND.2021-09-12T01:04:13.208 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.524 False 1.526 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 3 2021-09-12T01:04:13
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92454194 -19.726 GROND.2021-09-12T01:04:27.552 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.526 False 1.527 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 4 2021-09-12T01:04:27
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92447305 -19.72612 GROND.2021-09-12T01:04:41.756 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.528 False 1.529 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 5 2021-09-12T01:04:41
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92445805 -19.72617 GROND.2021-09-12T01:04:56.123 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.529 False 1.531 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 6 2021-09-12T01:04:56
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92437805 -19.72614 GROND.2021-09-12T01:05:10.327 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.531 False 1.532 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 7 2021-09-12T01:05:10
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92435111 -19.72614 GROND.2021-09-12T01:05:24.587 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.532 False 1.534 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 8 2021-09-12T01:05:24
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92429111 -19.72607 GROND.2021-09-12T01:05:38.789 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.534 False 1.535 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 9 2021-09-12T01:05:38
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92443111 -19.72609 GROND.2021-09-12T01:05:53.055 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.536 False 1.537 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 10 2021-09-12T01:05:53
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92431611 -19.72598 GROND.2021-09-12T01:06:07.307 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.537 False 1.539 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 11 2021-09-12T01:06:07
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92424388 -19.72594 GROND.2021-09-12T01:06:21.608 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.539 False 1.54 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 12 2021-09-12T01:06:21
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92417111 -19.72618 GROND.2021-09-12T01:06:35.813 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.54 False 1.542 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 13 2021-09-12T01:06:35
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92497194 -19.72055 GROND.2021-09-12T01:07:08.265 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.544 False 1.546 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 15 2021-09-12T01:07:08
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.925215 -19.72083 GROND.2021-09-12T01:07:08.943 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 114.923 nan True G,R,I,Z PSO242.92510-19.72637_P2 -1 1.559 False 1.56 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 14 2021-09-12T01:07:08
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.925265 -19.72059 GROND.2021-09-12T01:07:22.469 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.546 False 1.547 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 16 2021-09-12T01:07:22
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92514111 -19.72086 GROND.2021-09-12T01:07:36.697 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.547 False 1.549 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 17 2021-09-12T01:07:36
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92524805 -19.72087 GROND.2021-09-12T01:07:50.899 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.549 False 1.551 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 18 2021-09-12T01:07:50
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92538805 -19.72083 GROND.2021-09-12T01:08:05.144 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.551 False 1.552 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 19 2021-09-12T01:08:05
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92534888 -19.72071 GROND.2021-09-12T01:08:19.346 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.552 False 1.554 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 20 2021-09-12T01:08:19
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92534805 -19.72087 GROND.2021-09-12T01:08:33.600 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.554 False 1.556 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 21 2021-09-12T01:08:33
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92539194 -19.72091 GROND.2021-09-12T01:08:47.805 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.556 False 1.557 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 22 2021-09-12T01:08:47
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92525805 -19.72083 GROND.2021-09-12T01:09:02.069 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.557 False 1.559 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 23 2021-09-12T01:09:02
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.925215 -19.72083 GROND.2021-09-12T01:09:16.276 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.559 False 1.561 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 24 2021-09-12T01:09:16
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92520111 -19.72088 GROND.2021-09-12T01:09:30.582 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.561 False 1.562 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 25 2021-09-12T01:09:30
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92510888 -19.72079 GROND.2021-09-12T01:09:44.787 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.562 False 1.564 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 26 2021-09-12T01:09:44
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.929185 -19.72961 GROND.2021-09-12T01:10:16.647 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.566 False 1.568 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 28 2021-09-12T01:10:16
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92937388 -19.72968 GROND.2021-09-12T01:10:17.354 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 114.906 nan True G,R,I,Z PSO242.92510-19.72637_P2 -1 1.582 False 1.582 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 27 2021-09-12T01:10:17
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92920305 -19.72959 GROND.2021-09-12T01:10:30.851 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.568 False 1.569 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 29 2021-09-12T01:10:30
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92936805 -19.72952 GROND.2021-09-12T01:10:45.107 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.57 False 1.571 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 30 2021-09-12T01:10:45
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92916611 -19.72961 GROND.2021-09-12T01:10:59.309 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.571 False 1.573 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 31 2021-09-12T01:10:59
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.929355 -19.72963 GROND.2021-09-12T01:11:13.610 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.573 False 1.574 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 32 2021-09-12T01:11:13
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92935194 -19.72943 GROND.2021-09-12T01:11:27.815 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.575 False 1.576 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 33 2021-09-12T01:11:27
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92944805 -19.72959 GROND.2021-09-12T01:11:42.074 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.576 False 1.578 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 34 2021-09-12T01:11:42
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.929415 -19.72949 GROND.2021-09-12T01:11:56.275 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.578 False 1.58 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 35 2021-09-12T01:11:56
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92932111 -19.7295 GROND.2021-09-12T01:12:10.479 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.58 False 1.582 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 36 2021-09-12T01:12:10
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92937388 -19.72968 GROND.2021-09-12T01:12:24.690 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.582 False 1.583 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 37 2021-09-12T01:12:24
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92937694 -19.72953 GROND.2021-09-12T01:12:39.094 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.584 False 1.585 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 38 2021-09-12T01:12:39
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92941388 -19.72969 GROND.2021-09-12T01:12:53.298 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.585 False 1.587 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 39 2021-09-12T01:12:53
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.91922694 -19.72856 GROND.2021-09-12T01:13:25.285 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.59 False 1.591 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 41 2021-09-12T01:13:25
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.91967388 -19.72861 GROND.2021-09-12T01:13:25.976 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 114.919 nan True G,R,I,Z PSO242.92510-19.72637_P2 -1 1.606 False 1.606 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 40 2021-09-12T01:13:25
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.91940388 -19.72842 GROND.2021-09-12T01:13:39.490 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.591 False 1.593 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 42 2021-09-12T01:13:39
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.91932388 -19.72844 GROND.2021-09-12T01:13:53.715 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.593 False 1.595 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 43 2021-09-12T01:13:53
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.91928805 -19.72854 GROND.2021-09-12T01:14:07.919 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.595 False 1.597 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 44 2021-09-12T01:14:07
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.91929694 -19.72867 GROND.2021-09-12T01:14:22.161 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.597 False 1.598 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 45 2021-09-12T01:14:22
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.919415 -19.72848 GROND.2021-09-12T01:14:36.365 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.598 False 1.6 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 46 2021-09-12T01:14:36
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.91945111 -19.72866 GROND.2021-09-12T01:14:50.619 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.6 False 1.602 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 47 2021-09-12T01:14:50
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.91956388 -19.72855 GROND.2021-09-12T01:15:04.822 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.602 False 1.604 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 48 2021-09-12T01:15:04
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.91959888 -19.7287 GROND.2021-09-12T01:15:19.200 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.604 False 1.605 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 49 2021-09-12T01:15:19
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.91967388 -19.72861 GROND.2021-09-12T01:15:33.451 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.606 False 1.607 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 50 2021-09-12T01:15:33
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.91956888 -19.72866 GROND.2021-09-12T01:15:47.720 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.607 False 1.609 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 51 2021-09-12T01:15:47
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.919545 -19.72858 GROND.2021-09-12T01:16:01.925 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.609 False 1.611 False 4.56 False 4.56 False 2 2021-09-12T01:03:31 52 2021-09-12T01:16:01
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.9249 -19.72675 GROND.2021-09-12T01:16:50.132 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 114.902 nan True G,R,I,Z PSO242.92510-19.72637_P2 -1 1.632 False 1.633 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 1 2021-09-12T01:16:50
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92475111 -19.72655 GROND.2021-09-12T01:16:50.294 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.615 False 1.617 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 2 2021-09-12T01:16:50
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92470194 -19.72643 GROND.2021-09-12T01:17:04.499 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.617 False 1.619 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 3 2021-09-12T01:17:04
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.924675 -19.72657 GROND.2021-09-12T01:17:18.800 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.619 False 1.621 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 4 2021-09-12T01:17:18
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92460805 -19.7266 GROND.2021-09-12T01:17:33.005 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.621 False 1.623 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 5 2021-09-12T01:17:33
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92458611 -19.7263 GROND.2021-09-12T01:17:47.263 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.623 False 1.624 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 6 2021-09-12T01:17:47
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92469805 -19.72658 GROND.2021-09-12T01:18:01.467 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.624 False 1.626 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 7 2021-09-12T01:18:01
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92473305 -19.72659 GROND.2021-09-12T01:18:15.672 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.627 False 1.628 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 8 2021-09-12T01:18:15
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92473611 -19.72678 GROND.2021-09-12T01:18:29.875 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.628 False 1.63 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 9 2021-09-12T01:18:29
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.9248 -19.72673 GROND.2021-09-12T01:18:44.155 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.63 False 1.632 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 10 2021-09-12T01:18:44
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.9249 -19.72675 GROND.2021-09-12T01:18:58.396 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.632 False 1.634 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 11 2021-09-12T01:18:58
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92491194 -19.7267 GROND.2021-09-12T01:19:12.713 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.634 False 1.636 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 12 2021-09-12T01:19:12
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.925045 -19.72675 GROND.2021-09-12T01:19:26.918 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.636 False 1.638 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 13 2021-09-12T01:19:26
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92585611 -19.72119 GROND.2021-09-12T01:19:56.387 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.64 False 1.642 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 15 2021-09-12T01:19:56
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92564 -19.72144 GROND.2021-09-12T01:19:57.083 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 114.909 nan True G,R,I,Z PSO242.92510-19.72637_P2 -1 1.658 False 1.658 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 14 2021-09-12T01:19:57
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92574805 -19.7213 GROND.2021-09-12T01:20:10.590 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.642 False 1.644 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 16 2021-09-12T01:20:10
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92569 -19.72143 GROND.2021-09-12T01:20:24.831 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.644 False 1.646 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 17 2021-09-12T01:20:24
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92576611 -19.72148 GROND.2021-09-12T01:20:39.035 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.646 False 1.648 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 18 2021-09-12T01:20:39
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92571 -19.72131 GROND.2021-09-12T01:20:53.402 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.648 False 1.65 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 19 2021-09-12T01:20:53
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92553194 -19.72127 GROND.2021-09-12T01:21:07.607 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.65 False 1.651 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 20 2021-09-12T01:21:07
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92542 -19.72142 GROND.2021-09-12T01:21:21.913 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.652 False 1.654 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 21 2021-09-12T01:21:21
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92556111 -19.72146 GROND.2021-09-12T01:21:36.158 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.654 False 1.656 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 22 2021-09-12T01:21:36
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92560611 -19.7213 GROND.2021-09-12T01:21:50.484 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.656 False 1.658 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 23 2021-09-12T01:21:50
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92564 -19.72144 GROND.2021-09-12T01:22:04.737 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.658 False 1.659 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 24 2021-09-12T01:22:04
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92564111 -19.72137 GROND.2021-09-12T01:22:18.946 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.659 False 1.661 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 25 2021-09-12T01:22:18
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92565305 -19.7215 GROND.2021-09-12T01:22:33.150 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.661 False 1.663 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 26 2021-09-12T01:22:33
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92980805 -19.73021 GROND.2021-09-12T01:23:08.895 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 114.908 nan True G,R,I,Z PSO242.92510-19.72637_P2 -1 1.685 False 1.685 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 27 2021-09-12T01:23:08
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92967194 -19.73036 GROND.2021-09-12T01:23:09.452 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.666 False 1.668 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 28 2021-09-12T01:23:09
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92985111 -19.73005 GROND.2021-09-12T01:23:23.656 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.668 False 1.67 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 29 2021-09-12T01:23:23
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.929875 -19.73004 GROND.2021-09-12T01:23:37.938 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.67 False 1.672 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 30 2021-09-12T01:23:37
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92981805 -19.73014 GROND.2021-09-12T01:23:52.142 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.672 False 1.674 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 31 2021-09-12T01:23:52
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92997305 -19.73016 GROND.2021-09-12T01:24:06.471 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.674 False 1.676 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 32 2021-09-12T01:24:06
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92997805 -19.72999 GROND.2021-09-12T01:24:20.715 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.676 False 1.678 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 33 2021-09-12T01:24:20
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.929945 -19.73016 GROND.2021-09-12T01:24:34.933 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.678 False 1.68 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 34 2021-09-12T01:24:34
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92993388 -19.7302 GROND.2021-09-12T01:24:49.135 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.68 False 1.682 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 35 2021-09-12T01:24:49
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92989694 -19.73007 GROND.2021-09-12T01:25:03.369 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.683 False 1.684 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 36 2021-09-12T01:25:03
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92980805 -19.73021 GROND.2021-09-12T01:25:17.602 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.685 False 1.686 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 37 2021-09-12T01:25:17
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92973388 -19.73011 GROND.2021-09-12T01:25:31.840 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.687 False 1.689 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 38 2021-09-12T01:25:31
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92969805 -19.73022 GROND.2021-09-12T01:25:46.044 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.689 False 1.691 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 39 2021-09-12T01:25:46
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.920375 -19.72914 GROND.2021-09-12T01:26:21.377 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 114.92 nan True G,R,I,Z PSO242.92510-19.72637_P2 -1 1.713 False 1.714 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 40 2021-09-12T01:26:21
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.91970805 -19.72905 GROND.2021-09-12T01:26:22.346 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.694 False 1.696 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 41 2021-09-12T01:26:22
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.91983388 -19.72912 GROND.2021-09-12T01:26:36.550 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.696 False 1.699 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 42 2021-09-12T01:26:36
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92003805 -19.72911 GROND.2021-09-12T01:26:50.806 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.699 False 1.701 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 43 2021-09-12T01:26:50
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92009888 -19.72916 GROND.2021-09-12T01:27:05.011 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.701 False 1.703 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 44 2021-09-12T01:27:05
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92015305 -19.72907 GROND.2021-09-12T01:27:19.271 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.703 False 1.705 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 45 2021-09-12T01:27:19
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92027388 -19.72908 GROND.2021-09-12T01:27:33.475 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.705 False 1.707 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 46 2021-09-12T01:27:33
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92018611 -19.72908 GROND.2021-09-12T01:27:47.739 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.707 False 1.709 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 47 2021-09-12T01:27:47
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92025611 -19.72925 GROND.2021-09-12T01:28:01.940 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.709 False 1.711 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 48 2021-09-12T01:28:01
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92027805 -19.72915 GROND.2021-09-12T01:28:16.248 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.711 False 1.713 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 49 2021-09-12T01:28:16
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.920375 -19.72914 GROND.2021-09-12T01:28:30.455 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.713 False 1.716 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 50 2021-09-12T01:28:30
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92010888 -19.72911 GROND.2021-09-12T01:28:44.763 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.716 False 1.718 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 51 2021-09-12T01:28:44
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92017388 -19.72913 GROND.2021-09-12T01:28:58.967 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.718 False 1.72 False 4.56 False 4.56 False 3 2021-09-12T01:16:27 52 2021-09-12T01:28:58
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92555111 -19.72713 GROND.2021-09-12T01:29:44.982 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.725 False 1.727 False 4.56 False 4.56 False 4 2021-09-12T01:29:24 2 2021-09-12T01:29:44
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92572194 -19.72722 GROND.2021-09-12T01:29:45.653 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 114.682 nan True G,R,I,Z PSO242.92510-19.72637_P2 -1 1.736 False 1.584 False 4.56 False 4.56 False 4 2021-09-12T01:29:24 1 2021-09-12T01:29:45
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92551694 -19.72713 GROND.2021-09-12T01:29:59.187 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.727 False 1.729 False 4.56 False 4.56 False 4 2021-09-12T01:29:24 3 2021-09-12T01:29:59
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92554111 -19.72719 GROND.2021-09-12T01:30:13.493 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.729 False 1.731 False 4.56 False 4.56 False 4 2021-09-12T01:29:24 4 2021-09-12T01:30:13
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92564694 -19.72729 GROND.2021-09-12T01:30:27.698 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.731 False 1.733 False 4.56 False 4.56 False 4 2021-09-12T01:29:24 5 2021-09-12T01:30:27
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92565805 -19.72708 GROND.2021-09-12T01:30:41.919 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.734 False 1.736 False 4.56 False 4.56 False 4 2021-09-12T01:29:24 6 2021-09-12T01:30:41
+107 PSO242.92510-19.72637 PSO242.92510-19.72637 False 242.92572194 -19.72722 GROND.2021-09-12T01:30:56.123 ESO-2.2m GROND 0107.A-9001(A) "BANADOS, E" SCIENCE IMAGE OBJECT 10.0 10.0 False J,H,K PSO242.92510-19.72637_P2 -1 1.736 False 1.738 False 4.56 False 4.56 False 4 2021-09-12T01:29:24 7 2021-09-12T01:30:56
+0 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx False 0.0 0.0 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 0.0 0.0 False xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 0 0.0 False 0.0 False 0.0 False 0.0 False 0 xxxxxxxxxxxxxxxxxxx 0 xxxxxxxxxxxxxxxxxxx

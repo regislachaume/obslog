@@ -3,6 +3,7 @@ from astropy.table import Table as _Table
 import numpy as np
 from bs4 import BeautifulSoup
 from io import StringIO
+import os
 
 def BS(arg):
     return BeautifulSoup(arg, features='lxml')
@@ -106,21 +107,22 @@ class Table(_Table):
 
         if format in ['ascii.html', 'html']:
 
-            # htmldict = kwargs.pop('htmldict', {})
-
+            overwrite = kwargs.pop('overwrite', False)
+            if isinstance(output, str):
+                if not overwrite and os.path.exists(output):
+                    raise RuntimeError('cannot overwrite existing file')
+                fh = open(output, 'w')
+            else:
+                fh = output
+            
             soup = self.as_beautiful_soup(**kwargs)
             text = "<!DOCTYPE html>\n"
             text += soup.prettify()
 
-            if isinstance(output, str):
-                fh = open(output, 'w')
-            else:
-                fh = output
             fh.write(text)
 
         elif format == 'ascii.ecsv':
             
-
             print('Saving to ascii.ecsv')    
             # ensure str column width is preserved
 

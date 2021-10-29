@@ -24,4 +24,3 @@ log = PeriodLog.fetch(telescope, period, **opts)
 for log_type in ['log', 'target', 'report']:
    log.save(log_type=log_type, format='html')
    log.publish(log_type=log_type)
-

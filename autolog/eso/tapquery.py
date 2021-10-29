@@ -38,6 +38,7 @@ It keeps a local copy of requests to save on internet bandpass"""
             'dp_type': '<U30', 
             'exposure': '<f4', 
             'det_dit': '<f4', 
+            'det_ndit': '<i2',
             'filter_path': '<U255', 
             'ob_name': '<U70', 
             'ob_id': '<i4',
@@ -62,7 +63,7 @@ It keeps a local copy of requests to save on internet bandpass"""
  
         # La Silla telescopes were poorly handled in headers
 
-        site, telscope_names = parse_telescope(telescope)
+        site, telescope_names = parse_telescope(telescope)
 
         # Set the TAP & defaults
 
@@ -123,12 +124,17 @@ It keeps a local copy of requests to save on internet bandpass"""
         # TAP is not consistent with telescope name, ensure one is used
 
         tab['telescope'] = telescope
-         
+
         # char of variable size return by ESO TAP is rendered as object
         # by pyvo.  We fix that to get strings.  Empty ones are considered
         # masked.
-        
+       
         self._fix_column_types(tab)
+
+        #
+
+        self._fix_missing_exposures(tab)
+
 
         # use human unreadable TABLE_FORMAT == 'ascii.ecsv' to ensure 
         # full reversibility in read/write operations
@@ -140,7 +146,25 @@ It keeps a local copy of requests to save on internet bandpass"""
             print(f"Could not cache to {filename}")
 
         return tab
-    
+
+    @classmethod
+    def _fix_missing_exposures(cls, tab):
+
+        # GROND issue here
+
+        issue = (tab['instrument'] == 'GROND') & tab['exposure'].mask
+        tab['exposure'][issue] = 0
+
+        ir = issue * ~tab['det_dit'].mask 
+        tab['exposure'][ir] = tab['det_dit'][ir] * tab['det_ndit'][ir]
+        tab['filter_path'][ir] = 'J,H,K'
+
+        opt = issue * tab['det_dit'].mask
+        tab['filter_path'][opt] = 'G,R,I,Z'
+
+        tab.remove_column('det_ndit')
+
+        
     @classmethod
     def _fix_column_types(cls, tab):
         
@@ -168,8 +192,8 @@ It keeps a local copy of requests to save on internet bandpass"""
             
             # cast to correct type
             elif (str_ := cls.KEYS.get(name, '')) and col.dtype.str != str_:
-        
-                new_col = np.ma.masked_array(col, dtype=dtype)
+       
+                new_col = np.ma.masked_array(col, dtype=str_)
                 tab.replace_column(name, new_col)
    
             # ensure masked! 

@@ -94,23 +94,33 @@ class Allocation(Table):
         pid, object, ob_name = log_entry['used_pid', 'object', 'ob_name']
         instrument = log_entry['instrument']
         date = log_entry['ob_start']
-        
+
+        if np.ma.is_masked(object):
+            object = ''
+
         # Look if it has been observed with a wrong PID.  The fixes table is
         # manually maintained by a 2.2m SA for transient/target-dependent
         # issues.
-               
+              
+        if pid == '0104.A-9033(A)':
+            print(pid, object, ob_name, instrument, date)
+ 
         for fix in self.meta['pid_fixes']:
             
             if fix['Used PID'] in pid:
                 
                 obj, name = fix['Object', 'OB name']
                 d1, d2 = fix['Start date', 'End date']
- 
-                if (obj != '' and not re.search(obj, object) or
-                    name != '' and not re.search(name, ob_name) or
-                    d1 is not np.ma.masked and date < d1 or
-                    d2 is not np.ma.masked and date > d2):
-                    continue
+                     
+
+                try: 
+                    if (obj and not re.search(obj, object) or
+                        name and not re.search(name, ob_name) or
+                        d1 and date < d1 or
+                        d2 and date > d2):
+                        continue
+                except:
+                    raise
 
                 pid = fix['Nominal PID']
                 break

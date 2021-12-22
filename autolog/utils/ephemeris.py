@@ -21,7 +21,7 @@ def _down_span(observer, start, midnight, end, type='night'):
     warnings.simplefilter('error', category=AstroplanWarning)
 
     if type == 'down':
-        h = -0.8333 * deg
+        h = -2 * deg # it seems horizon dip is somehow not included? 
     elif type == 'nautical':
         h = -6 * deg
     elif type == 'astronomical':

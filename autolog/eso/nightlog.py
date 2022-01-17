@@ -240,7 +240,7 @@ class NightLog(Log):
             row[key].mask = True
 
         uname = [n.upper() for n in name]
-        row['pi'] = ' '.join([*name, 'downtime'])[0:20]
+        row['pi'] = 'N/A'
         row['used_pid'] =  '/'.join(['IDLE', *uname])[0:14]
         row['object'] = 'IDLE'
         row['ob_name'] = 'Telescope_Idle'

@@ -373,7 +373,7 @@ class Log(Table):
 
             progress = executed / allocated
 
-            col = Column(executed, name='executed')
+            col = Column(executed, name='executed', unit='h')
             summary.add_column(col)
     
             col = MaskedColumn(progress, name='progress', format='.0%')

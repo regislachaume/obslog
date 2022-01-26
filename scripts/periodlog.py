@@ -15,8 +15,8 @@ telescope = 'ESO-2.2m'
 cls = NightLog
 opts = dict(
     rootdir = '.',
-    use_tap_cache = True,
-    use_log_cache = True,
+    use_tap_cache = False,
+    use_log_cache = False,
 )
 
 log = PeriodLog.fetch(telescope, period, **opts) 

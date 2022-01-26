@@ -183,7 +183,7 @@ class Allocation(Table):
 
         filename = alloc.get_filename(ext=ext, makedirs=True)
         
-        alloc.write(filename, format=format)
+        alloc.write(filename, format=format, overwrite=True)
 
     def as_beautiful_soup(self, caption=None, exclude_names=['Identifiers']):
       

@@ -21,5 +21,5 @@ opts = dict(
 
 log = NightLog.fetch(telescope, night, **opts) 
 
-# log.save(format='html')
+#log.save(format='html')
 # log.publish()

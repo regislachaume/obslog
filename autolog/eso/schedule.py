@@ -52,6 +52,7 @@ class Schedule(log.Log):
 
         support = [s for s in self['support'] if s]
         tios = np.unique(np.hstack([tios.split(', ') for tios in support]))
+        
         for tio in tios:
             on_duty = [tio in support for support in self['support']]
             duty = self[on_duty]

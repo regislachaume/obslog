@@ -16,26 +16,30 @@ echo "" >> $LOG
 
 cd ${MAINDIR}
 echo "github pull in ${MAINDIR}" >> $LOG
-git pull >> $LOG
+git pull >> $LOG 2>> $LOG
 
 cd ${WWWDIR}
 echo "github pull in ${WWWDIR}" >> $LOG
-git pull >> $LOG 
+git pull >> $LOG 2>> $LOG
 
 cd ${SCRIPTDIR}
-./periodlog.py >> $LOG
+./periodlog.py >> $LOG 2>> $LOG
 
 cd ${MAINDIR}
-echo "github push in ${MAINDIR}" > $LOG
-git add * >> $LOG 
-git commit -m"automatic update of ${DATE}" >> $LOG
-git push >> $LOG
+echo "git add * in ${MAINDIR}" >> $LOG
+git add * >> $LOG 2>> $LOG
+echo "git commit" >> $LOG
+git commit -m"automatic update of ${DATE}" >> $LOG 2>> $LOG
+echo "git push" >> $LOG
+git push >> $LOG 2>> $LOG
 
 cd /data/www/twoptwo.com
 echo  "sync ${WWWDIR} to live website http://www.astro.puc.cl/2.2m" >> $LOG
-./sync.sh >> $LOG
+./sync.sh >> $LOG 2>> $LOG
 
-echo "github push in ${WWWDIR}" > $LOG
-git add * >> $LOG
-git commit -m"automatic update of ${DATE}" >> $LOG
-git push >> $LOG
+echo "git add * in ${WWWDIR}" >> $LOG
+git add * >> $LOG 2>> $LOG
+echo "git commit"
+git commit -m"automatic update of ${DATE}" >> $LOG 2>> $LOG
+git "push"
+git push >> $LOG 2>> $LOG

@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/zsh
 
 MAINDIR=/home/regis/git/autolog
 SCRIPTDIR=${MAINDIR}/scripts
@@ -16,7 +16,7 @@ cat<<EOF  >> $LOG >>& $ERR
 daily.sh at $TIME
 -------------------------------------
 
-EOF 
+EOF
 
 cd ${MAINDIR}
 echo "github pull in ${MAINDIR}" >> $LOG >>& $ERR

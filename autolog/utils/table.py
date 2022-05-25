@@ -106,20 +106,20 @@ class Table(_Table):
     def write(self, output, *, format, **kwargs):
 
         if format in ['ascii.html', 'html']:
-
-            overwrite = kwargs.pop('overwrite', False)
-            if isinstance(output, str):
-                if not overwrite and os.path.exists(output):
-                    raise RuntimeError('cannot overwrite existing file')
-                fh = open(output, 'w')
-            else:
-                fh = output
             
             soup = self.as_beautiful_soup(**kwargs)
             text = "<!DOCTYPE html>\n"
             text += soup.prettify()
 
-            fh.write(text)
+            overwrite = kwargs.pop('overwrite', False)
+            if isinstance(output, str):
+                if not overwrite and os.path.exists(output):
+                    raise RuntimeError('cannot overwrite existing file')
+                with open(output, 'w') as fh:
+                    fh.write(text)
+            else:
+                fh = output
+                fh.write(text)
 
         elif format == 'ascii.ecsv':
             

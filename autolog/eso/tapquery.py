@@ -109,8 +109,13 @@ It keeps a local copy of requests to save on internet bandpass"""
             ORDER BY exp_start ASC
         """
 
+        print(query)
+
         tap = TAPQuery(self.URL, query)
         tab = tap.execute().to_table()
+        # socket is not closed when object is destroyed, but why?
+        if '_session' in tap.__dict__:
+            tap._session.close()
         tab.__class__ = Table
 
         # Add some meta information

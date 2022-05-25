@@ -12,7 +12,7 @@ warnings.filterwarnings('error', category=Warning)
 
 import numpy as np
 
-night = '2021-09-16'
+night = '2022-05-22'
 telescope = 'ESO-2.2m'
 opts = dict(
     use_tap_cache = False, 
@@ -21,5 +21,5 @@ opts = dict(
 
 log = NightLog.fetch(telescope, night, **opts) 
 
-#log.save(format='html')
-# log.publish()
+log.save(format='html', overwrite=True)
+log.publish()

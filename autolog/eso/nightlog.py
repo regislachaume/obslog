@@ -8,7 +8,6 @@ from . import path
 from .tapquery import NightQuery
 from .log import Log
 
-from pyvo.dal import tap
 from astropy.coordinates import EarthLocation
 from ..utils.table import Table
 from astropy.table import Column, MaskedColumn

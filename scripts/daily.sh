@@ -1,6 +1,6 @@
-#! /bin/zsh
+#! /usr/bin/zsh
 
-MAINDIR=/home/regis/git/autolog
+MAINDIR=${HOME}/git/autolog
 SCRIPTDIR=${MAINDIR}/scripts
 WWWDIR=/data/www/twoptwo.com
 DATE=`date -I`

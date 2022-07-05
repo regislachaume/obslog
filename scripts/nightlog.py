@@ -1,4 +1,4 @@
-#! /usr/bin/python3
+#! /usr/bin/env python3
 
 import sys
 sys.path.append('..')
@@ -12,7 +12,7 @@ warnings.filterwarnings('error', category=Warning)
 
 import numpy as np
 
-night = '2022-05-22'
+night = '2022-07-03'
 telescope = 'ESO-2.2m'
 opts = dict(
     use_tap_cache = False, 

@@ -688,3 +688,100 @@ Traceback (most recent call last):
 pyvo.dal.exceptions.DALFormatError: ConnectionError: HTTPConnectionPool(host='archive.eso.org', port=80): Max retries exceeded with url: /tap_obs/sync (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f2c0c72b8b0>: Failed to establish a new connection: [Errno -3] Temporary failure in name resolution'))
 
 git add * in /home/lachaume/git/autolog
+git commit
+git push
+ssh: Could not resolve hostname github.com: Temporary failure in name resolution
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+
+github pull in /data/www/twoptwo.com
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/urllib3/connection.py", line 169, in _new_conn
+    conn = connection.create_connection(
+  File "/usr/lib/python3/dist-packages/urllib3/util/connection.py", line 96, in create_connection
+    raise err
+  File "/usr/lib/python3/dist-packages/urllib3/util/connection.py", line 86, in create_connection
+    sock.connect(sa)
+TimeoutError: [Errno 110] Connection timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/urllib3/connectionpool.py", line 699, in urlopen
+    httplib_response = self._make_request(
+  File "/usr/lib/python3/dist-packages/urllib3/connectionpool.py", line 394, in _make_request
+    conn.request(method, url, **httplib_request_kw)
+  File "/usr/lib/python3/dist-packages/urllib3/connection.py", line 234, in request
+    super(HTTPConnection, self).request(method, url, body=body, headers=headers)
+  File "/usr/lib/python3.10/http/client.py", line 1282, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1328, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1277, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1037, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.10/http/client.py", line 975, in send
+    self.connect()
+  File "/usr/lib/python3/dist-packages/urllib3/connection.py", line 200, in connect
+    conn = self._new_conn()
+  File "/usr/lib/python3/dist-packages/urllib3/connection.py", line 174, in _new_conn
+    raise ConnectTimeoutError(
+urllib3.exceptions.ConnectTimeoutError: (<urllib3.connection.HTTPConnection object at 0x7f5b61bab4c0>, 'Connection to archive.eso.org timed out. (connect timeout=None)')
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/requests/adapters.py", line 439, in send
+    resp = conn.urlopen(
+  File "/usr/lib/python3/dist-packages/urllib3/connectionpool.py", line 755, in urlopen
+    retries = retries.increment(
+  File "/usr/lib/python3/dist-packages/urllib3/util/retry.py", line 574, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+urllib3.exceptions.MaxRetryError: HTTPConnectionPool(host='archive.eso.org', port=80): Max retries exceeded with url: /tap_obs/sync (Caused by ConnectTimeoutError(<urllib3.connection.HTTPConnection object at 0x7f5b61bab4c0>, 'Connection to archive.eso.org timed out. (connect timeout=None)'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/pyvo/dal/query.py", line 242, in execute_votable
+    return votableparse(self.execute_stream(post=post).read)
+  File "/usr/local/lib/python3.10/dist-packages/pyvo/dal/tap.py", line 926, in execute_stream
+    return super().execute_stream(post=post)
+  File "/usr/local/lib/python3.10/dist-packages/pyvo/utils/decorators.py", line 9, in wrapper
+    raw = func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/pyvo/dal/query.py", line 191, in execute_stream
+    response = self.submit(post=post)
+  File "/usr/local/lib/python3.10/dist-packages/pyvo/dal/tap.py", line 959, in submit
+    response = self._session.post(
+  File "/usr/lib/python3/dist-packages/requests/sessions.py", line 590, in post
+    return self.request('POST', url, data=data, json=json, **kwargs)
+  File "/usr/lib/python3/dist-packages/requests/sessions.py", line 542, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python3/dist-packages/requests/sessions.py", line 655, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python3/dist-packages/requests/adapters.py", line 504, in send
+    raise ConnectTimeout(e, request=request)
+requests.exceptions.ConnectTimeout: HTTPConnectionPool(host='archive.eso.org', port=80): Max retries exceeded with url: /tap_obs/sync (Caused by ConnectTimeoutError(<urllib3.connection.HTTPConnection object at 0x7f5b61bab4c0>, 'Connection to archive.eso.org timed out. (connect timeout=None)'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/lachaume/git/autolog/scripts/./periodlog.py", line 22, in <module>
+    log = PeriodLog.fetch(telescope, period, **opts) 
+  File "/home/lachaume/git/autolog/scripts/../autolog/eso/periodlog.py", line 56, in fetch
+    logs = [NightLog.fetch(telescope, night, **opts)
+  File "/home/lachaume/git/autolog/scripts/../autolog/eso/periodlog.py", line 56, in <listcomp>
+    logs = [NightLog.fetch(telescope, night, **opts)
+  File "/home/lachaume/git/autolog/scripts/../autolog/eso/nightlog.py", line 67, in fetch
+    log = query.fetch(night=night, use_tap_cache=use_tap_cache)
+  File "/home/lachaume/git/autolog/scripts/../autolog/eso/tapquery.py", line 115, in fetch
+    tab = tap.execute().to_table()
+  File "/usr/local/lib/python3.10/dist-packages/pyvo/dal/tap.py", line 942, in execute
+    return TAPResults(self.execute_votable(), url=self.queryurl, session=self._session)
+  File "/usr/local/lib/python3.10/dist-packages/pyvo/dal/query.py", line 245, in execute_votable
+    raise DALFormatError(e, self.queryurl)
+pyvo.dal.exceptions.DALFormatError: ConnectTimeout: HTTPConnectionPool(host='archive.eso.org', port=80): Max retries exceeded with url: /tap_obs/sync (Caused by ConnectTimeoutError(<urllib3.connection.HTTPConnection object at 0x7f5b61bab4c0>, 'Connection to archive.eso.org timed out. (connect timeout=None)'))
+
+git add * in /home/lachaume/git/autolog

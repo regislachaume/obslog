@@ -4935,3 +4935,91 @@ Traceback (most recent call last):
 pyvo.dal.exceptions.DALFormatError: ConnectionError: HTTPConnectionPool(host='archive.eso.org', port=80): Max retries exceeded with url: /tap_obs/sync (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f3bbdb36a10>: Failed to establish a new connection: [Errno -3] Temporary failure in name resolution'))
 
 git add * in /home/lachaume/git/autolog
+git commit
+git push
+To github.com:loqueelvientoajuarez/obslog.git
+   9f23704..730e6da  master -> master
+
+
+git add * in /data/www/twoptwo.com
+git commit
+Everything up-to-date
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/urllib3/connectionpool.py", line 445, in _make_request
+    six.raise_from(e, None)
+  File "<string>", line 3, in raise_from
+  File "/usr/lib/python3/dist-packages/urllib3/connectionpool.py", line 440, in _make_request
+    httplib_response = conn.getresponse()
+  File "/usr/lib/python3.10/http/client.py", line 1374, in getresponse
+    response.begin()
+  File "/usr/lib/python3.10/http/client.py", line 318, in begin
+    version, status, reason = self._read_status()
+  File "/usr/lib/python3.10/http/client.py", line 279, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/usr/lib/python3.10/socket.py", line 705, in readinto
+    return self._sock.recv_into(b)
+TimeoutError: [Errno 110] Connection timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/requests/adapters.py", line 439, in send
+    resp = conn.urlopen(
+  File "/usr/lib/python3/dist-packages/urllib3/connectionpool.py", line 755, in urlopen
+    retries = retries.increment(
+  File "/usr/lib/python3/dist-packages/urllib3/util/retry.py", line 532, in increment
+    raise six.reraise(type(error), error, _stacktrace)
+  File "/usr/lib/python3/dist-packages/six.py", line 719, in reraise
+    raise value
+  File "/usr/lib/python3/dist-packages/urllib3/connectionpool.py", line 699, in urlopen
+    httplib_response = self._make_request(
+  File "/usr/lib/python3/dist-packages/urllib3/connectionpool.py", line 447, in _make_request
+    self._raise_timeout(err=e, url=url, timeout_value=read_timeout)
+  File "/usr/lib/python3/dist-packages/urllib3/connectionpool.py", line 336, in _raise_timeout
+    raise ReadTimeoutError(
+urllib3.exceptions.ReadTimeoutError: HTTPConnectionPool(host='archive.eso.org', port=80): Read timed out. (read timeout=None)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/pyvo/dal/query.py", line 242, in execute_votable
+    return votableparse(self.execute_stream(post=post).read)
+  File "/usr/local/lib/python3.10/dist-packages/pyvo/dal/tap.py", line 926, in execute_stream
+    return super().execute_stream(post=post)
+  File "/usr/local/lib/python3.10/dist-packages/pyvo/utils/decorators.py", line 9, in wrapper
+    raw = func(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/pyvo/dal/query.py", line 191, in execute_stream
+    response = self.submit(post=post)
+  File "/usr/local/lib/python3.10/dist-packages/pyvo/dal/tap.py", line 959, in submit
+    response = self._session.post(
+  File "/usr/lib/python3/dist-packages/requests/sessions.py", line 590, in post
+    return self.request('POST', url, data=data, json=json, **kwargs)
+  File "/usr/lib/python3/dist-packages/requests/sessions.py", line 542, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python3/dist-packages/requests/sessions.py", line 655, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python3/dist-packages/requests/adapters.py", line 529, in send
+    raise ReadTimeout(e, request=request)
+requests.exceptions.ReadTimeout: HTTPConnectionPool(host='archive.eso.org', port=80): Read timed out. (read timeout=None)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/lachaume/git/autolog/scripts/./periodlog.py", line 22, in <module>
+    log = PeriodLog.fetch(telescope, period, **opts) 
+  File "/home/lachaume/git/autolog/scripts/../autolog/eso/periodlog.py", line 56, in fetch
+    logs = [NightLog.fetch(telescope, night, **opts)
+  File "/home/lachaume/git/autolog/scripts/../autolog/eso/periodlog.py", line 56, in <listcomp>
+    logs = [NightLog.fetch(telescope, night, **opts)
+  File "/home/lachaume/git/autolog/scripts/../autolog/eso/nightlog.py", line 67, in fetch
+    log = query.fetch(night=night, use_tap_cache=use_tap_cache)
+  File "/home/lachaume/git/autolog/scripts/../autolog/eso/tapquery.py", line 115, in fetch
+    tab = tap.execute().to_table()
+  File "/usr/local/lib/python3.10/dist-packages/pyvo/dal/tap.py", line 942, in execute
+    return TAPResults(self.execute_votable(), url=self.queryurl, session=self._session)
+  File "/usr/local/lib/python3.10/dist-packages/pyvo/dal/query.py", line 245, in execute_votable
+    raise DALFormatError(e, self.queryurl)
+pyvo.dal.exceptions.DALFormatError: ReadTimeout: HTTPConnectionPool(host='archive.eso.org', port=80): Read timed out. (read timeout=None)
+
+git add * in /home/lachaume/git/autolog

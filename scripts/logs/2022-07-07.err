@@ -5660,3 +5660,85 @@ Traceback (most recent call last):
 pyvo.dal.exceptions.DALFormatError: ConnectionError: HTTPConnectionPool(host='archive.eso.org', port=80): Max retries exceeded with url: /tap_obs/sync (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7fb074c06e30>: Failed to establish a new connection: [Errno -3] Temporary failure in name resolution'))
 
 git add * in /home/lachaume/git/autolog
+git commit
+git push
+ssh: Could not resolve hostname github.com: Temporary failure in name resolution
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+
+
+git add * in /data/www/twoptwo.com
+git commit
+Everything up-to-date
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/http/client.py", line 591, in _read_chunked
+    value.append(self._safe_read(chunk_left))
+  File "/usr/lib/python3.10/http/client.py", line 632, in _safe_read
+    raise IncompleteRead(data, amt-len(data))
+http.client.IncompleteRead: IncompleteRead(2268 bytes read, 5225 more expected)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/urllib3/response.py", line 438, in _error_catcher
+    yield
+  File "/usr/lib/python3/dist-packages/urllib3/response.py", line 519, in read
+    data = self._fp.read(amt) if not fp_closed else b""
+  File "/usr/lib/python3.10/http/client.py", line 459, in read
+    return self._read_chunked(amt)
+  File "/usr/lib/python3.10/http/client.py", line 597, in _read_chunked
+    raise IncompleteRead(b''.join(value))
+http.client.IncompleteRead: IncompleteRead(8192 bytes read)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/pyvo/dal/query.py", line 242, in execute_votable
+    return votableparse(self.execute_stream(post=post).read)
+  File "/usr/local/lib/python3.10/dist-packages/astropy/utils/decorators.py", line 546, in wrapper
+    return function(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/astropy/io/votable/table.py", line 160, in parse
+    config=config, pos=(1, 1)).parse(iterator, config)
+  File "/usr/local/lib/python3.10/dist-packages/astropy/io/votable/tree.py", line 3615, in parse
+    tag_mapping.get(tag, self._add_unknown_tag)(
+  File "/usr/local/lib/python3.10/dist-packages/astropy/io/votable/tree.py", line 3494, in _add_resource
+    resource.parse(self, iterator, config)
+  File "/usr/local/lib/python3.10/dist-packages/astropy/io/votable/tree.py", line 3292, in parse
+    tag_mapping.get(tag, self._add_unknown_tag)(
+  File "/usr/local/lib/python3.10/dist-packages/astropy/io/votable/tree.py", line 3238, in _add_table
+    table.parse(iterator, config)
+  File "/usr/local/lib/python3.10/dist-packages/astropy/io/votable/tree.py", line 2513, in parse
+    self.array = self._parse_tabledata(
+  File "/usr/local/lib/python3.10/dist-packages/astropy/io/votable/tree.py", line 2591, in _parse_tabledata
+    for start, tag, data, pos in iterator:
+  File "/usr/lib/python3/dist-packages/urllib3/response.py", line 512, in read
+    with self._error_catcher():
+  File "/usr/lib/python3.10/contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/usr/lib/python3/dist-packages/urllib3/response.py", line 455, in _error_catcher
+    raise ProtocolError("Connection broken: %r" % e, e)
+urllib3.exceptions.ProtocolError: ('Connection broken: IncompleteRead(8192 bytes read)', IncompleteRead(8192 bytes read))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/lachaume/git/autolog/scripts/./periodlog.py", line 22, in <module>
+    log = PeriodLog.fetch(telescope, period, **opts) 
+  File "/home/lachaume/git/autolog/scripts/../autolog/eso/periodlog.py", line 56, in fetch
+    logs = [NightLog.fetch(telescope, night, **opts)
+  File "/home/lachaume/git/autolog/scripts/../autolog/eso/periodlog.py", line 56, in <listcomp>
+    logs = [NightLog.fetch(telescope, night, **opts)
+  File "/home/lachaume/git/autolog/scripts/../autolog/eso/nightlog.py", line 67, in fetch
+    log = query.fetch(night=night, use_tap_cache=use_tap_cache)
+  File "/home/lachaume/git/autolog/scripts/../autolog/eso/tapquery.py", line 115, in fetch
+    tab = tap.execute().to_table()
+  File "/usr/local/lib/python3.10/dist-packages/pyvo/dal/tap.py", line 942, in execute
+    return TAPResults(self.execute_votable(), url=self.queryurl, session=self._session)
+  File "/usr/local/lib/python3.10/dist-packages/pyvo/dal/query.py", line 245, in execute_votable
+    raise DALFormatError(e, self.queryurl)
+pyvo.dal.exceptions.DALFormatError: ProtocolError: ('Connection broken: IncompleteRead(8192 bytes read)', IncompleteRead(8192 bytes read))
+
+git add * in /home/lachaume/git/autolog

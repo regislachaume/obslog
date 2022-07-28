@@ -107,11 +107,12 @@ class Table(_Table):
 
         if format in ['ascii.html', 'html']:
             
+            overwrite = kwargs.pop('overwrite', False)
+            
             soup = self.as_beautiful_soup(**kwargs)
             text = "<!DOCTYPE html>\n"
             text += soup.prettify()
 
-            overwrite = kwargs.pop('overwrite', False)
             if isinstance(output, str):
                 if not overwrite and os.path.exists(output):
                     raise RuntimeError('cannot overwrite existing file')

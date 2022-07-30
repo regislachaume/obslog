@@ -57,3 +57,60 @@ github pull in /data/www/twoptwo.com
 executing periodlog.py in /home/regis/git/autolog/scripts
 
 git add * in /home/regis/git/autolog
+git commit
+git push
+To github.com:loqueelvientoajuarez/obslog.git
+   2b7bf0ec..116c58e5  master -> master
+
+
+git add * in /data/www/twoptwo.com
+git commit
+To github.com:loqueelvientoajuarez/2.2m-website
+   1dd70e9..568d388  main -> main
+
+
+daily.sh at 2022-07-28T17:36:02-04:00
+-------------------------------------
+
+github pull in /home/regis/git/autolog
+
+github pull in /data/www/twoptwo.com
+
+executing periodlog.py in /home/regis/git/autolog/scripts
+Traceback (most recent call last):
+  File "/home/regis/git/autolog/scripts/./periodlog.py", line 22, in <module>
+    log = PeriodLog.fetch(telescope, period, **opts) 
+  File "/home/regis/git/autolog/scripts/../autolog/eso/periodlog.py", line 56, in fetch
+    logs = [NightLog.fetch(telescope, night, **opts)
+  File "/home/regis/git/autolog/scripts/../autolog/eso/periodlog.py", line 56, in <listcomp>
+    logs = [NightLog.fetch(telescope, night, **opts)
+  File "/home/regis/git/autolog/scripts/../autolog/eso/nightlog.py", line 67, in fetch
+    log = query.fetch(night=night, use_tap_cache=use_tap_cache)
+  File "/home/regis/git/autolog/scripts/../autolog/eso/tapquery.py", line 115, in fetch
+    tab = tap.execute().to_table()
+  File "/usr/local/lib/python3.10/dist-packages/pyvo/dal/tap.py", line 942, in execute
+    return TAPResults(self.execute_votable(), url=self.queryurl, session=self._session)
+  File "/usr/local/lib/python3.10/dist-packages/pyvo/dal/query.py", line 242, in execute_votable
+    return votableparse(self.execute_stream(post=post).read)
+  File "/usr/lib/python3.10/dist-packages/astropy/utils/decorators.py", line 536, in wrapper
+    return function(*args, **kwargs)
+  File "/usr/lib/python3.10/dist-packages/astropy/io/votable/table.py", line 167, in parse
+    config=config, pos=(1, 1)).parse(iterator, config)
+  File "/usr/lib/python3.10/dist-packages/astropy/io/votable/tree.py", line 3573, in parse
+    for start, tag, data, pos in iterator:
+  File "/usr/lib/python3/dist-packages/urllib3/response.py", line 519, in read
+    data = self._fp.read(amt) if not fp_closed else b""
+  File "/usr/lib/python3.10/http/client.py", line 459, in read
+    return self._read_chunked(amt)
+  File "/usr/lib/python3.10/http/client.py", line 591, in _read_chunked
+    value.append(self._safe_read(chunk_left))
+  File "/usr/lib/python3.10/http/client.py", line 630, in _safe_read
+    data = self.fp.read(amt)
+  File "/usr/lib/python3.10/socket.py", line 705, in readinto
+    return self._sock.recv_into(b)
+KeyboardInterrupt
+
+daily.sh at 2022-07-28T21:30:37-04:00
+-------------------------------------
+
+github pull in /home/regis/git/autolog

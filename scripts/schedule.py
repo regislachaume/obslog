@@ -5,7 +5,7 @@ sys.path.append('..')
 
 from autolog.eso.schedule import Schedule
 
-period = 110
+period = 109
 telescope = 'ESO-2.2m'
 schedule = Schedule.read(telescope=telescope, period=period)
 

@@ -18,10 +18,10 @@ daily.sh at $TIME
 
 EOF
 
-cd ${MAINDIR}
-echo "github pull in ${MAINDIR}" >> $LOG >>& $ERR
-git pull >> $LOG 2>> $ERR
-echo ""  >> $LOG >>& $ERR
+#cd ${MAINDIR}
+#echo "github pull in ${MAINDIR}" >> $LOG >>& $ERR
+#git pull >> $LOG 2>> $ERR
+#echo ""  >> $LOG >>& $ERR
 
 cd ${WWWDIR}
 echo "github pull in ${WWWDIR}" >> $LOG >>& $ERR

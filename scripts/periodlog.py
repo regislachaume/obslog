@@ -10,7 +10,7 @@ from autolog.eso.periodlog import *
 from autolog.eso.date import *
 from astropy.table import MaskedColumn
 
-period = 109
+period = 110
 telescope = 'ESO-2.2m'
 cls = NightLog
 opts = dict(

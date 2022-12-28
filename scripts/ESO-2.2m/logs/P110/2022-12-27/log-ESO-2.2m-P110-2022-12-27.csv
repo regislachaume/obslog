@@ -1,0 +1,230 @@
+# %ECSV 1.0
+# ---
+# datatype:
+# - {name: tac, datatype: string}
+# - {name: period, datatype: int32, description: ESO observing period}
+# - {name: night, datatype: string, description: observing night}
+# - {name: internal, datatype: bool, description: flag for internal instrument calibration}
+# - {name: slew, datatype: bool, description: flag for non-tracking observations}
+# - {name: object, datatype: string, description: name of the object in the exposure}
+# - {name: target, datatype: string, description: name of the astronomical target}
+# - {name: target.mask, datatype: bool}
+# - name: ra
+#   unit: deg
+#   datatype: float64
+#   description: Right Ascension FK5 J2000
+#   meta: !!omap
+#   - {ucd: pos.eq.ra;meta.main}
+# - {name: ra.mask, datatype: bool}
+# - name: dec
+#   unit: deg
+#   datatype: float64
+#   description: Declination FK5 J2000
+#   meta: !!omap
+#   - {ucd: pos.eq.dec;meta.main}
+# - {name: dec.mask, datatype: bool}
+# - {name: dp_id, datatype: string}
+# - {name: dp_id.mask, datatype: bool}
+# - {name: telescope, datatype: string, description: telescope name}
+# - {name: instrument, datatype: string, description: instrument name}
+# - {name: pid, datatype: string, description: ESO programme ID allocated by TAC}
+# - {name: used_pid, datatype: string, description: ESO programme ID used to observe}
+# - {name: pi, datatype: string, description: name of the principal investigator}
+# - {name: dp_cat, datatype: string, description: purpose of observation}
+# - {name: dp_tech, datatype: string, description: observing technique}
+# - {name: dp_tech.mask, datatype: bool}
+# - {name: dp_type, datatype: string, description: type of exposure}
+# - {name: dp_type.mask, datatype: bool}
+# - name: exposure
+#   unit: s
+#   datatype: float32
+#   format: .0f
+#   description: cumulated exposure time
+#   meta: !!omap
+#   - {ucd: time.duration;obs.exposure}
+# - {name: filter, datatype: string, description: list of filtres in the optical path}
+# - {name: filter.mask, datatype: bool}
+# - {name: ob_name, datatype: string, description: name of the observing block}
+# - name: ob_id
+#   datatype: int32
+#   description: observing block ID number
+#   meta: !!omap
+#   - {ucd: meta.id;obs;meta.main}
+# - {name: airmass, datatype: float32, format: .2f, description: airmass during the exposure}
+# - {name: airmass.mask, datatype: bool}
+# - {name: seeing, unit: arcsec, datatype: float32, format: .2f, description: DIMM seeing during the exposure}
+# - {name: seeing.mask, datatype: bool}
+# - name: ob_no
+#   datatype: int32
+#   description: unique OB number within the night
+#   meta: !!omap
+#   - {ucd: meta.code.member;obs.sequence}
+# - {name: ob_start, datatype: string, description: estimated start time of the execution of the OB}
+# - {name: ob_end, datatype: string, description: estimated end time of the execution of the OB}
+# - name: tpl_no
+#   datatype: int32
+#   description: template number within OB
+#   meta: !!omap
+#   - {ucd: meta.code.member;obs.sequence}
+# - {name: tpl_start, datatype: string, description: time at start of observing template}
+# - {name: tpl_end, datatype: string, description: estimated end time of the execution of the observing template}
+# - name: exp_no
+#   datatype: int32
+#   description: exposure number within template
+#   meta: !!omap
+#   - {ucd: meta.number;obs}
+# - {name: exp_start, datatype: string, description: time at start of exposure}
+# - {name: exp_end, datatype: string, description: estimated end time of the exposure}
+# - {name: night_hours, unit: h, datatype: float64, format: .3f, description: number of hours of night conditions}
+# - {name: dark_hours, unit: h, datatype: float64, format: .3f, description: number of hours of dark conditions}
+# - {name: twilight_hours, unit: h, datatype: float64, format: .3f, description: number of hours of twilight conditions}
+# - {name: nautical_twilight_hours, unit: h, datatype: float64, format: .3f, description: number of hours of nauticaltwilight conditions}
+# - {name: civil_twilight_hours, unit: h, datatype: float64, format: .3f, description: number of hours of civiltwilight conditions}
+# - {name: sun_down_hours, unit: h, datatype: float64, format: .3f, description: number of hours of sundown conditions}
+# - {name: total_hours, unit: h, datatype: float64, format: .3f, description: number of hours}
+# meta: !!omap
+# - {site: La Silla Observatory}
+# - {lon: -70.73000000000002}
+# - {lat: -29.25666666666666}
+# - {alt: 2346.999999998842}
+# - {telescope: ESO-2.2m}
+# - {period: 110}
+# - {night: '2022-12-27'}
+# - {rootdir: .}
+# - ephemeris:
+#     civil_twilight_hours: 0.7030555555555555
+#     civil_twilight_time:
+#     - ['2022-12-27T23:50:21', '2022-12-28T00:11:26']
+#     - ['2022-12-28T09:17:10', '2022-12-28T09:38:16']
+#     dark_hours: 4.456388888888889
+#     dark_time:
+#     - ['2022-12-28T03:41:46', '2022-12-28T08:09:09']
+#     moon_illumination: 0.3004786903205668
+#     nautical_twilight_hours: 1.0972222222222223
+#     nautical_twilight_time:
+#     - ['2022-12-28T00:11:26', '2022-12-28T00:44:21']
+#     - ['2022-12-28T08:44:15', '2022-12-28T09:17:10']
+#     night_hours: 6.828333333333333
+#     night_time:
+#     - ['2022-12-28T01:19:27', '2022-12-28T08:09:09']
+#     sun_down_hours: 9.79861111111111
+#     sun_down_time:
+#     - ['2022-12-27T23:50:21', '2022-12-28T09:38:16']
+#     twilight_hours: 1.17
+#     twilight_time:
+#     - ['2022-12-28T00:44:21', '2022-12-28T01:19:27']
+#     - ['2022-12-28T08:09:09', '2022-12-28T08:44:15']
+# - {roodir: .}
+# - {wwwdir: /data/www/twoptwo.com}
+# - __serialized_columns__:
+#     airmass:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: airmass}
+#       mask: !astropy.table.SerializedColumn {name: airmass.mask}
+#     dec:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: dec}
+#       mask: !astropy.table.SerializedColumn {name: dec.mask}
+#     dp_id:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: dp_id}
+#       mask: !astropy.table.SerializedColumn {name: dp_id.mask}
+#     dp_tech:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: dp_tech}
+#       mask: !astropy.table.SerializedColumn {name: dp_tech.mask}
+#     dp_type:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: dp_type}
+#       mask: !astropy.table.SerializedColumn {name: dp_type.mask}
+#     exp_no:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: exp_no}
+#     exposure:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: exposure}
+#     filter:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: filter}
+#       mask: !astropy.table.SerializedColumn {name: filter.mask}
+#     ob_id:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: ob_id}
+#     ob_no:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: ob_no}
+#     ra:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: ra}
+#       mask: !astropy.table.SerializedColumn {name: ra.mask}
+#     seeing:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: seeing}
+#       mask: !astropy.table.SerializedColumn {name: seeing.mask}
+#     tac:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: tac}
+#     target:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: target}
+#       mask: !astropy.table.SerializedColumn {name: target.mask}
+#     tpl_no:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: tpl_no}
+# schema: astropy-2.0
+tac period night internal slew object target target.mask ra ra.mask dec dec.mask dp_id dp_id.mask telescope instrument pid used_pid pi dp_cat dp_tech dp_tech.mask dp_type dp_type.mask exposure filter filter.mask ob_name ob_id airmass airmass.mask seeing seeing.mask ob_no ob_start ob_end tpl_no tpl_start tpl_end exp_no exp_start exp_end night_hours dark_hours twilight_hours nautical_twilight_hours civil_twilight_hours sun_down_hours total_hours
+Calib 110 2022-12-27 False True FLAT,SCREEN "" True 303.35303611 True -80.06628 True WFI.2022-12-27T18:30:47.616 False ESO-2.2m WFI 60.A-9120(A) 60.A-9120(A) Service CALIB IMAGE False FLAT,SCREEN False 0.739 BB#RC/162_ESO844 False DomeFlatsRc 100185402 1.58 True 1.61 True 1 2022-12-27T18:29:06 2022-12-27T18:34:31 1 2022-12-27T18:29:06 2022-12-27T18:34:31 2 2022-12-27T18:30:47 2022-12-27T18:31:47 0.0 0.0 0.0 0.0 0.0 0.0 0.09027777777777778
+Calib 110 2022-12-27 False True FLAT,SCREEN "" True 303.52966194 True -80.06659 True WFI.2022-12-27T18:31:28.971 False ESO-2.2m WFI 60.A-9120(A) 60.A-9120(A) Service CALIB IMAGE False FLAT,SCREEN False 0.739 BB#RC/162_ESO844 False DomeFlatsRc 100185402 1.58 True 1.61 True 1 2022-12-27T18:29:06 2022-12-27T18:34:31 1 2022-12-27T18:29:06 2022-12-27T18:34:31 3 2022-12-27T18:31:28 2022-12-27T18:32:28 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 110 2022-12-27 False True FLAT,SCREEN "" True 303.70629388 True -80.0669 True WFI.2022-12-27T18:32:09.925 False ESO-2.2m WFI 60.A-9120(A) 60.A-9120(A) Service CALIB IMAGE False FLAT,SCREEN False 0.739 BB#RC/162_ESO844 False DomeFlatsRc 100185402 1.58 True 1.61 True 1 2022-12-27T18:29:06 2022-12-27T18:34:31 1 2022-12-27T18:29:06 2022-12-27T18:34:31 4 2022-12-27T18:32:09 2022-12-27T18:33:09 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 110 2022-12-27 False True FLAT,SCREEN "" True 303.87452 True -80.0672 True WFI.2022-12-27T18:32:50.780 False ESO-2.2m WFI 60.A-9120(A) 60.A-9120(A) Service CALIB IMAGE False FLAT,SCREEN False 0.739 BB#RC/162_ESO844 False DomeFlatsRc 100185402 1.58 True 1.61 True 1 2022-12-27T18:29:06 2022-12-27T18:34:31 1 2022-12-27T18:29:06 2022-12-27T18:34:31 5 2022-12-27T18:32:50 2022-12-27T18:33:50 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 110 2022-12-27 False True FLAT,SCREEN "" True 304.05116194 True -80.06751 True WFI.2022-12-27T18:33:31.664 False ESO-2.2m WFI 60.A-9120(A) 60.A-9120(A) Service CALIB IMAGE False FLAT,SCREEN False 0.739 BB#RC/162_ESO844 False DomeFlatsRc 100185402 1.58 True 1.61 True 1 2022-12-27T18:29:06 2022-12-27T18:34:31 1 2022-12-27T18:29:06 2022-12-27T18:34:31 6 2022-12-27T18:33:31 2022-12-27T18:34:31 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 110 2022-12-27 False False FLAT,SKY "" True 44.67064888 False -20.17184 False WFI.2022-12-28T00:05:04.141 False ESO-2.2m WFI 60.A-9120(A) 60.A-9120(A) Service CALIB IMAGE False FLAT,SKY False 1.07 BB#RC/162_ESO844 False SkyFlatsEvening_Rc 100346479 1.05 False 1.61 False 2 2022-12-28T00:01:34 2022-12-28T00:11:26 1 2022-12-28T00:01:34 2022-12-28T00:11:26 5 2022-12-28T00:05:04 2022-12-28T00:06:05 0.0 0.0 0.0 0.0 0.16444444444444445 0.16444444444444445 0.16444444444444445
+Calib 110 2022-12-27 False False FLAT,SKY "" True 44.67649694 False -20.16628 False WFI.2022-12-28T00:05:57.756 False ESO-2.2m WFI 60.A-9120(A) 60.A-9120(A) Service CALIB IMAGE False FLAT,SKY False 1.274 BB#RC/162_ESO844 False SkyFlatsEvening_Rc 100346479 1.049 False 1.61 False 2 2022-12-28T00:01:34 2022-12-28T00:11:26 1 2022-12-28T00:01:34 2022-12-28T00:11:26 6 2022-12-28T00:05:57 2022-12-28T00:06:58 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 110 2022-12-27 False False FLAT,SKY "" True 44.68241 False -20.16071 False WFI.2022-12-28T00:06:51.852 False ESO-2.2m WFI 60.A-9120(A) 60.A-9120(A) Service CALIB IMAGE False FLAT,SKY False 1.523 BB#RC/162_ESO844 False SkyFlatsEvening_Rc 100346479 1.048 False 1.61 False 2 2022-12-28T00:01:34 2022-12-28T00:11:26 1 2022-12-28T00:01:34 2022-12-28T00:11:26 7 2022-12-28T00:06:51 2022-12-28T00:07:52 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 110 2022-12-27 False False FLAT,SKY "" True 44.68831194 False -20.15515 False WFI.2022-12-28T00:07:45.819 False ESO-2.2m WFI 60.A-9120(A) 60.A-9120(A) Service CALIB IMAGE False FLAT,SKY False 1.821 BB#RC/162_ESO844 False SkyFlatsEvening_Rc 100346479 1.047 False 1.61 False 2 2022-12-28T00:01:34 2022-12-28T00:11:26 1 2022-12-28T00:01:34 2022-12-28T00:11:26 8 2022-12-28T00:07:45 2022-12-28T00:08:46 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 110 2022-12-27 False False FLAT,SKY "" True 44.69422 False -20.14959 False WFI.2022-12-28T00:08:39.534 False ESO-2.2m WFI 60.A-9120(A) 60.A-9120(A) Service CALIB IMAGE False FLAT,SKY False 2.168 BB#RC/162_ESO844 False SkyFlatsEvening_Rc 100346479 1.046 False 1.61 False 2 2022-12-28T00:01:34 2022-12-28T00:11:26 1 2022-12-28T00:01:34 2022-12-28T00:11:26 9 2022-12-28T00:08:39 2022-12-28T00:09:41 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 110 2022-12-27 False False FLAT,SKY "" True 44.70012805 False -20.14402 False WFI.2022-12-28T00:09:31.590 False ESO-2.2m WFI 60.A-9120(A) 60.A-9120(A) Service CALIB IMAGE False FLAT,SKY False 2.577 BB#RC/162_ESO844 False SkyFlatsEvening_Rc 100346479 1.0455 False 1.61 False 2 2022-12-28T00:01:34 2022-12-28T00:11:26 1 2022-12-28T00:01:34 2022-12-28T00:11:26 10 2022-12-28T00:09:31 2022-12-28T00:10:33 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 110 2022-12-27 False False FLAT,SKY "" True 44.706035 False -20.13846 False WFI.2022-12-28T00:10:23.856 False ESO-2.2m WFI 60.A-9120(A) 60.A-9120(A) Service CALIB IMAGE False FLAT,SKY False 3.062 BB#RC/162_ESO844 False SkyFlatsEvening_Rc 100346479 1.0445 False 1.11 False 2 2022-12-28T00:01:34 2022-12-28T00:11:26 1 2022-12-28T00:01:34 2022-12-28T00:11:26 11 2022-12-28T00:10:23 2022-12-28T00:11:26 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 110 2022-12-27 False True SKY HR0612 True 31.12265611 True -29.29664 True WFI.2022-12-28T00:12:26.330 False ESO-2.2m WFI 60.A-9120(A) 60.A-9120(A) Service ACQUISITION IMAGE False SKY False 0.999 BB#RC/162_ESO844 False Pointing-0204-2917 100185390 1.0 True 1.11 True 3 2022-12-28T00:11:36 2022-12-28T00:13:26 1 2022-12-28T00:11:36 2022-12-28T00:13:26 1 2022-12-28T00:12:26 2022-12-28T00:13:26 0.0 0.0 0.0 0.030555555555555555 0.0 0.030555555555555555 0.030555555555555555
+Downtime 110 2022-12-27 False True IDLE "" True 0.0 True 0.0 True "" True ESO-2.2m IDLE IDLE/TWILIGHT IDLE/TWILIGHT 0.0 IDLE "" True "" True 0.0 "" False Telescope_Idle 0 0.0 True 0.0 True 43 2022-12-28T00:44:21 2022-12-28T00:48:30 0 2022-12-28T00:44:21 2022-12-28T00:48:30 0 2022-12-28T00:44:21 2022-12-28T00:48:30 0.0 0.0 0.06916666666666667 0.0 0.0 0.06916666666666667 0.06916666666666667
+MPIA/A 110 2022-12-27 False False TIC243167068 TIC243167068 False 16.04953111 False 19.74895 False "" True ESO-2.2m FEROS 0110.A-9011(A) 0110.A-9011(A) "Hobson, Melissa" ACQUISITION "" True "" True 0.0 "" True TIC243167068 1000251727 1.7825 False 1.315 False 4 2022-12-28T00:48:30 2022-12-28T01:24:09 1 2022-12-28T00:48:30 2022-12-28T00:52:30 1 2022-12-28T00:48:30 2022-12-28T00:52:30 0.0 0.0 0.06666666666666667 0.0 0.0 0.06666666666666667 0.06666666666666667
+MPIA/A 110 2022-12-27 False False TIC243167068 TIC243167068 False 16.04953111 False 19.74895 False FEROS.2022-12-28T00:53:09.002 False ESO-2.2m FEROS 0110.A-9011(A) 0110.A-9011(A) "Hobson, Melissa" SCIENCE ECHELLE False OBJECT,WAVE False 1800.043 "" False TIC243167068 1000251727 1.7825 False 1.315 False 4 2022-12-28T00:48:30 2022-12-28T01:24:09 2 2022-12-28T00:52:30 2022-12-28T01:24:09 1 2022-12-28T00:53:09 2022-12-28T01:24:09 0.07833333333333334 0.0 0.44916666666666666 0.0 0.0 0.5275 0.5275
+MPIA/A 110 2022-12-27 False False TIC248387177 TIC248387177 False 19.11641194 False -0.27741 False "" True ESO-2.2m FEROS 0110.A-9011(A) 0110.A-9011(A) "Hobson, Melissa" ACQUISITION "" True "" True 0.0 "" True TIC248387177 1000251730 1.345 False 1.44 False 5 2022-12-28T01:24:09 2022-12-28T01:47:50 1 2022-12-28T01:24:09 2022-12-28T01:26:30 1 2022-12-28T01:24:09 2022-12-28T01:26:30 0.03916666666666667 0.0 0.0 0.0 0.0 0.03916666666666667 0.03916666666666667
+MPIA/A 110 2022-12-27 False False TIC248387177 TIC248387177 False 19.11641194 False -0.27741 False FEROS.2022-12-28T01:26:50.547 False ESO-2.2m FEROS 0110.A-9011(A) 0110.A-9011(A) "Hobson, Melissa" SCIENCE ECHELLE False OBJECT,WAVE False 1200.044 "" False TIC248387177 1000251730 1.345 False 1.44 False 5 2022-12-28T01:24:09 2022-12-28T01:47:50 2 2022-12-28T01:26:30 2022-12-28T01:47:50 1 2022-12-28T01:26:50 2022-12-28T01:47:50 0.35555555555555557 0.0 0.0 0.0 0.0 0.35555555555555557 0.35555555555555557
+MPIA/A 110 2022-12-27 False False TIC408809625 TIC408809625 False 38.13795888 False 16.34956 False "" True ESO-2.2m FEROS 0110.A-9011(A) 0110.A-9011(A) "Hobson, Melissa" ACQUISITION "" True "" True 0.0 "" True TIC408809625 1000248280 1.524 False 1.3199999 False 6 2022-12-28T01:47:50 2022-12-28T02:11:07 1 2022-12-28T01:47:50 2022-12-28T01:49:47 1 2022-12-28T01:47:50 2022-12-28T01:49:47 0.0325 0.0 0.0 0.0 0.0 0.0325 0.0325
+MPIA/A 110 2022-12-27 False False TIC408809625 TIC408809625 False 38.13795888 False 16.34956 False FEROS.2022-12-28T01:50:07.686 False ESO-2.2m FEROS 0110.A-9011(A) 0110.A-9011(A) "Hobson, Melissa" SCIENCE ECHELLE False OBJECT,WAVE False 1200.043 "" False TIC408809625 1000248280 1.524 False 1.3199999 False 6 2022-12-28T01:47:50 2022-12-28T02:11:07 2 2022-12-28T01:49:47 2022-12-28T02:11:07 1 2022-12-28T01:50:07 2022-12-28T02:11:07 0.35555555555555557 0.0 0.0 0.0 0.0 0.35555555555555557 0.35555555555555557
+MPIA/A 110 2022-12-27 False False TIC91481801 TIC91481801 False 44.77780805 False 20.00121 False "" True ESO-2.2m FEROS 0110.A-9011(A) 0110.A-9011(A) "Hobson, Melissa" ACQUISITION "" True "" True 0.0 "" True TIC91481801 1000248295 1.6094999 False 1.61 False 7 2022-12-28T02:11:07 2022-12-28T02:20:27 1 2022-12-28T02:11:07 2022-12-28T02:14:06 1 2022-12-28T02:11:07 2022-12-28T02:14:06 0.04972222222222222 0.0 0.0 0.0 0.0 0.04972222222222222 0.04972222222222222
+MPIA/A 110 2022-12-27 False False TIC91481801 TIC91481801 False 44.77780805 False 20.00121 False FEROS.2022-12-28T02:14:27.443 False ESO-2.2m FEROS 0110.A-9011(A) 0110.A-9011(A) "Hobson, Melissa" SCIENCE ECHELLE False OBJECT,WAVE False 300.044 "" False TIC91481801 1000248295 1.6094999 False 1.61 False 7 2022-12-28T02:11:07 2022-12-28T02:20:27 2 2022-12-28T02:14:06 2022-12-28T02:20:27 1 2022-12-28T02:14:27 2022-12-28T02:20:27 0.10583333333333333 0.0 0.0 0.0 0.0 0.10583333333333333 0.10583333333333333
+MPIA/A 110 2022-12-27 False False TIC270406298 TIC270406298 False 32.89823805 False 4.20485 False "" True ESO-2.2m FEROS 0110.A-9011(A) 0110.A-9011(A) "Hobson, Melissa" ACQUISITION "" True "" True 0.0 "" True TIC270406298 1000248277 1.4365001 False 1.5699999 False 8 2022-12-28T02:20:27 2022-12-28T02:48:35 1 2022-12-28T02:20:27 2022-12-28T02:22:14 1 2022-12-28T02:20:27 2022-12-28T02:22:14 0.029722222222222223 0.0 0.0 0.0 0.0 0.029722222222222223 0.029722222222222223
+MPIA/A 110 2022-12-27 False False TIC270406298 TIC270406298 False 32.89823805 False 4.20485 False FEROS.2022-12-28T02:22:35.084 False ESO-2.2m FEROS 0110.A-9011(A) 0110.A-9011(A) "Hobson, Melissa" SCIENCE ECHELLE False OBJECT,WAVE False 1500.044 "" False TIC270406298 1000248277 1.4365001 False 1.5699999 False 8 2022-12-28T02:20:27 2022-12-28T02:48:35 2 2022-12-28T02:22:14 2022-12-28T02:48:35 1 2022-12-28T02:22:35 2022-12-28T02:48:35 0.43916666666666665 0.0 0.0 0.0 0.0 0.43916666666666665 0.43916666666666665
+MPIA/A 110 2022-12-27 False False HD28447 HD28447 False 67.56831 False 28.14224 False "" True ESO-2.2m FEROS 0110.A-9013(A) 0110.A-9013(A) "Zakhozhay, Olga" ACQUISITION "" True "" True 0.0 "" True HD28447 1000247726 1.8555 False 1.775 False 9 2022-12-28T02:48:35 2022-12-28T03:00:33 1 2022-12-28T02:48:35 2022-12-28T02:50:43 1 2022-12-28T02:48:35 2022-12-28T02:50:43 0.035555555555555556 0.0 0.0 0.0 0.0 0.035555555555555556 0.035555555555555556
+MPIA/A 110 2022-12-27 False False HD28447 HD28447 False 67.56831 False 28.14224 False FEROS.2022-12-28T02:51:03.688 False ESO-2.2m FEROS 0110.A-9013(A) 0110.A-9013(A) "Zakhozhay, Olga" SCIENCE ECHELLE False OBJECT,WAVE False 510.044 "" False HD28447 1000247726 1.8555 False 1.775 False 9 2022-12-28T02:48:35 2022-12-28T03:00:33 2 2022-12-28T02:50:43 2022-12-28T03:00:33 1 2022-12-28T02:51:03 2022-12-28T03:00:33 0.1638888888888889 0.0 0.0 0.0 0.0 0.1638888888888889 0.1638888888888889
+MPIA/A 110 2022-12-27 False False "TIC 184397998" "TIC 184397998" False 29.22422111 False -45.86413 False "" True ESO-2.2m FEROS 0110.A-9011(A) 0110.A-9011(A) "Hobson, Melissa" ACQUISITION "" True "" True 0.0 "" True TIC184397998 1000251724 1.3134999 False 1.815 False 10 2022-12-28T03:00:33 2022-12-28T03:34:49 1 2022-12-28T03:00:33 2022-12-28T03:03:29 1 2022-12-28T03:00:33 2022-12-28T03:03:29 0.04888888888888889 0.0 0.0 0.0 0.0 0.04888888888888889 0.04888888888888889
+MPIA/A 110 2022-12-27 False False "TIC 184397998" "TIC 184397998" False 29.22422111 False -45.86413 False FEROS.2022-12-28T03:03:49.949 False ESO-2.2m FEROS 0110.A-9011(A) 0110.A-9011(A) "Hobson, Melissa" SCIENCE ECHELLE False OBJECT,WAVE False 1800.044 "" False TIC184397998 1000251724 1.3134999 False 1.815 False 10 2022-12-28T03:00:33 2022-12-28T03:34:49 2 2022-12-28T03:03:29 2022-12-28T03:34:49 1 2022-12-28T03:03:49 2022-12-28T03:34:49 0.5222222222222223 0.0 0.0 0.0 0.0 0.5222222222222223 0.5222222222222223
+MPIA/A 110 2022-12-27 False False HD13246 HD13246 False 31.83907694 False -59.66789 False "" True ESO-2.2m FEROS 0110.A-9013(A) 0110.A-9013(A) "Zakhozhay, Olga" ACQUISITION "" True "" True 0.0 "" True HD13246 1000247684 1.4255 False 2.095 False 11 2022-12-28T03:34:49 2022-12-28T03:49:45 1 2022-12-28T03:34:49 2022-12-28T03:36:25 1 2022-12-28T03:34:49 2022-12-28T03:36:25 0.02666666666666667 0.0 0.0 0.0 0.0 0.02666666666666667 0.02666666666666667
+MPIA/A 110 2022-12-27 False False HD13246 HD13246 False 31.83907694 False -59.66789 False FEROS.2022-12-28T03:36:45.971 False ESO-2.2m FEROS 0110.A-9013(A) 0110.A-9013(A) "Zakhozhay, Olga" SCIENCE ECHELLE False OBJECT,WAVE False 720.044 "" False HD13246 1000247684 1.4255 False 2.095 False 11 2022-12-28T03:34:49 2022-12-28T03:49:45 2 2022-12-28T03:36:25 2022-12-28T03:49:45 1 2022-12-28T03:36:45 2022-12-28T03:49:45 0.2222222222222222 0.13305555555555557 0.0 0.0 0.0 0.2222222222222222 0.2222222222222222
+CNTAC 110 2022-12-27 False False TIC-184534291 TIC-184534291 False 29.75819388 False -47.80471 False "" True ESO-2.2m FEROS 0110.A-9035(A) 0110.A-9035(A) "Vinés, José" ACQUISITION "" True "" True 0.0 "" True TIC-184534291 1000265866 1.4795 False 2.21 False 12 2022-12-28T03:49:45 2022-12-28T04:13:07 1 2022-12-28T03:49:45 2022-12-28T03:51:46 1 2022-12-28T03:49:45 2022-12-28T03:51:46 0.03361111111111111 0.03361111111111111 0.0 0.0 0.0 0.03361111111111111 0.03361111111111111
+CNTAC 110 2022-12-27 False False TIC-184534291 TIC-184534291 False 29.75819388 False -47.80471 False FEROS.2022-12-28T03:52:07.429 False ESO-2.2m FEROS 0110.A-9035(A) 0110.A-9035(A) "Vinés, José" SCIENCE ECHELLE False OBJECT,WAVE False 1200.044 "" False TIC-184534291 1000265866 1.4795 False 2.21 False 12 2022-12-28T03:49:45 2022-12-28T04:13:07 2 2022-12-28T03:51:46 2022-12-28T04:13:07 1 2022-12-28T03:52:07 2022-12-28T04:13:07 0.35583333333333333 0.35583333333333333 0.0 0.0 0.0 0.35583333333333333 0.35583333333333333
+MPIA/A 110 2022-12-27 False False TIC437856897 TIC437856897 False 83.85085694 False 21.30619 False "" True ESO-2.2m FEROS 0110.A-9011(A) 0110.A-9011(A) "Hobson, Melissa" ACQUISITION "" True "" True 0.0 "" True TIC437856897 1000257346 1.5929999 False 1.525 False 13 2022-12-28T04:13:07 2022-12-28T04:27:17 1 2022-12-28T04:13:07 2022-12-28T04:15:56 1 2022-12-28T04:13:07 2022-12-28T04:15:56 0.04694444444444444 0.04694444444444444 0.0 0.0 0.0 0.04694444444444444 0.04694444444444444
+MPIA/A 110 2022-12-27 False False TIC437856897 TIC437856897 False 83.85085694 False 21.30619 False FEROS.2022-12-28T04:16:17.344 False ESO-2.2m FEROS 0110.A-9011(A) 0110.A-9011(A) "Hobson, Melissa" SCIENCE ECHELLE False OBJECT,WAVE False 600.044 "" False TIC437856897 1000257346 1.5929999 False 1.525 False 13 2022-12-28T04:13:07 2022-12-28T04:27:17 2 2022-12-28T04:15:56 2022-12-28T04:27:17 1 2022-12-28T04:16:17 2022-12-28T04:27:17 0.18916666666666668 0.18916666666666668 0.0 0.0 0.0 0.18916666666666668 0.18916666666666668
+MPIA/A 110 2022-12-27 False False TIC436637677 TIC436637677 False 72.14954305 False 12.96768 False "" True ESO-2.2m FEROS 0110.A-9011(A) 0110.A-9011(A) "Hobson, Melissa" ACQUISITION "" True "" True 0.0 "" True TIC436637677 1000248322 1.51 False 1.39 False 14 2022-12-28T04:27:17 2022-12-28T04:51:35 1 2022-12-28T04:27:17 2022-12-28T04:30:15 1 2022-12-28T04:27:17 2022-12-28T04:30:15 0.049444444444444444 0.049444444444444444 0.0 0.0 0.0 0.049444444444444444 0.049444444444444444
+MPIA/A 110 2022-12-27 False False TIC436637677 TIC436637677 False 72.14954305 False 12.96768 False FEROS.2022-12-28T04:30:35.746 False ESO-2.2m FEROS 0110.A-9011(A) 0110.A-9011(A) "Hobson, Melissa" SCIENCE ECHELLE False OBJECT,WAVE False 1200.044 "" False TIC436637677 1000248322 1.51 False 1.39 False 14 2022-12-28T04:27:17 2022-12-28T04:51:35 2 2022-12-28T04:30:15 2022-12-28T04:51:35 1 2022-12-28T04:30:35 2022-12-28T04:51:35 0.35555555555555557 0.35555555555555557 0.0 0.0 0.0 0.35555555555555557 0.35555555555555557
+CNTAC 110 2022-12-27 False False TIC358289302 TIC358289302 False 62.15574805 False -57.58248 False "" True ESO-2.2m FEROS 0110.A-9035(A) 0110.A-9035(A) "Vinés, José" ACQUISITION "" True "" True 0.0 "" True TIC358289302 1000265875 1.3069999 False 1.3199999 False 15 2022-12-28T04:51:35 2022-12-28T05:16:10 1 2022-12-28T04:51:35 2022-12-28T04:54:50 1 2022-12-28T04:51:35 2022-12-28T04:54:50 0.05416666666666667 0.05416666666666667 0.0 0.0 0.0 0.05416666666666667 0.05416666666666667
+CNTAC 110 2022-12-27 False False TIC358289302 TIC358289302 False 62.15574805 False -57.58248 False FEROS.2022-12-28T04:55:10.474 False ESO-2.2m FEROS 0110.A-9035(A) 0110.A-9035(A) "Vinés, José" SCIENCE ECHELLE False OBJECT,WAVE False 1200.044 "" False TIC358289302 1000265875 1.3069999 False 1.3199999 False 15 2022-12-28T04:51:35 2022-12-28T05:16:10 2 2022-12-28T04:54:50 2022-12-28T05:16:10 1 2022-12-28T04:55:10 2022-12-28T05:16:10 0.35555555555555557 0.35555555555555557 0.0 0.0 0.0 0.35555555555555557 0.35555555555555557
+MPIA/A 110 2022-12-27 False False HD57703 HD57703 False 110.75308888 False 18.28555 False "" True ESO-2.2m FEROS 0110.A-9013(A) 0110.A-9013(A) "Zakhozhay, Olga" ACQUISITION "" True "" True 0.0 "" True HD57703 1000247765 1.483 False 1.31 False 16 2022-12-28T05:16:10 2022-12-28T05:29:08 1 2022-12-28T05:16:10 2022-12-28T05:19:17 1 2022-12-28T05:16:10 2022-12-28T05:19:17 0.051944444444444446 0.051944444444444446 0.0 0.0 0.0 0.051944444444444446 0.051944444444444446
+MPIA/A 110 2022-12-27 False False HD57703 HD57703 False 110.75308888 False 18.28555 False FEROS.2022-12-28T05:19:38.440 False ESO-2.2m FEROS 0110.A-9013(A) 0110.A-9013(A) "Zakhozhay, Olga" SCIENCE ECHELLE False OBJECT,WAVE False 510.044 "" False HD57703 1000247765 1.483 False 1.31 False 16 2022-12-28T05:16:10 2022-12-28T05:29:08 2 2022-12-28T05:19:17 2022-12-28T05:29:08 1 2022-12-28T05:19:38 2022-12-28T05:29:08 0.16416666666666666 0.16416666666666666 0.0 0.0 0.0 0.16416666666666666 0.16416666666666666
+CNTAC 110 2022-12-27 False False TIC-423785115 TIC-423785115 False 70.90364388 False -26.63679 False "" True ESO-2.2m FEROS 0110.A-9036(A) 0110.A-9036(A) "Moyano, Maximiliano" ACQUISITION "" True "" True 0.0 "" True TIC-423785115 1000257679 1.227 False 1.4449999 False 17 2022-12-28T05:29:08 2022-12-28T05:42:50 1 2022-12-28T05:29:08 2022-12-28T05:31:30 1 2022-12-28T05:29:08 2022-12-28T05:31:30 0.03944444444444444 0.03944444444444444 0.0 0.0 0.0 0.03944444444444444 0.03944444444444444
+CNTAC 110 2022-12-27 False False TIC-423785115 TIC-423785115 False 70.90364388 False -26.63679 False FEROS.2022-12-28T05:31:50.539 False ESO-2.2m FEROS 0110.A-9036(A) 0110.A-9036(A) "Moyano, Maximiliano" SCIENCE ECHELLE False OBJECT,WAVE False 600.044 "" False TIC-423785115 1000257679 1.227 False 1.4449999 False 17 2022-12-28T05:29:08 2022-12-28T05:42:50 2 2022-12-28T05:31:30 2022-12-28T05:42:50 1 2022-12-28T05:31:50 2022-12-28T05:42:50 0.18888888888888888 0.18888888888888888 0.0 0.0 0.0 0.18888888888888888 0.18888888888888888
+CNTAC 110 2022-12-27 False False TIC-442893494 TIC-442893494 False 79.99398111 False -16.2062 False "" True ESO-2.2m FEROS 0110.A-9036(A) 0110.A-9036(A) "Moyano, Maximiliano" ACQUISITION "" True "" True 0.0 "" True TIC-442893494 1000265922 1.2285 False 1.4 False 18 2022-12-28T05:42:50 2022-12-28T06:07:17 1 2022-12-28T05:42:50 2022-12-28T05:45:57 1 2022-12-28T05:42:50 2022-12-28T05:45:57 0.051944444444444446 0.051944444444444446 0.0 0.0 0.0 0.051944444444444446 0.051944444444444446
+CNTAC 110 2022-12-27 False False TIC-442893494 TIC-442893494 False 79.99398111 False -16.2062 False FEROS.2022-12-28T05:46:17.892 False ESO-2.2m FEROS 0110.A-9036(A) 0110.A-9036(A) "Moyano, Maximiliano" SCIENCE ECHELLE False OBJECT,WAVE False 1200.044 "" False TIC-442893494 1000265922 1.2285 False 1.4 False 18 2022-12-28T05:42:50 2022-12-28T06:07:17 2 2022-12-28T05:45:57 2022-12-28T06:07:17 1 2022-12-28T05:46:17 2022-12-28T06:07:17 0.35555555555555557 0.35555555555555557 0.0 0.0 0.0 0.35555555555555557 0.35555555555555557
+CNTAC 110 2022-12-27 False False TIC-350432166 TIC-350432166 False 84.86351388 False -58.99333 False "" True ESO-2.2m FEROS 0110.A-9035(A) 0110.A-9035(A) "Vinés, José" ACQUISITION "" True "" True 0.0 "" True TIC-350432166 1000265884 1.287 False 1.13 False 19 2022-12-28T06:07:17 2022-12-28T06:30:53 1 2022-12-28T06:07:17 2022-12-28T06:09:32 1 2022-12-28T06:07:17 2022-12-28T06:09:32 0.0375 0.0375 0.0 0.0 0.0 0.0375 0.0375
+CNTAC 110 2022-12-27 False False TIC-350432166 TIC-350432166 False 84.86351388 False -58.99333 False FEROS.2022-12-28T06:09:53.523 False ESO-2.2m FEROS 0110.A-9035(A) 0110.A-9035(A) "Vinés, José" SCIENCE ECHELLE False OBJECT,WAVE False 1200.044 "" False TIC-350432166 1000265884 1.287 False 1.13 False 19 2022-12-28T06:07:17 2022-12-28T06:30:53 2 2022-12-28T06:09:32 2022-12-28T06:30:53 1 2022-12-28T06:09:53 2022-12-28T06:30:53 0.35583333333333333 0.35583333333333333 0.0 0.0 0.0 0.35583333333333333 0.35583333333333333
+MPIA/A 110 2022-12-27 False False HD50571 HD50571 False 102.48126111 False -60.23546 False "" True ESO-2.2m FEROS 0110.A-9013(A) 0110.A-9013(A) "Zakhozhay, Olga" ACQUISITION "" True "" True 0.0 "" True HD50571 1000247753 1.219 False 1.195 False 20 2022-12-28T06:30:53 2022-12-28T06:42:42 1 2022-12-28T06:30:53 2022-12-28T06:32:52 1 2022-12-28T06:30:53 2022-12-28T06:32:52 0.03305555555555555 0.03305555555555555 0.0 0.0 0.0 0.03305555555555555 0.03305555555555555
+MPIA/A 110 2022-12-27 False False HD50571 HD50571 False 102.48126111 False -60.23546 False FEROS.2022-12-28T06:33:12.813 False ESO-2.2m FEROS 0110.A-9013(A) 0110.A-9013(A) "Zakhozhay, Olga" SCIENCE ECHELLE False OBJECT,WAVE False 510.044 "" False HD50571 1000247753 1.219 False 1.195 False 20 2022-12-28T06:30:53 2022-12-28T06:42:42 2 2022-12-28T06:32:52 2022-12-28T06:42:42 1 2022-12-28T06:33:12 2022-12-28T06:42:42 0.1638888888888889 0.1638888888888889 0.0 0.0 0.0 0.1638888888888889 0.1638888888888889
+CNTAC 110 2022-12-27 False False TIC-292719109 TIC-292719109 False 107.40110694 False 3.58111 False "" True ESO-2.2m FEROS 0110.A-9035(A) 0110.A-9035(A) "Vinés, José" ACQUISITION "" True "" True 0.0 "" True TIC-292719109 1000257574 1.2945 False 1.11 False 21 2022-12-28T06:42:42 2022-12-28T07:01:29 1 2022-12-28T06:42:42 2022-12-28T06:45:08 1 2022-12-28T06:42:42 2022-12-28T06:45:08 0.04055555555555555 0.04055555555555555 0.0 0.0 0.0 0.04055555555555555 0.04055555555555555
+CNTAC 110 2022-12-27 False False TIC-292719109 TIC-292719109 False 107.40110694 False 3.58111 False FEROS.2022-12-28T06:45:29.482 False ESO-2.2m FEROS 0110.A-9035(A) 0110.A-9035(A) "Vinés, José" SCIENCE ECHELLE False OBJECT,WAVE False 900.044 "" False TIC-292719109 1000257574 1.2945 False 1.11 False 21 2022-12-28T06:42:42 2022-12-28T07:01:29 2 2022-12-28T06:45:08 2022-12-28T07:01:29 1 2022-12-28T06:45:29 2022-12-28T07:01:29 0.2725 0.2725 0.0 0.0 0.0 0.2725 0.2725
+MPIA/A 110 2022-12-27 False False HD59659 HD59659 False 112.105965 False -49.13614 False "" True ESO-2.2m FEROS 0110.A-9013(A) 0110.A-9013(A) "Zakhozhay, Olga" ACQUISITION "" True "" True 0.0 "" True HD59659 1000247759 1.1155 False 0.9 False 22 2022-12-28T07:01:29 2022-12-28T07:18:42 1 2022-12-28T07:01:29 2022-12-28T07:03:51 1 2022-12-28T07:01:29 2022-12-28T07:03:51 0.03944444444444444 0.03944444444444444 0.0 0.0 0.0 0.03944444444444444 0.03944444444444444
+MPIA/A 110 2022-12-27 False False HD59659 HD59659 False 112.105965 False -49.13614 False FEROS.2022-12-28T07:04:12.782 False ESO-2.2m FEROS 0110.A-9013(A) 0110.A-9013(A) "Zakhozhay, Olga" SCIENCE ECHELLE False OBJECT,WAVE False 810.044 "" False HD59659 1000247759 1.1155 False 0.9 False 22 2022-12-28T07:01:29 2022-12-28T07:18:42 2 2022-12-28T07:03:51 2022-12-28T07:18:42 1 2022-12-28T07:04:12 2022-12-28T07:18:42 0.2475 0.2475 0.0 0.0 0.0 0.2475 0.2475
+Downtime 110 2022-12-27 False True IDLE "" True 0.0 True 0.0 True "" True ESO-2.2m IDLE IDLE/NIGHT IDLE/NIGHT 0.0 IDLE "" True "" True 0.0 "" False Telescope_Idle 0 0.0 True 0.0 True 23 2022-12-28T07:18:42 2022-12-28T08:09:09 0 2022-12-28T07:18:42 2022-12-28T08:09:09 0 2022-12-28T07:18:42 2022-12-28T08:09:09 0.8408333333333333 0.8408333333333333 0.0 0.0 0.0 0.8408333333333333 0.8408333333333333
+Downtime 110 2022-12-27 False True IDLE "" True 0.0 True 0.0 True "" True ESO-2.2m IDLE IDLE/TWILIGHT IDLE/TWILIGHT 0.0 IDLE "" True "" True 0.0 "" False Telescope_Idle 0 0.0 True 0.0 True 44 2022-12-28T08:09:09 2022-12-28T08:44:15 0 2022-12-28T08:09:09 2022-12-28T08:44:15 0 2022-12-28T08:09:09 2022-12-28T08:44:15 0.0 0.0 0.585 0.0 0.0 0.585 0.585
+xxxxxxxxxxxx 0 xxxxxxxxxx False False xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx False 0.0 False 0.0 False xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx False xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxx xxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx False xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx False 0.0 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx False xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 0 0.0 False 0.0 False 0 xxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxx 0 xxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxx 0 xxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxx 0.0 0.0 0.0 0.0 0.0 0.0 0.0

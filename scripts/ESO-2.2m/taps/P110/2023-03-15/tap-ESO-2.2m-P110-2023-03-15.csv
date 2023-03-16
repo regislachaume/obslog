@@ -1,0 +1,283 @@
+# %ECSV 1.0
+# ---
+# datatype:
+# - name: period
+#   datatype: int16
+#   description: ESO proposal cycle
+#   meta: !!omap
+#   - {ucd: obs.proposal.cycle}
+# - {name: object, datatype: string}
+# - {name: target, datatype: string}
+# - {name: target.mask, datatype: bool}
+# - name: ra
+#   unit: deg
+#   datatype: float64
+#   description: Right Ascension FK5 J2000
+#   meta: !!omap
+#   - {ucd: pos.eq.ra;meta.main}
+# - name: dec
+#   unit: deg
+#   datatype: float64
+#   description: Declination FK5 J2000
+#   meta: !!omap
+#   - {ucd: pos.eq.dec;meta.main}
+# - {name: dp_id, datatype: string}
+# - {name: telescope, datatype: string}
+# - {name: instrument, datatype: string}
+# - {name: prog_id, datatype: string}
+# - {name: pi_coi, datatype: string}
+# - {name: dp_cat, datatype: string}
+# - {name: dp_tech, datatype: string}
+# - {name: dp_type, datatype: string}
+# - name: exposure
+#   unit: s
+#   datatype: float32
+#   description: Total exposure time on target.
+#   meta: !!omap
+#   - {ucd: time.duration;obs.exposure}
+# - {name: det_dit, unit: s, datatype: float32, description: Detector Integration Time (Infrared instruments).}
+# - {name: det_dit.mask, datatype: bool}
+# - {name: filter_path, datatype: string}
+# - {name: ob_name, datatype: string}
+# - name: ob_id
+#   datatype: int32
+#   description: The identifier of the ESO Observation Block, a unique numeric ID assigned by the Observation Handling System
+#   meta: !!omap
+#   - {ucd: meta.id;obs;meta.main}
+# - name: tel_airm_start
+#   datatype: float32
+#   description: The airmass at the start of the observation.
+#   meta: !!omap
+#   - {ucd: obs.airMass;time.start}
+# - {name: tel_airm_start.mask, datatype: bool}
+# - name: tel_airm_end
+#   datatype: float32
+#   description: The airmass at the end of the observation.
+#   meta: !!omap
+#   - {ucd: obs.airMass;time.end}
+# - {name: tel_airm_end.mask, datatype: bool}
+# - name: tel_ambi_fwhm_start
+#   unit: arcsec
+#   datatype: float32
+#   description: The seeing measured by XXX at the start of the observation.
+#   meta: !!omap
+#   - {ucd: instr.obsty.seeing;time.start}
+# - {name: tel_ambi_fwhm_start.mask, datatype: bool}
+# - name: tel_ambi_fwhm_end
+#   unit: arcsec
+#   datatype: float32
+#   description: The seeing measured by XXX at the end of the observation.
+#   meta: !!omap
+#   - {ucd: instr.obsty.seeing;time.end}
+# - {name: tel_ambi_fwhm_end.mask, datatype: bool}
+# - name: tpl_seqno
+#   datatype: int32
+#   description: The template sequence number within the Observing Block
+#   meta: !!omap
+#   - {ucd: meta.code.member;obs.sequence}
+# - {name: tpl_start, datatype: string}
+# - name: tpl_expno
+#   datatype: int32
+#   description: The exposure number within its template execution.
+#   meta: !!omap
+#   - {ucd: meta.number;obs}
+# - {name: exp_start, datatype: string}
+# meta: !!omap
+# - {site: La Silla Observatory}
+# - {lon: -70.73000000000002}
+# - {lat: -29.25666666666666}
+# - {alt: 2346.999999998842}
+# - {telescope: ESO-2.2m}
+# - {period: 110}
+# - {night: '2023-03-15'}
+# - {rootdir: .}
+# - __serialized_columns__:
+#     dec:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: dec}
+#     det_dit:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: det_dit}
+#       mask: !astropy.table.SerializedColumn {name: det_dit.mask}
+#     dp_id:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: dp_id}
+#     dp_tech:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: dp_tech}
+#     dp_type:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: dp_type}
+#     exposure:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: exposure}
+#     filter_path:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: filter_path}
+#     ob_id:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: ob_id}
+#     period:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: period}
+#     ra:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: ra}
+#     target:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: target}
+#       mask: !astropy.table.SerializedColumn {name: target.mask}
+#     tel_airm_end:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: tel_airm_end}
+#       mask: !astropy.table.SerializedColumn {name: tel_airm_end.mask}
+#     tel_airm_start:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: tel_airm_start}
+#       mask: !astropy.table.SerializedColumn {name: tel_airm_start.mask}
+#     tel_ambi_fwhm_end:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: tel_ambi_fwhm_end}
+#       mask: !astropy.table.SerializedColumn {name: tel_ambi_fwhm_end.mask}
+#     tel_ambi_fwhm_start:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: tel_ambi_fwhm_start}
+#       mask: !astropy.table.SerializedColumn {name: tel_ambi_fwhm_start.mask}
+#     tpl_expno:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: tpl_expno}
+#     tpl_seqno:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: tpl_seqno}
+# schema: astropy-2.0
+period object target target.mask ra dec dp_id telescope instrument prog_id pi_coi dp_cat dp_tech dp_type exposure det_dit det_dit.mask filter_path ob_name ob_id tel_airm_start tel_airm_start.mask tel_airm_end tel_airm_end.mask tel_ambi_fwhm_start tel_ambi_fwhm_start.mask tel_ambi_fwhm_end tel_ambi_fwhm_end.mask tpl_seqno tpl_start tpl_expno exp_start
+60 BIAS "" True -596.52323555 -596.52323555 FEROS.2023-03-15T18:48:45.161 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE BIAS 0.0 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 1 2023-03-15T18:48:40 1 2023-03-15T18:48:45
+60 BIAS "" True -596.52323555 -596.52323555 FEROS.2023-03-15T18:49:33.216 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE BIAS 0.0 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 1 2023-03-15T18:48:40 2 2023-03-15T18:49:33
+60 BIAS "" True -596.52323555 -596.52323555 FEROS.2023-03-15T18:50:23.031 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE BIAS 0.0 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 1 2023-03-15T18:48:40 3 2023-03-15T18:50:23
+60 BIAS "" True -596.52323555 -596.52323555 FEROS.2023-03-15T18:51:11.546 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE BIAS 0.0 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 1 2023-03-15T18:48:40 4 2023-03-15T18:51:11
+60 BIAS "" True -596.52323555 -596.52323555 FEROS.2023-03-15T18:52:01.042 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE BIAS 0.0 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 1 2023-03-15T18:48:40 5 2023-03-15T18:52:01
+60 FLAT "" True -596.52323555 -596.52323555 FEROS.2023-03-15T18:58:07.310 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE FLAT 8.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 2 2023-03-15T18:52:44 1 2023-03-15T18:58:07
+60 FLAT "" True -596.52323555 -596.52323555 FEROS.2023-03-15T18:59:06.127 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE FLAT 8.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 2 2023-03-15T18:52:44 2 2023-03-15T18:59:06
+60 FLAT "" True -596.52323555 -596.52323555 FEROS.2023-03-15T19:00:06.534 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE FLAT 8.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 2 2023-03-15T18:52:44 3 2023-03-15T19:00:06
+60 FLAT "" True -596.52323555 -596.52323555 FEROS.2023-03-15T19:01:04.710 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE FLAT 8.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 2 2023-03-15T18:52:44 4 2023-03-15T19:01:04
+60 FLAT "" True -596.52323555 -596.52323555 FEROS.2023-03-15T19:02:05.206 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE FLAT 8.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 2 2023-03-15T18:52:44 5 2023-03-15T19:02:05
+60 FLAT "" True -596.52323555 -596.52323555 FEROS.2023-03-15T19:03:03.722 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE FLAT 8.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 2 2023-03-15T18:52:44 6 2023-03-15T19:03:03
+60 FLAT "" True -596.52323555 -596.52323555 FEROS.2023-03-15T19:04:04.209 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE FLAT 8.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 2 2023-03-15T18:52:44 7 2023-03-15T19:04:04
+60 FLAT "" True -596.52323555 -596.52323555 FEROS.2023-03-15T19:05:02.745 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE FLAT 8.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 2 2023-03-15T18:52:44 8 2023-03-15T19:05:02
+60 FLAT "" True -596.52323555 -596.52323555 FEROS.2023-03-15T19:06:03.562 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE FLAT 8.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 2 2023-03-15T18:52:44 9 2023-03-15T19:06:03
+60 FLAT "" True -596.52323555 -596.52323555 FEROS.2023-03-15T19:07:02.108 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE FLAT 8.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 2 2023-03-15T18:52:44 10 2023-03-15T19:07:02
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T19:08:17.186 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 10.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 3 2023-03-15T19:08:00 1 2023-03-15T19:08:17
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T19:09:17.732 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 10.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 3 2023-03-15T19:08:00 2 2023-03-15T19:09:17
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T19:10:26.640 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 30.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 4 2023-03-15T19:10:17 1 2023-03-15T19:10:26
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T19:11:47.759 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 30.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 4 2023-03-15T19:10:17 2 2023-03-15T19:11:47
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T19:13:15.158 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 60.042 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 5 2023-03-15T19:13:06 1 2023-03-15T19:13:15
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T19:15:07.290 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 60.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 5 2023-03-15T19:13:06 2 2023-03-15T19:15:07
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T19:37:21.513 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 30.042 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 6 2023-03-15T19:16:57 1 2023-03-15T19:37:21
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T19:38:43.571 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 30.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 6 2023-03-15T19:16:57 2 2023-03-15T19:38:43
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T19:40:11.131 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 150.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 7 2023-03-15T19:40:02 1 2023-03-15T19:40:11
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T19:43:33.573 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 150.042 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 7 2023-03-15T19:40:02 2 2023-03-15T19:43:33
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T19:47:01.614 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 300.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 8 2023-03-15T19:46:52 1 2023-03-15T19:47:01
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T19:52:54.233 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 300.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 8 2023-03-15T19:46:52 2 2023-03-15T19:52:54
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T19:58:51.111 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 30.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 9 2023-03-15T19:58:42 1 2023-03-15T19:58:51
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T20:00:12.040 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 30.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 9 2023-03-15T19:58:42 2 2023-03-15T20:00:12
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T20:01:32.138 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 30.042 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 9 2023-03-15T19:58:42 3 2023-03-15T20:01:32
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T20:02:54.207 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 30.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 9 2023-03-15T19:58:42 4 2023-03-15T20:02:54
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T20:04:14.735 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 30.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 9 2023-03-15T19:58:42 5 2023-03-15T20:04:14
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T20:05:37.265 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 30.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 9 2023-03-15T19:58:42 6 2023-03-15T20:05:37
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T20:06:59.244 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 30.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 9 2023-03-15T19:58:42 7 2023-03-15T20:06:59
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T20:08:19.752 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 30.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 9 2023-03-15T19:58:42 8 2023-03-15T20:08:19
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T20:09:42.611 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 30.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 9 2023-03-15T19:58:42 9 2023-03-15T20:09:42
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T20:11:05.250 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 30.042 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 9 2023-03-15T19:58:42 10 2023-03-15T20:11:05
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T20:12:26.209 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 30.042 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 9 2023-03-15T19:58:42 11 2023-03-15T20:12:26
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T20:13:48.588 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 30.042 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 9 2023-03-15T19:58:42 12 2023-03-15T20:13:48
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T20:15:11.566 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 30.042 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 9 2023-03-15T19:58:42 13 2023-03-15T20:15:11
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T20:16:32.155 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 30.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 9 2023-03-15T19:58:42 14 2023-03-15T20:16:32
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T20:17:54.254 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 30.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 9 2023-03-15T19:58:42 15 2023-03-15T20:17:54
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T20:19:16.562 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 30.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 9 2023-03-15T19:58:42 16 2023-03-15T20:19:16
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T20:20:37.161 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 30.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 9 2023-03-15T19:58:42 17 2023-03-15T20:20:37
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T20:21:59.270 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 30.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 9 2023-03-15T19:58:42 18 2023-03-15T20:21:59
+60 BIAS "" True -596.52323555 -596.52323555 FEROS.2023-03-15T20:23:24.949 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE BIAS 0.0 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 10 2023-03-15T20:23:19 1 2023-03-15T20:23:24
+60 BIAS "" True -596.52323555 -596.52323555 FEROS.2023-03-15T20:23:43.212 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE BIAS 0.0 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 10 2023-03-15T20:23:19 2 2023-03-15T20:23:43
+60 BIAS "" True -596.52323555 -596.52323555 FEROS.2023-03-15T20:24:01.514 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE BIAS 0.0 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 10 2023-03-15T20:23:19 3 2023-03-15T20:24:01
+60 BIAS "" True -596.52323555 -596.52323555 FEROS.2023-03-15T20:24:19.176 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE BIAS 0.0 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 10 2023-03-15T20:23:19 4 2023-03-15T20:24:19
+60 BIAS "" True -596.52323555 -596.52323555 FEROS.2023-03-15T20:24:37.187 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE BIAS 0.0 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 10 2023-03-15T20:23:19 5 2023-03-15T20:24:37
+60 FLAT "" True -596.52323555 -596.52323555 FEROS.2023-03-15T20:30:05.902 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE FLAT 4.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 11 2023-03-15T20:24:50 1 2023-03-15T20:30:05
+60 FLAT "" True -596.52323555 -596.52323555 FEROS.2023-03-15T20:30:31.105 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE FLAT 4.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 11 2023-03-15T20:24:50 2 2023-03-15T20:30:31
+60 FLAT "" True -596.52323555 -596.52323555 FEROS.2023-03-15T20:30:56.028 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE FLAT 4.042 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 11 2023-03-15T20:24:50 3 2023-03-15T20:30:56
+60 FLAT "" True -596.52323555 -596.52323555 FEROS.2023-03-15T20:31:23.571 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE FLAT 4.042 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 11 2023-03-15T20:24:50 4 2023-03-15T20:31:23
+60 FLAT "" True -596.52323555 -596.52323555 FEROS.2023-03-15T20:31:48.774 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE FLAT 4.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 11 2023-03-15T20:24:50 5 2023-03-15T20:31:48
+60 FLAT "" True -596.52323555 -596.52323555 FEROS.2023-03-15T20:32:13.726 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE FLAT 4.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 11 2023-03-15T20:24:50 6 2023-03-15T20:32:13
+60 FLAT "" True -596.52323555 -596.52323555 FEROS.2023-03-15T20:32:38.729 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE FLAT 4.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 11 2023-03-15T20:24:50 7 2023-03-15T20:32:38
+60 FLAT "" True -596.52323555 -596.52323555 FEROS.2023-03-15T20:33:03.782 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE FLAT 4.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 11 2023-03-15T20:24:50 8 2023-03-15T20:33:03
+60 FLAT "" True -596.52323555 -596.52323555 FEROS.2023-03-15T20:33:30.255 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE FLAT 4.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 11 2023-03-15T20:24:50 9 2023-03-15T20:33:30
+60 FLAT "" True -596.52323555 -596.52323555 FEROS.2023-03-15T20:33:56.047 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE FLAT 4.042 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 11 2023-03-15T20:24:50 10 2023-03-15T20:33:56
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T20:34:35.261 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 5.042 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 12 2023-03-15T20:34:18 1 2023-03-15T20:34:35
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T20:35:02.145 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 5.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 12 2023-03-15T20:34:18 2 2023-03-15T20:35:02
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T20:35:36.608 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 15.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 13 2023-03-15T20:35:27 1 2023-03-15T20:35:36
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T20:36:12.692 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 15.042 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 13 2023-03-15T20:35:27 2 2023-03-15T20:36:12
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T20:36:55.096 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 30.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 14 2023-03-15T20:36:46 1 2023-03-15T20:36:55
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T20:37:47.202 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 30.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 14 2023-03-15T20:36:46 2 2023-03-15T20:37:47
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T20:59:00.228 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 15.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 15 2023-03-15T20:38:35 1 2023-03-15T20:59:00
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T20:59:37.263 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 15.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 15 2023-03-15T20:38:35 2 2023-03-15T20:59:37
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T21:00:20.137 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 75.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 16 2023-03-15T21:00:11 1 2023-03-15T21:00:20
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T21:01:58.608 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 75.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 16 2023-03-15T21:00:11 2 2023-03-15T21:01:58
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T21:03:41.109 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 150.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 17 2023-03-15T21:03:32 1 2023-03-15T21:03:41
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T21:06:33.507 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 150.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 17 2023-03-15T21:03:32 2 2023-03-15T21:06:33
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T21:09:31.086 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 15.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 18 2023-03-15T21:09:22 1 2023-03-15T21:09:31
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T21:10:09.190 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 15.042 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 18 2023-03-15T21:09:22 2 2023-03-15T21:10:09
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T21:10:46.034 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 15.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 18 2023-03-15T21:09:22 3 2023-03-15T21:10:46
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T21:11:22.018 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 15.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 18 2023-03-15T21:09:22 4 2023-03-15T21:11:22
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T21:11:59.202 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 15.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 18 2023-03-15T21:09:22 5 2023-03-15T21:11:59
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T21:12:36.116 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 15.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 18 2023-03-15T21:09:22 6 2023-03-15T21:12:36
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T21:13:12.720 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 15.042 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 18 2023-03-15T21:09:22 7 2023-03-15T21:13:12
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T21:13:50.184 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 15.042 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 18 2023-03-15T21:09:22 8 2023-03-15T21:13:50
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T21:14:27.138 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 15.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 18 2023-03-15T21:09:22 9 2023-03-15T21:14:27
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T21:15:02.692 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 15.042 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 18 2023-03-15T21:09:22 10 2023-03-15T21:15:02
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T21:15:38.716 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 15.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 18 2023-03-15T21:09:22 11 2023-03-15T21:15:38
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T21:16:16.510 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 15.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 18 2023-03-15T21:09:22 12 2023-03-15T21:16:16
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T21:16:52.734 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 15.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 18 2023-03-15T21:09:22 13 2023-03-15T21:16:52
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T21:17:28.728 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 15.042 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 18 2023-03-15T21:09:22 14 2023-03-15T21:17:28
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T21:18:06.521 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 15.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 18 2023-03-15T21:09:22 15 2023-03-15T21:18:06
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T21:18:42.706 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 15.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 18 2023-03-15T21:09:22 16 2023-03-15T21:18:42
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T21:19:18.710 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 15.043 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 18 2023-03-15T21:09:22 17 2023-03-15T21:19:18
+60 WAVE "" True -596.52323555 -596.52323555 FEROS.2023-03-15T21:19:56.513 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE WAVE 15.042 nan True "" "Calibration 1x1 and 2x2,normal" 100319512 nan True nan True nan True nan True 18 2023-03-15T21:09:22 18 2023-03-15T21:19:56
+60 FLAT,SKY "" True 108.13255194 -42.66143 WFI.2023-03-15T23:18:25.997 ESO-2.2m WFI 60.A-9120(A) "2P2 TEAM 20" CALIB IMAGE FLAT,SKY 1.01 nan True BB#RC/162_ESO844 SkyFlatsEvening_Rc 100346479 1.055 False 1.055 False 1.1 False 1.1 False 1 2023-03-15T23:15:10 8 2023-03-15T23:18:25
+60 FLAT,SKY "" True 108.14004805 -42.65587 WFI.2023-03-15T23:19:19.973 ESO-2.2m WFI 60.A-9120(A) "2P2 TEAM 20" CALIB IMAGE FLAT,SKY 1.257 nan True BB#RC/162_ESO844 SkyFlatsEvening_Rc 100346479 1.055 False 1.055 False 1.1 False 1.1 False 1 2023-03-15T23:15:10 9 2023-03-15T23:19:19
+60 FLAT,SKY "" True 108.14757888 -42.65029 WFI.2023-03-15T23:20:13.940 ESO-2.2m WFI 60.A-9120(A) "2P2 TEAM 20" CALIB IMAGE FLAT,SKY 1.557 nan True BB#RC/162_ESO844 SkyFlatsEvening_Rc 100346479 1.054 False 1.054 False 1.1 False 1.1 False 1 2023-03-15T23:15:10 10 2023-03-15T23:20:13
+60 FLAT,SKY "" True 108.15510805 -42.64472 WFI.2023-03-15T23:21:07.995 ESO-2.2m WFI 60.A-9120(A) "2P2 TEAM 20" CALIB IMAGE FLAT,SKY 1.929 nan True BB#RC/162_ESO844 SkyFlatsEvening_Rc 100346479 1.053 False 1.053 False 1.1 False 1.1 False 1 2023-03-15T23:15:10 11 2023-03-15T23:21:07
+60 FLAT,SKY "" True 108.16263388 -42.63915 WFI.2023-03-15T23:22:03.941 ESO-2.2m WFI 60.A-9120(A) "2P2 TEAM 20" CALIB IMAGE FLAT,SKY 2.401 nan True BB#RC/162_ESO844 SkyFlatsEvening_Rc 100346479 1.052 False 1.052 False 1.1 False 1.1 False 1 2023-03-15T23:15:10 12 2023-03-15T23:22:03
+60 FLAT,SKY "" True 108.17016888 -42.63358 WFI.2023-03-15T23:22:57.978 ESO-2.2m WFI 60.A-9120(A) "2P2 TEAM 20" CALIB IMAGE FLAT,SKY 2.979 nan True BB#RC/162_ESO844 SkyFlatsEvening_Rc 100346479 1.052 False 1.052 False 1.1 False 1.1 False 1 2023-03-15T23:15:10 13 2023-03-15T23:22:57
+60 BIAS CD-39_2316 False 90.06785388 -39.50406 FEROS.2023-03-15T23:33:10.969 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE BIAS 0.0 nan True "" Focus_06-40 100241081 1.019 False 1.02 False 1.1 False 1.1 False 3 2023-03-15T23:33:05 1 2023-03-15T23:33:10
+110 "HD 32712" "HD 32712" False 75.36698611 -58.50066 FEROS.2023-03-15T23:40:46.379 ESO-2.2m FEROS 0110.A-9015(A) "DIMOFF, A" SCIENCE ECHELLE OBJECT,WAVE 400.043 nan True "" FEROS_HD-32712 1000243719 1.192 False 1.201 False 1.1 False 1.14 False 2 2023-03-15T23:40:25 1 2023-03-15T23:40:46
+110 "HD 269246" "HD 269246" False 78.66233 -69.17461 FEROS.2023-03-15T23:50:39.673 ESO-2.2m FEROS 0110.A-9015(A) "DIMOFF, A" SCIENCE ECHELLE OBJECT,WAVE 300.043 nan True "" FEROS_HD-269246 1000243729 1.341 False 1.346 False 1.14 False 1.26 False 2 2023-03-15T23:50:19 1 2023-03-15T23:50:39
+110 DR3_TARG3184078579032750464 DR3_TARG3184078579032750464 False 70.33634305 -11.47455 FEROS.2023-03-15T23:59:58.012 ESO-2.2m FEROS 0110.A-9014(A) "ZARI, E" SCIENCE ECHELLE OBJECT,WAVE 2400.043 nan True "" DR3_TARG3184078579032750464 1000288423 1.215 False 1.365 False 1.26 False 0.95 False 2 2023-03-15T23:59:37 1 2023-03-15T23:59:58
+110 DR3_TARG2995961897685517312 DR3_TARG2995961897685517312 False 88.45071694 -13.815 FEROS.2023-03-16T00:45:18.624 ESO-2.2m FEROS 0110.A-9014(A) "ZARI, E" SCIENCE ECHELLE OBJECT,WAVE 1800.043 nan True "" DR3_TARG2995961897685517312 1000262959 1.132 False 1.206 False 0.84 False 0.91 False 2 2023-03-16T00:44:58 1 2023-03-16T00:45:18
+110 "CD-42 2048" "CD-42 2048" False 84.47745 -42.31081 FEROS.2023-03-16T01:17:54.224 ESO-2.2m FEROS 0110.A-9015(A) "DIMOFF, A" SCIENCE ECHELLE OBJECT,WAVE 600.043 nan True "" FEROS_CD-42-2048 1000244376 1.188 False 1.216 False 0.91 False 1.08 False 2 2023-03-16T01:17:33 1 2023-03-16T01:17:54
+110 "HD 45483" "HD 45483" False 87.93358 -86.38002 FEROS.2023-03-16T01:31:37.223 ESO-2.2m FEROS 0110.A-9015(A) "DIMOFF, A" SCIENCE ECHELLE OBJECT,WAVE 300.043 nan True "" FEROS_HD-45483 1000244381 1.881 False 1.884 False 1.08 False 1.23 False 2 2023-03-16T01:31:16 1 2023-03-16T01:31:37
+110 "HD 39778" "HD 39778" False 88.11578805 -43.0894 FEROS.2023-03-16T01:40:50.322 ESO-2.2m FEROS 0110.A-9015(A) "DIMOFF, A" SCIENCE ECHELLE OBJECT,WAVE 600.043 nan True "" FEROS_HD-39778 1000244386 1.211 False 1.241 False 1.23 False 1.56 False 2 2023-03-16T01:40:29 1 2023-03-16T01:40:50
+110 "HD 49778" "HD 49778" False 101.89749611 -47.28426 FEROS.2023-03-16T01:53:53.996 ESO-2.2m FEROS 0110.A-9015(A) "DIMOFF, A" SCIENCE ECHELLE OBJECT,WAVE 300.043 nan True "" FEROS_HD-49778 1000244392 1.141 False 1.151 False 1.43 False 1.43 False 2 2023-03-16T01:53:33 1 2023-03-16T01:53:53
+108 "CD-61 1712" "CD-61 1712" False 115.95945611 -61.67895 FEROS.2023-03-16T02:04:10.433 ESO-2.2m FEROS 0108.A-9004(A) "GEBRUERS, S" SCIENCE ECHELLE OBJECT,SKY 1800.043 nan True "" TIC281582674_2of4 1000291393 1.212 False 1.243 False 1.26 False 1.35 False 2 2023-03-16T02:04:04 1 2023-03-16T02:04:10
+108 "CD-60 2007" "CD-60 2007" False 119.88401 -61.17927 FEROS.2023-03-16T02:37:05.256 ESO-2.2m FEROS 0108.A-9004(A) "GEBRUERS, S" SCIENCE ECHELLE OBJECT,SKY 1800.043 nan True "" TIC410452218_2of4 1000291447 1.222 False 1.26 False 1.35 False 0.93 False 2 2023-03-16T02:36:59 1 2023-03-16T02:37:05
+108 "CL NGC 2516   DAC     863" "CL NGC 2516   DAC     863" False 120.19862611 -60.73906 FEROS.2023-03-16T03:13:33.242 ESO-2.2m FEROS 0108.A-9004(A) "GEBRUERS, S" SCIENCE ECHELLE OBJECT,SKY 1800.043 nan True "" TIC308307454_3of6 1000291474 1.261 False 1.315 False 0.98 False 1.13 False 2 2023-03-16T03:13:27 1 2023-03-16T03:13:33
+60 BIAS CD-39_6019 False 149.74847194 -39.88332 FEROS.2023-03-16T03:54:25.805 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE BIAS 0.0 nan True "" Focus_10-40 100241081 1.031 False 1.031 False 0.92 False 0.92 False 3 2023-03-16T03:54:20 1 2023-03-16T03:54:25
+110 "HD 76044" "HD 76044" False 133.18122305 -29.02746 FEROS.2023-03-16T03:58:36.972 ESO-2.2m FEROS 0110.A-9015(A) "DIMOFF, A" SCIENCE ECHELLE OBJECT,WAVE 600.043 nan True "" FEROS_HD-76044 1000244289 1.105 False 1.128 False 0.92 False 0.94 False 2 2023-03-16T03:58:16 1 2023-03-16T03:58:36
+110 "HD 76225" "HD 76225" False 133.48083805 -26.89935 FEROS.2023-03-16T04:11:51.357 ESO-2.2m FEROS 0110.A-9015(A) "DIMOFF, A" SCIENCE ECHELLE OBJECT,WAVE 700.043 nan True "" FEROS_HD-76225 1000243782 1.135 False 1.166 False 0.94 False 0.98 False 2 2023-03-16T04:11:30 1 2023-03-16T04:11:51
+110 "V AL ANT" "V AL ANT" False 142.30210194 -33.65663 FEROS.2023-03-16T04:34:23.843 ESO-2.2m FEROS 0110.A-9015(A) "DIMOFF, A" SCIENCE ECHELLE OBJECT,WAVE 300.043 nan True "" FEROS_AL-Ant 1000244294 1.102 False 1.113 False 0.98 False 0.98 False 2 2023-03-16T04:34:03 1 2023-03-16T04:34:23
+110 "HD 82221" "HD 82221" False 142.40768694 -33.29474 FEROS.2023-03-16T04:42:15.714 ESO-2.2m FEROS 0110.A-9015(A) "DIMOFF, A" SCIENCE ECHELLE OBJECT,WAVE 600.043 nan True "" FEROS_HD-82221 1000244417 1.116 False 1.14 False 0.98 False 0.98 False 2 2023-03-16T04:41:41 1 2023-03-16T04:42:15
+110 "HD 87080" "HD 87080" False 150.48004 -33.66888 FEROS.2023-03-16T04:56:15.965 ESO-2.2m FEROS 0110.A-9015(A) "DIMOFF, A" SCIENCE ECHELLE OBJECT,WAVE 600.043 nan True "" FEROS_HD-87080 1000243802 1.083 False 1.102 False 0.98 False 0.98 False 2 2023-03-16T04:55:55 1 2023-03-16T04:56:15
+60 FOCUS DUMMY False 137.86174694 5.84814 WFI.2023-03-16T05:12:36.158 ESO-2.2m WFI 60.A-9120(A) "2P2 TEAM 20" CALIB TEL-THROUGH FOCUS 9.835 nan True BB#RC/162_ESO844 focusCurrentFiltre 100119956 1.699 False 1.733 False 0.98 False 0.84 False 1 2023-03-16T05:10:30 1 2023-03-16T05:12:36
+110 SKY RXJ0911+0551 False 137.86420388 5.84809 WFI.2023-03-16T05:18:50.039 ESO-2.2m WFI 0110.A-9010(A) "COURBIN, F" ACQUISITION IMAGE SKY 29.991 nan True BB#RC/162_ESO844 RXJ0911+0551 1746213 1.747 False 1.753 False 0.84 False 0.84 False 1 2023-03-16T05:18:18 1 2023-03-16T05:18:50
+110 RXJ0911+0551 RXJ0911+0551 False 137.89403888 5.75652 WFI.2023-03-16T05:22:25.673 ESO-2.2m WFI 0110.A-9010(A) "COURBIN, F" SCIENCE IMAGE OBJECT 319.917 nan True BB#RC/162_ESO844 RXJ0911+0551 1746213 1.773 False 1.822 False 0.84 False 0.68 False 2 2023-03-16T05:22:07 1 2023-03-16T05:22:25
+110 RXJ0911+0551 RXJ0911+0551 False 137.89726305 5.75645 WFI.2023-03-16T05:29:11.168 ESO-2.2m WFI 0110.A-9010(A) "COURBIN, F" SCIENCE IMAGE OBJECT 319.917 nan True BB#RC/162_ESO844 RXJ0911+0551 1746213 1.833 False 1.886 False 0.68 False 0.86 False 2 2023-03-16T05:22:07 2 2023-03-16T05:29:11
+110 RXJ0911+0551 RXJ0911+0551 False 137.89580194 5.75816 WFI.2023-03-16T05:35:58.012 ESO-2.2m WFI 0110.A-9010(A) "COURBIN, F" SCIENCE IMAGE OBJECT 319.917 nan True BB#RC/162_ESO844 RXJ0911+0551 1746213 1.899 False 1.958 False 0.86 False 0.86 False 2 2023-03-16T05:22:07 3 2023-03-16T05:35:58
+110 RXJ0911+0551 RXJ0911+0551 False 137.89612805 5.75463 WFI.2023-03-16T05:42:42.447 ESO-2.2m WFI 0110.A-9010(A) "COURBIN, F" SCIENCE IMAGE OBJECT 319.917 nan True BB#RC/162_ESO844 RXJ0911+0551 1746213 1.971 False 2.036 False 0.86 False 0.77 False 2 2023-03-16T05:22:07 4 2023-03-16T05:42:42
+110 SKY GRAL1131-4419 False 172.91670694 -44.33304 WFI.2023-03-16T05:50:20.449 ESO-2.2m WFI 0110.A-9010(A) "COURBIN, F" ACQUISITION IMAGE SKY 29.991 nan True BB#RC/162_ESO844 GRAL1131-4419 1746213 1.066 False 1.067 False 0.77 False 0.77 False 1 2023-03-16T05:48:52 1 2023-03-16T05:50:20
+110 GRAL1131-4419 GRAL1131-4419 False 172.79274194 -44.42473 WFI.2023-03-16T05:55:58.014 ESO-2.2m WFI 0110.A-9010(A) "COURBIN, F" SCIENCE IMAGE OBJECT 319.918 nan True BB#RC/162_ESO844 GRAL1131-4419 1746213 1.073 False 1.078 False 0.72 False 0.72 False 2 2023-03-16T05:55:39 1 2023-03-16T05:55:58
+110 GRAL1131-4419 GRAL1131-4419 False 172.79748611 -44.42493 WFI.2023-03-16T06:02:43.410 ESO-2.2m WFI 0110.A-9010(A) "COURBIN, F" SCIENCE IMAGE OBJECT 319.917 nan True BB#RC/162_ESO844 GRAL1131-4419 1746213 1.08 False 1.086 False 0.72 False 0.85 False 2 2023-03-16T05:55:39 2 2023-03-16T06:02:43
+110 GRAL1131-4419 GRAL1131-4419 False 172.79500611 -44.42319 WFI.2023-03-16T06:09:29.265 ESO-2.2m WFI 0110.A-9010(A) "COURBIN, F" SCIENCE IMAGE OBJECT 319.917 nan True BB#RC/162_ESO844 GRAL1131-4419 1746213 1.087 False 1.094 False 0.85 False 0.8 False 2 2023-03-16T05:55:39 3 2023-03-16T06:09:29
+110 GRAL1131-4419 GRAL1131-4419 False 172.79499694 -44.42664 WFI.2023-03-16T06:16:08.260 ESO-2.2m WFI 0110.A-9010(A) "COURBIN, F" SCIENCE IMAGE OBJECT 319.917 nan True BB#RC/162_ESO844 GRAL1131-4419 1746213 1.096 False 1.103 False 0.8 False 0.8 False 2 2023-03-16T05:55:39 4 2023-03-16T06:16:08
+60 BIAS FOCUS False 179.64866611 -40.00316 FEROS.2023-03-16T06:34:09.116 ESO-2.2m FEROS 60.A-9700(A) "OBSERVATORY, L" CALIB ECHELLE BIAS 0.0 nan True "" Focus_12-40 100241081 1.068 False 1.068 False 0.79 False 0.79 False 3 2023-03-16T06:34:04 1 2023-03-16T06:34:09
+110 "HD 88035" "HD 88035" False 152.15322805 -20.29944 FEROS.2023-03-16T06:37:47.279 ESO-2.2m FEROS 0110.A-9015(A) "DIMOFF, A" SCIENCE ECHELLE OBJECT,WAVE 600.043 nan True "" FEROS_HD-88035 1000244422 1.433 False 1.498 False 0.79 False 0.79 False 2 2023-03-16T06:37:26 1 2023-03-16T06:37:47
+110 "HD 88562" "HD 88562" False 153.10364694 -15.87577 FEROS.2023-03-16T06:50:54.624 ESO-2.2m FEROS 0110.A-9015(A) "DIMOFF, A" SCIENCE ECHELLE OBJECT,WAVE 500.043 nan True "" FEROS_HD-88562 1000244427 1.541 False 1.607 False 0.79 False 0.79 False 2 2023-03-16T06:50:34 1 2023-03-16T06:50:54
+110 "HD 89638" "HD 89638" False 155.03323 -23.08855 FEROS.2023-03-16T07:03:02.962 ESO-2.2m FEROS 0110.A-9015(A) "DIMOFF, A" SCIENCE ECHELLE OBJECT,WAVE 300.043 nan True "" FEROS_HD-89638 1000244432 1.488 False 1.526 False 0.79 False 0.79 False 2 2023-03-16T07:02:42 1 2023-03-16T07:03:02
+0 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx False 0.0 0.0 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 0.0 0.0 False xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 0 0.0 False 0.0 False 0.0 False 0.0 False 0 xxxxxxxxxxxxxxxxxxx 0 xxxxxxxxxxxxxxxxxxx

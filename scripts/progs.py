@@ -6,7 +6,7 @@ sys.path.append('..')
 # from autolog.eso.tapquery import NightQuery
 from autolog.eso.allocation import Allocation
 
-period = 111
+period = 110
 telescope = 'ESO-2.2m'
 allocation = Allocation.read(telescope=telescope, period=period)
 allocation.save(format='html')

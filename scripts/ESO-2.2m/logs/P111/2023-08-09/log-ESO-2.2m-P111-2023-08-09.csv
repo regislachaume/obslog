@@ -1,0 +1,250 @@
+# %ECSV 1.0
+# ---
+# datatype:
+# - {name: tac, datatype: string}
+# - {name: period, datatype: int32, description: ESO observing period}
+# - {name: night, datatype: string, description: observing night}
+# - {name: internal, datatype: bool, description: flag for internal instrument calibration}
+# - {name: slew, datatype: bool, description: flag for non-tracking observations}
+# - {name: object, datatype: string, description: name of the object in the exposure}
+# - {name: target, datatype: string, description: name of the astronomical target}
+# - {name: target.mask, datatype: bool}
+# - name: ra
+#   unit: deg
+#   datatype: float64
+#   description: Right Ascension FK5 J2000
+#   meta: !!omap
+#   - {ucd: pos.eq.ra;meta.main}
+# - {name: ra.mask, datatype: bool}
+# - name: dec
+#   unit: deg
+#   datatype: float64
+#   description: Declination FK5 J2000
+#   meta: !!omap
+#   - {ucd: pos.eq.dec;meta.main}
+# - {name: dec.mask, datatype: bool}
+# - {name: dp_id, datatype: string}
+# - {name: dp_id.mask, datatype: bool}
+# - {name: telescope, datatype: string, description: telescope name}
+# - {name: instrument, datatype: string, description: instrument name}
+# - {name: pid, datatype: string, description: ESO programme ID allocated by TAC}
+# - {name: used_pid, datatype: string, description: ESO programme ID used to observe}
+# - {name: pi, datatype: string, description: name of the principal investigator}
+# - {name: dp_cat, datatype: string, description: purpose of observation}
+# - {name: dp_tech, datatype: string, description: observing technique}
+# - {name: dp_tech.mask, datatype: bool}
+# - {name: dp_type, datatype: string, description: type of exposure}
+# - {name: dp_type.mask, datatype: bool}
+# - name: exposure
+#   unit: s
+#   datatype: float32
+#   format: .0f
+#   description: cumulated exposure time
+#   meta: !!omap
+#   - {ucd: time.duration;obs.exposure}
+# - {name: filter, datatype: string, description: list of filtres in the optical path}
+# - {name: filter.mask, datatype: bool}
+# - {name: ob_name, datatype: string, description: name of the observing block}
+# - name: ob_id
+#   datatype: int32
+#   description: observing block ID number
+#   meta: !!omap
+#   - {ucd: meta.id;obs;meta.main}
+# - {name: airmass, datatype: float32, format: .2f, description: airmass during the exposure}
+# - {name: airmass.mask, datatype: bool}
+# - {name: seeing, unit: arcsec, datatype: float32, format: .2f, description: DIMM seeing during the exposure}
+# - {name: seeing.mask, datatype: bool}
+# - name: ob_no
+#   datatype: int32
+#   description: unique OB number within the night
+#   meta: !!omap
+#   - {ucd: meta.code.member;obs.sequence}
+# - {name: ob_start, datatype: string, description: estimated start time of the execution of the OB}
+# - {name: ob_end, datatype: string, description: estimated end time of the execution of the OB}
+# - name: tpl_no
+#   datatype: int32
+#   description: template number within OB
+#   meta: !!omap
+#   - {ucd: meta.code.member;obs.sequence}
+# - {name: tpl_start, datatype: string, description: time at start of observing template}
+# - {name: tpl_end, datatype: string, description: estimated end time of the execution of the observing template}
+# - name: exp_no
+#   datatype: int32
+#   description: exposure number within template
+#   meta: !!omap
+#   - {ucd: meta.number;obs}
+# - {name: exp_start, datatype: string, description: time at start of exposure}
+# - {name: exp_end, datatype: string, description: estimated end time of the exposure}
+# - {name: night_hours, unit: h, datatype: float64, format: .3f, description: number of hours of night conditions}
+# - {name: dark_hours, unit: h, datatype: float64, format: .3f, description: number of hours of dark conditions}
+# - {name: twilight_hours, unit: h, datatype: float64, format: .3f, description: number of hours of twilight conditions}
+# - {name: nautical_twilight_hours, unit: h, datatype: float64, format: .3f, description: number of hours of nauticaltwilight conditions}
+# - {name: civil_twilight_hours, unit: h, datatype: float64, format: .3f, description: number of hours of civiltwilight conditions}
+# - {name: sun_down_hours, unit: h, datatype: float64, format: .3f, description: number of hours of sundown conditions}
+# - {name: total_hours, unit: h, datatype: float64, format: .3f, description: number of hours}
+# meta: !!omap
+# - {site: La Silla Observatory}
+# - {lon: -70.73000000000002}
+# - {lat: -29.25666666666666}
+# - {alt: 2346.999999998842}
+# - {telescope: ESO-2.2m}
+# - {period: 111}
+# - {night: '2023-08-09'}
+# - {rootdir: .}
+# - ephemeris:
+#     civil_twilight_hours: 0.635
+#     civil_twilight_time:
+#     - ['2023-08-09T22:21:45', '2023-08-09T22:40:49']
+#     - ['2023-08-10T10:55:37', '2023-08-10T11:14:39']
+#     dark_hours: 7.3725
+#     dark_time:
+#     - ['2023-08-09T23:37:00', '2023-08-10T06:59:21']
+#     moon_illumination: 0.32249702989478235
+#     nautical_twilight_hours: 0.9411111111111111
+#     nautical_twilight_time:
+#     - ['2023-08-09T22:40:49', '2023-08-09T23:09:04']
+#     - ['2023-08-10T10:27:24', '2023-08-10T10:55:37']
+#     night_hours: 10.375277777777777
+#     night_time:
+#     - ['2023-08-09T23:37:00', '2023-08-10T09:59:31']
+#     sun_down_hours: 12.881666666666666
+#     sun_down_time:
+#     - ['2023-08-09T22:21:45', '2023-08-10T11:14:39']
+#     twilight_hours: 0.9302777777777778
+#     twilight_time:
+#     - ['2023-08-09T23:09:04', '2023-08-09T23:37:00']
+#     - ['2023-08-10T09:59:31', '2023-08-10T10:27:24']
+# - {roodir: .}
+# - {wwwdir: /data/www/twoptwo.com}
+# - __serialized_columns__:
+#     airmass:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: airmass}
+#       mask: !astropy.table.SerializedColumn {name: airmass.mask}
+#     dec:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: dec}
+#       mask: !astropy.table.SerializedColumn {name: dec.mask}
+#     dp_id:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: dp_id}
+#       mask: !astropy.table.SerializedColumn {name: dp_id.mask}
+#     dp_tech:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: dp_tech}
+#       mask: !astropy.table.SerializedColumn {name: dp_tech.mask}
+#     dp_type:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: dp_type}
+#       mask: !astropy.table.SerializedColumn {name: dp_type.mask}
+#     exp_no:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: exp_no}
+#     exposure:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: exposure}
+#     filter:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: filter}
+#       mask: !astropy.table.SerializedColumn {name: filter.mask}
+#     ob_id:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: ob_id}
+#     ob_no:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: ob_no}
+#     ra:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: ra}
+#       mask: !astropy.table.SerializedColumn {name: ra.mask}
+#     seeing:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: seeing}
+#       mask: !astropy.table.SerializedColumn {name: seeing.mask}
+#     tac:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: tac}
+#     target:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: target}
+#       mask: !astropy.table.SerializedColumn {name: target.mask}
+#     tpl_no:
+#       __class__: astropy.table.column.MaskedColumn
+#       data: !astropy.table.SerializedColumn {name: tpl_no}
+# schema: astropy-2.0
+tac period night internal slew object target target.mask ra ra.mask dec dec.mask dp_id dp_id.mask telescope instrument pid used_pid pi dp_cat dp_tech dp_tech.mask dp_type dp_type.mask exposure filter filter.mask ob_name ob_id airmass airmass.mask seeing seeing.mask ob_no ob_start ob_end tpl_no tpl_start tpl_end exp_no exp_start exp_end night_hours dark_hours twilight_hours nautical_twilight_hours civil_twilight_hours sun_down_hours total_hours
+Downtime 111 2023-08-09 False True IDLE "" True 0.0 True 0.0 True "" True ESO-2.2m IDLE IDLE/TWILIGHT IDLE/TWILIGHT 0.0 IDLE "" True "" True 0.0 "" False Telescope_Idle 0 0.0 True 0.0 True 9 2023-08-09T23:09:04 2023-08-09T23:37:00 0 2023-08-09T23:09:04 2023-08-09T23:37:00 0 2023-08-09T23:09:04 2023-08-09T23:37:00 0.0 0.0 0.46555555555555556 0.0 0.0 0.46555555555555556 0.46555555555555556
+Downtime 111 2023-08-09 False True IDLE "" True 0.0 True 0.0 True "" True ESO-2.2m IDLE IDLE/NIGHT IDLE/NIGHT 0.0 IDLE "" True "" True 0.0 "" False Telescope_Idle 0 0.0 True 0.0 True 8 2023-08-09T23:37:00 2023-08-10T07:28:16 0 2023-08-09T23:37:00 2023-08-10T07:28:16 0 2023-08-09T23:37:00 2023-08-10T07:28:16 7.854444444444445 7.3725 0.0 0.0 0.0 7.854444444444445 7.854444444444445
+Calib 111 2023-08-09 False False FOCUS DUMMY False 44.92794194 False -16.59536 False WFI.2023-08-10T07:29:59.965 False ESO-2.2m WFI 60.A-9120(A) 60.A-9120(A) Service CALIB TEL-THROUGH False FOCUS False 9.85 BB#RC/162_ESO844 False focusCurrentFiltre 100119956 1.356 False 1.14 False 3 2023-08-10T07:28:16 2023-08-10T07:36:28 1 2023-08-10T07:28:16 2023-08-10T07:36:28 1 2023-08-10T07:29:59 2023-08-10T07:36:28 0.13666666666666666 0.0 0.0 0.0 0.0 0.13666666666666666 0.13666666666666666
+Downtime 111 2023-08-09 False True IDLE "" True 0.0 True 0.0 True "" True ESO-2.2m IDLE IDLE/NIGHT IDLE/NIGHT 0.0 IDLE "" True "" True 0.0 "" False Telescope_Idle 0 0.0 True 0.0 True 7 2023-08-10T07:36:28 2023-08-10T07:46:07 0 2023-08-10T07:36:28 2023-08-10T07:46:07 0 2023-08-10T07:36:28 2023-08-10T07:46:07 0.16083333333333333 0.0 0.0 0.0 0.0 0.16083333333333333 0.16083333333333333
+Calib 111 2023-08-09 False False VELOC,WAVE TAUCET False 25.98141111 False -15.91724 False "" True ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service ACQUISITION "" True "" True 0.0 "" True RVStandard_0144-1556_tauCet 15357984 1.0875 False 1.14 False 5 2023-08-10T07:46:07 2023-08-10T07:52:27 1 2023-08-10T07:46:07 2023-08-10T07:50:07 1 2023-08-10T07:46:07 2023-08-10T07:50:07 0.06666666666666667 0.0 0.0 0.0 0.0 0.06666666666666667 0.06666666666666667
+Calib 111 2023-08-09 False False VELOC,WAVE TAUCET False 25.98141111 False -15.91724 False FEROS.2023-08-10T07:50:27.670 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False VELOC,WAVE False 60.043 "" False RVStandard_0144-1556_tauCet 15357984 1.0875 False 1.14 False 5 2023-08-10T07:46:07 2023-08-10T07:52:27 2 2023-08-10T07:50:07 2023-08-10T07:52:27 1 2023-08-10T07:50:27 2023-08-10T07:52:27 0.03888888888888889 0.0 0.0 0.0 0.0 0.03888888888888889 0.03888888888888889
+Downtime 111 2023-08-09 False True IDLE "" True 0.0 True 0.0 True "" True ESO-2.2m IDLE IDLE/NIGHT IDLE/NIGHT 0.0 IDLE "" True "" True 0.0 "" False Telescope_Idle 0 0.0 True 0.0 True 6 2023-08-10T07:52:27 2023-08-10T09:59:31 0 2023-08-10T07:52:27 2023-08-10T09:59:31 0 2023-08-10T07:52:27 2023-08-10T09:59:31 2.117777777777778 0.0 0.0 0.0 0.0 2.117777777777778 2.117777777777778
+Downtime 111 2023-08-09 False True IDLE "" True 0.0 True 0.0 True "" True ESO-2.2m IDLE IDLE/TWILIGHT IDLE/TWILIGHT 0.0 IDLE "" True "" True 0.0 "" False Telescope_Idle 0 0.0 True 0.0 True 10 2023-08-10T09:59:31 2023-08-10T10:27:24 0 2023-08-10T09:59:31 2023-08-10T10:27:24 0 2023-08-10T09:59:31 2023-08-10T10:27:24 0.0 0.0 0.4647222222222222 0.0 0.0 0.4647222222222222 0.4647222222222222
+Calib 111 2023-08-09 True True FLAT "" True -596.52323555 True -596.52323555 True "" True ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service ACQUISITION "" True "" True 0.0 "" True "Calibration 1x1,normal" 100319512 nan True nan True 1 2023-08-09T16:39:04 2023-08-09T18:14:03 1 2023-08-09T16:39:04 2023-08-09T16:43:04 1 2023-08-09T16:39:04 2023-08-09T16:43:04 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True FLAT "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T16:48:38.777 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False FLAT False 8.044 "" False "Calibration 1x1,normal" 100319512 nan True nan True 1 2023-08-09T16:39:04 2023-08-09T18:14:03 2 2023-08-09T16:43:04 2023-08-09T16:58:37 1 2023-08-09T16:48:38 2023-08-09T16:49:46 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True FLAT "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T16:49:39.103 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False FLAT False 8.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 1 2023-08-09T16:39:04 2023-08-09T18:14:03 2 2023-08-09T16:43:04 2023-08-09T16:58:37 2 2023-08-09T16:49:39 2023-08-09T16:50:47 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True FLAT "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T16:50:39.110 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False FLAT False 8.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 1 2023-08-09T16:39:04 2023-08-09T18:14:03 2 2023-08-09T16:43:04 2023-08-09T16:58:37 3 2023-08-09T16:50:39 2023-08-09T16:51:47 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True FLAT "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T16:51:39.256 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False FLAT False 8.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 1 2023-08-09T16:39:04 2023-08-09T18:14:03 2 2023-08-09T16:43:04 2023-08-09T16:58:37 4 2023-08-09T16:51:39 2023-08-09T16:52:47 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True FLAT "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T16:52:39.793 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False FLAT False 8.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 1 2023-08-09T16:39:04 2023-08-09T18:14:03 2 2023-08-09T16:43:04 2023-08-09T16:58:37 5 2023-08-09T16:52:39 2023-08-09T16:53:47 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True FLAT "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T16:53:39.759 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False FLAT False 8.044 "" False "Calibration 1x1,normal" 100319512 nan True nan True 1 2023-08-09T16:39:04 2023-08-09T18:14:03 2 2023-08-09T16:43:04 2023-08-09T16:58:37 6 2023-08-09T16:53:39 2023-08-09T16:54:47 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True FLAT "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T16:54:39.857 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False FLAT False 8.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 1 2023-08-09T16:39:04 2023-08-09T18:14:03 2 2023-08-09T16:43:04 2023-08-09T16:58:37 7 2023-08-09T16:54:39 2023-08-09T16:55:47 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True FLAT "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T16:55:39.804 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False FLAT False 8.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 1 2023-08-09T16:39:04 2023-08-09T18:14:03 2 2023-08-09T16:43:04 2023-08-09T16:58:37 8 2023-08-09T16:55:39 2023-08-09T16:56:47 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True FLAT "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T16:56:39.810 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False FLAT False 8.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 1 2023-08-09T16:39:04 2023-08-09T18:14:03 2 2023-08-09T16:43:04 2023-08-09T16:58:37 9 2023-08-09T16:56:39 2023-08-09T16:57:47 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True FLAT "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T16:57:39.806 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False FLAT False 8.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 1 2023-08-09T16:39:04 2023-08-09T18:14:03 2 2023-08-09T16:43:04 2023-08-09T16:58:37 10 2023-08-09T16:57:39 2023-08-09T16:58:47 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True WAVE "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T16:58:54.714 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 10.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 1 2023-08-09T16:39:04 2023-08-09T18:14:03 3 2023-08-09T16:58:37 2023-08-09T17:00:55 1 2023-08-09T16:58:54 2023-08-09T17:00:04 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True WAVE "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T16:59:56.801 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 10.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 1 2023-08-09T16:39:04 2023-08-09T18:14:03 3 2023-08-09T16:58:37 2023-08-09T17:00:55 2 2023-08-09T16:59:56 2023-08-09T17:01:06 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True WAVE "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T17:01:03.748 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 30.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 1 2023-08-09T16:39:04 2023-08-09T18:14:03 4 2023-08-09T17:00:55 2023-08-09T17:03:46 1 2023-08-09T17:01:03 2023-08-09T17:02:33 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True WAVE "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T17:02:26.127 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 30.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 1 2023-08-09T16:39:04 2023-08-09T18:14:03 4 2023-08-09T17:00:55 2023-08-09T17:03:46 2 2023-08-09T17:02:26 2023-08-09T17:03:56 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True WAVE "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T17:03:55.487 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 60.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 1 2023-08-09T16:39:04 2023-08-09T18:14:03 5 2023-08-09T17:03:46 2023-08-09T17:07:36 1 2023-08-09T17:03:55 2023-08-09T17:05:55 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True WAVE "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T17:05:47.779 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 60.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 1 2023-08-09T16:39:04 2023-08-09T18:14:03 5 2023-08-09T17:03:46 2023-08-09T17:07:36 2 2023-08-09T17:05:47 2023-08-09T17:07:47 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True WAVE "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T17:28:00.603 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 30.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 1 2023-08-09T16:39:04 2023-08-09T18:14:03 6 2023-08-09T17:07:36 2023-08-09T17:30:41 1 2023-08-09T17:28:00 2023-08-09T17:29:30 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True WAVE "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T17:29:21.303 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 30.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 1 2023-08-09T16:39:04 2023-08-09T18:14:03 6 2023-08-09T17:07:36 2023-08-09T17:30:41 2 2023-08-09T17:29:21 2023-08-09T17:30:51 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True WAVE "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T17:30:50.533 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 150.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 1 2023-08-09T16:39:04 2023-08-09T18:14:03 7 2023-08-09T17:30:41 2023-08-09T17:37:31 1 2023-08-09T17:30:50 2023-08-09T17:34:20 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True WAVE "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T17:34:12.795 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 150.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 1 2023-08-09T16:39:04 2023-08-09T18:14:03 7 2023-08-09T17:30:41 2023-08-09T17:37:31 2 2023-08-09T17:34:12 2023-08-09T17:37:42 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True WAVE "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T17:37:39.677 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 300.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 1 2023-08-09T16:39:04 2023-08-09T18:14:03 8 2023-08-09T17:37:31 2023-08-09T17:49:20 1 2023-08-09T17:37:39 2023-08-09T17:43:39 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True WAVE "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T17:43:30.315 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 300.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 1 2023-08-09T16:39:04 2023-08-09T18:14:03 8 2023-08-09T17:37:31 2023-08-09T17:49:20 2 2023-08-09T17:43:30 2023-08-09T17:49:30 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True WAVE "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T17:49:29.234 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 30.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 1 2023-08-09T16:39:04 2023-08-09T18:14:03 9 2023-08-09T17:49:20 2023-08-09T18:14:03 1 2023-08-09T17:49:29 2023-08-09T17:50:59 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True WAVE "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T17:50:51.783 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 30.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 1 2023-08-09T16:39:04 2023-08-09T18:14:03 9 2023-08-09T17:49:20 2023-08-09T18:14:03 2 2023-08-09T17:50:51 2023-08-09T17:52:21 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True WAVE "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T17:52:12.281 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 30.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 1 2023-08-09T16:39:04 2023-08-09T18:14:03 9 2023-08-09T17:49:20 2023-08-09T18:14:03 3 2023-08-09T17:52:12 2023-08-09T17:53:42 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True WAVE "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T17:53:33.700 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 30.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 1 2023-08-09T16:39:04 2023-08-09T18:14:03 9 2023-08-09T17:49:20 2023-08-09T18:14:03 4 2023-08-09T17:53:33 2023-08-09T17:55:03 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True WAVE "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T17:54:56.149 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 30.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 1 2023-08-09T16:39:04 2023-08-09T18:14:03 9 2023-08-09T17:49:20 2023-08-09T18:14:03 5 2023-08-09T17:54:56 2023-08-09T17:56:26 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True WAVE "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T17:56:17.288 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 30.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 1 2023-08-09T16:39:04 2023-08-09T18:14:03 9 2023-08-09T17:49:20 2023-08-09T18:14:03 6 2023-08-09T17:56:17 2023-08-09T17:57:47 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True WAVE "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T17:57:38.667 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 30.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 1 2023-08-09T16:39:04 2023-08-09T18:14:03 9 2023-08-09T17:49:20 2023-08-09T18:14:03 7 2023-08-09T17:57:38 2023-08-09T17:59:08 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True WAVE "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T17:59:01.166 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 30.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 1 2023-08-09T16:39:04 2023-08-09T18:14:03 9 2023-08-09T17:49:20 2023-08-09T18:14:03 8 2023-08-09T17:59:01 2023-08-09T18:00:31 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True WAVE "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T18:00:22.285 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 30.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 1 2023-08-09T16:39:04 2023-08-09T18:14:03 9 2023-08-09T17:49:20 2023-08-09T18:14:03 9 2023-08-09T18:00:22 2023-08-09T18:01:52 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True WAVE "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T18:01:42.293 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 30.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 1 2023-08-09T16:39:04 2023-08-09T18:14:03 9 2023-08-09T17:49:20 2023-08-09T18:14:03 10 2023-08-09T18:01:42 2023-08-09T18:03:12 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True WAVE "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T18:03:04.842 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 30.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 1 2023-08-09T16:39:04 2023-08-09T18:14:03 9 2023-08-09T17:49:20 2023-08-09T18:14:03 11 2023-08-09T18:03:04 2023-08-09T18:04:34 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True WAVE "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T18:04:25.302 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 30.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 1 2023-08-09T16:39:04 2023-08-09T18:14:03 9 2023-08-09T17:49:20 2023-08-09T18:14:03 12 2023-08-09T18:04:25 2023-08-09T18:05:55 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True WAVE "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T18:05:46.270 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 30.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 1 2023-08-09T16:39:04 2023-08-09T18:14:03 9 2023-08-09T17:49:20 2023-08-09T18:14:03 13 2023-08-09T18:05:46 2023-08-09T18:07:16 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True WAVE "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T18:07:09.229 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 30.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 1 2023-08-09T16:39:04 2023-08-09T18:14:03 9 2023-08-09T17:49:20 2023-08-09T18:14:03 14 2023-08-09T18:07:09 2023-08-09T18:08:39 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True WAVE "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T18:08:29.598 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 30.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 1 2023-08-09T16:39:04 2023-08-09T18:14:03 9 2023-08-09T17:49:20 2023-08-09T18:14:03 15 2023-08-09T18:08:29 2023-08-09T18:09:59 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True WAVE "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T18:09:50.337 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 30.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 1 2023-08-09T16:39:04 2023-08-09T18:14:03 9 2023-08-09T17:49:20 2023-08-09T18:14:03 16 2023-08-09T18:09:50 2023-08-09T18:11:20 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True WAVE "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T18:11:12.836 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 30.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 1 2023-08-09T16:39:04 2023-08-09T18:14:03 9 2023-08-09T17:49:20 2023-08-09T18:14:03 17 2023-08-09T18:11:12 2023-08-09T18:12:42 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True WAVE "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T18:12:33.624 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 30.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 1 2023-08-09T16:39:04 2023-08-09T18:14:03 9 2023-08-09T17:49:20 2023-08-09T18:14:03 18 2023-08-09T18:12:33 2023-08-09T18:14:03 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True FLAT "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T19:57:45.699 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False FLAT False 1.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 2 2023-08-09T19:57:20 2023-08-09T21:01:11 1 2023-08-09T19:57:20 2023-08-09T20:06:05 1 2023-08-09T19:57:45 2023-08-09T19:58:46 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True HIDDEN "" True -596.52323555 True -596.52323555 True "" True ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service TECHNICAL "" True "" True 0.0 "" True "Calibration 1x1,normal" 100319512 nan True nan True 2 2023-08-09T19:57:20 2023-08-09T21:01:11 2 2023-08-09T20:06:05 2023-08-09T20:06:05 1 2023-08-09T20:06:05 2023-08-09T20:06:05 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True WAVE "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T20:26:20.225 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 30.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 2 2023-08-09T19:57:20 2023-08-09T21:01:11 6 2023-08-09T20:06:05 2023-08-09T20:31:56 1 2023-08-09T20:26:20 2023-08-09T20:27:50 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True WAVE "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T20:27:42.443 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 30.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 2 2023-08-09T19:57:20 2023-08-09T21:01:11 6 2023-08-09T20:06:05 2023-08-09T20:31:56 2 2023-08-09T20:27:42 2023-08-09T20:29:12 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True HIDDEN "" True -596.52323555 True -596.52323555 True "" True ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service TECHNICAL "" True "" True 0.0 "" True "Calibration 1x1,normal" 100319512 nan True nan True 2 2023-08-09T19:57:20 2023-08-09T21:01:11 7 2023-08-09T20:31:56 2023-08-09T20:31:56 1 2023-08-09T20:31:56 2023-08-09T20:31:56 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True WAVE "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T20:32:05.152 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 45.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 2 2023-08-09T19:57:20 2023-08-09T21:01:11 9 2023-08-09T20:31:56 2023-08-09T21:01:11 1 2023-08-09T20:32:05 2023-08-09T20:33:50 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True WAVE "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T20:33:42.462 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 45.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 2 2023-08-09T19:57:20 2023-08-09T21:01:11 9 2023-08-09T20:31:56 2023-08-09T21:01:11 2 2023-08-09T20:33:42 2023-08-09T20:35:27 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True WAVE "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T20:35:19.473 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 45.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 2 2023-08-09T19:57:20 2023-08-09T21:01:11 9 2023-08-09T20:31:56 2023-08-09T21:01:11 3 2023-08-09T20:35:19 2023-08-09T20:37:04 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True WAVE "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T20:36:56.414 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 45.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 2 2023-08-09T19:57:20 2023-08-09T21:01:11 9 2023-08-09T20:31:56 2023-08-09T21:01:11 4 2023-08-09T20:36:56 2023-08-09T20:38:41 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True WAVE "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T20:38:32.194 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 45.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 2 2023-08-09T19:57:20 2023-08-09T21:01:11 9 2023-08-09T20:31:56 2023-08-09T21:01:11 5 2023-08-09T20:38:32 2023-08-09T20:40:17 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True WAVE "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T20:40:07.935 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 45.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 2 2023-08-09T19:57:20 2023-08-09T21:01:11 9 2023-08-09T20:31:56 2023-08-09T21:01:11 6 2023-08-09T20:40:07 2023-08-09T20:41:52 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True WAVE "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T20:41:45.425 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 45.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 2 2023-08-09T19:57:20 2023-08-09T21:01:11 9 2023-08-09T20:31:56 2023-08-09T21:01:11 7 2023-08-09T20:41:45 2023-08-09T20:43:30 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True WAVE "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T20:43:22.496 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 45.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 2 2023-08-09T19:57:20 2023-08-09T21:01:11 9 2023-08-09T20:31:56 2023-08-09T21:01:11 8 2023-08-09T20:43:22 2023-08-09T20:45:07 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True WAVE "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T20:44:57.926 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 45.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 2 2023-08-09T19:57:20 2023-08-09T21:01:11 9 2023-08-09T20:31:56 2023-08-09T21:01:11 9 2023-08-09T20:44:57 2023-08-09T20:46:42 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True WAVE "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T20:46:34.347 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 45.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 2 2023-08-09T19:57:20 2023-08-09T21:01:11 9 2023-08-09T20:31:56 2023-08-09T21:01:11 10 2023-08-09T20:46:34 2023-08-09T20:48:19 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True WAVE "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T20:48:10.007 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 45.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 2 2023-08-09T19:57:20 2023-08-09T21:01:11 9 2023-08-09T20:31:56 2023-08-09T21:01:11 11 2023-08-09T20:48:10 2023-08-09T20:49:55 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True WAVE "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T20:49:47.427 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 45.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 2 2023-08-09T19:57:20 2023-08-09T21:01:11 9 2023-08-09T20:31:56 2023-08-09T21:01:11 12 2023-08-09T20:49:47 2023-08-09T20:51:32 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True WAVE "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T20:51:24.418 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 45.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 2 2023-08-09T19:57:20 2023-08-09T21:01:11 9 2023-08-09T20:31:56 2023-08-09T21:01:11 13 2023-08-09T20:51:24 2023-08-09T20:53:09 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True WAVE "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T20:52:59.890 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 45.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 2 2023-08-09T19:57:20 2023-08-09T21:01:11 9 2023-08-09T20:31:56 2023-08-09T21:01:11 14 2023-08-09T20:52:59 2023-08-09T20:54:44 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True WAVE "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T20:54:35.979 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 45.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 2 2023-08-09T19:57:20 2023-08-09T21:01:11 9 2023-08-09T20:31:56 2023-08-09T21:01:11 15 2023-08-09T20:54:35 2023-08-09T20:56:20 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True WAVE "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T20:56:11.970 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 45.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 2 2023-08-09T19:57:20 2023-08-09T21:01:11 9 2023-08-09T20:31:56 2023-08-09T21:01:11 16 2023-08-09T20:56:11 2023-08-09T20:57:56 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True WAVE "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T20:57:49.661 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 45.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 2 2023-08-09T19:57:20 2023-08-09T21:01:11 9 2023-08-09T20:31:56 2023-08-09T21:01:11 17 2023-08-09T20:57:49 2023-08-09T20:59:34 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True WAVE "" True -596.52323555 True -596.52323555 True FEROS.2023-08-09T20:59:26.441 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False WAVE False 45.043 "" False "Calibration 1x1,normal" 100319512 nan True nan True 2 2023-08-09T19:57:20 2023-08-09T21:01:11 9 2023-08-09T20:31:56 2023-08-09T21:01:11 18 2023-08-09T20:59:26 2023-08-09T21:01:11 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True BIAS HD_215 True 1.69577611 True -40.97523 True "" True ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service ACQUISITION "" True "" True 0.0 "" True Focus_00-40 100241081 1.022 True 1.14 True 4 2023-08-10T07:44:06 2023-08-10T07:45:11 1 2023-08-10T07:44:06 2023-08-10T07:44:06 1 2023-08-10T07:44:06 2023-08-10T07:44:06 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+Calib 111 2023-08-09 True True BIAS HD_215 True 1.69577611 True -40.97523 True FEROS.2023-08-10T07:44:11.829 False ESO-2.2m FEROS 60.A-9700(A) 60.A-9700(A) Service CALIB ECHELLE False BIAS False 0.0 "" False Focus_00-40 100241081 1.022 True 1.14 True 4 2023-08-10T07:44:06 2023-08-10T07:45:11 3 2023-08-10T07:44:06 2023-08-10T07:45:11 1 2023-08-10T07:44:11 2023-08-10T07:45:11 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+xxxxxxxxxxxx 0 xxxxxxxxxx False False xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx False 0.0 False 0.0 False xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx False xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxx xxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx xxxxxxxxxxx xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx False xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx False 0.0 xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx False xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 0 0.0 False 0.0 False 0 xxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxx 0 xxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxx 0 xxxxxxxxxxxxxxxxxxx xxxxxxxxxxxxxxxxxxx 0.0 0.0 0.0 0.0 0.0 0.0 0.0

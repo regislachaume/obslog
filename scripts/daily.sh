@@ -47,9 +47,3 @@ echo  "sync ${WWWDIR} to live website http://www.astro.puc.cl/2.2m" >> $LOG
 ./sync.sh >> $LOG 2>> $LOG
 echo ""  >> $LOG >>& $ERR
 
-echo "git add * in ${WWWDIR}" >> $LOG >>& $ERR
-git add * >> $LOG 2>> $LOG
-echo "git commit" >> $LOG >>& $ERR
-git commit -m"automatic update of ${DATE}" >> $LOG 2>> $ERR
-git push >> $LOG 2>> $ERR
-echo ""  >> $LOG >>& $ERR
